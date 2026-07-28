@@ -1,8 +1,90 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-<h2>Dashboard</h2>
+<div class="dashboard-header">
 
+    <h2>Student Dashboard</h2>
+
+    <p>
+        Welcome to the SPGS Record Management System.
+    </p>
+
+</div>
+
+<div class="dashboard-grid">
+
+    <!-- Research Proposal -->
+    <div class="dashboard-box">
+
+        <h3>
+            <i class="fa-solid fa-file-lines"></i>
+            Research Proposal
+        </h3>
+
+        <p>
+            View your proposal details and current status.
+        </p>
+
+        <a href="@Url.Action("Proposal","Student")">
+            View Proposal →
+        </a>
+
+    </div>
+
+    <!-- Ethics -->
+    <div class="dashboard-box">
+
+        <h3>
+            <i class="fa-solid fa-scale-balanced"></i>
+            Ethics Application
+        </h3>
+
+        <p>
+            View your ethics application and approval status.
+        </p>
+
+        <a href="@Url.Action("Ethics","Student")">
+            View Ethics →
+        </a>
+
+    </div>
+
+    <!-- Submission -->
+    <div class="dashboard-box">
+
+        <h3>
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Latest Submission
+        </h3>
+
+        <p>
+            View your latest research submission.
+        </p>
+
+        <a href="@Url.Action("Submissions","Student")">
+            View Submission →
+        </a>
+
+    </div>
+
+    <!-- Notifications -->
+    <div class="dashboard-box">
+
+        <h3>
+            <i class="fa-solid fa-bell"></i>
+            Notifications
+        </h3>
+
+        <p>
+            View your latest notifications from the system.
+        </p>
+
+        <a href="#">
+            View Notifications →
+        </a>
+
+    </div>
+
+</div>
