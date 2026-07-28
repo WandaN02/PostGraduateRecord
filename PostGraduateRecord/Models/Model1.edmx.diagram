@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0aebfeba85f24fd39187673b392ff408" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.AuditLog" Width="1.5" PointX="3" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Department" Width="1.5" PointX="0.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.EthicsApplication" Width="1.5" PointX="10.5" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Evaluation" Width="1.5" PointX="13.5" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Evaluator" Width="1.5" PointX="6" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Faculty" Width="1.5" PointX="1.5" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Feedback" Width="1.5" PointX="11.25" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Milestone" Width="1.5" PointX="3.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Notification" Width="1.5" PointX="3" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ProgressReport" Width="1.5" PointX="5.25" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ProposalDocument" Width="1.5" PointX="10.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Proposal" Width="1.5" PointX="8.25" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ProposalStatusHistory" Width="1.5" PointX="6" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.StudentMilestone" Width="1.5" PointX="6" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Student" Width="1.5" PointX="3" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.SubmissionPeriod" Width="1.5" PointX="6" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.SupervisorAssignment" Width="1.5" PointX="11.25" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Supervisor" Width="1.5" PointX="9" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.TimelineEvent" Width="1.5" PointX="3.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.User" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Audit_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Department_Faculty" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Evaluator_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Student_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Supervisor_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_TE_Department" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Ethics_Proposal" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Evaluation_Evaluator" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Evaluation_Proposal" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Evaluator_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_TE_Faculty" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_StudentFeedback_Proposals" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_StudentFeedback_Students" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_StudentFeedback_Supervisors" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_SM_Milestone" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Notif_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_PR_Proposal" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_PR_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Document_Proposal" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Assignment_Proposal" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Proposal_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Proposal_SubmissionPeriod" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_PSH_Proposal" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_SM_Proposal" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_PSH_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_SM_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_SM_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Student_User" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Assignment_Supervisor" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Supervisor_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

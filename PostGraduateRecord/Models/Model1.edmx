@@ -1,0 +1,1840 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AuditLogs">
+          <Key>
+            <PropertyRef Name="AuditID" />
+          </Key>
+          <Property Name="AuditID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="ActionPerformed" Type="nvarchar" MaxLength="200" />
+          <Property Name="TableAffected" Type="nvarchar" MaxLength="100" />
+          <Property Name="RecordID" Type="int" />
+          <Property Name="ActionDate" Type="datetime" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FacultyID" Type="int" Nullable="false" />
+          <Property Name="DepartmentName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EthicsApplications">
+          <Key>
+            <PropertyRef Name="EthicsID" />
+          </Key>
+          <Property Name="EthicsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="ApprovalDate" Type="datetime" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Evaluations">
+          <Key>
+            <PropertyRef Name="EvaluationID" />
+          </Key>
+          <Property Name="EvaluationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="EvaluatorID" Type="int" Nullable="false" />
+          <Property Name="Score" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Recommendation" Type="nvarchar" MaxLength="200" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="EvaluationDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Evaluators">
+          <Key>
+            <PropertyRef Name="EvaluatorID" />
+          </Key>
+          <Property Name="EvaluatorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" />
+          <Property Name="Organisation" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Faculty">
+          <Key>
+            <PropertyRef Name="FacultyID" />
+          </Key>
+          <Property Name="FacultyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FacultyName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackID" />
+          </Key>
+          <Property Name="FeedbackID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="SupervisorID" Type="int" Nullable="false" />
+          <Property Name="Comments" Type="varchar(max)" Nullable="false" />
+          <Property Name="Decision" Type="varchar" MaxLength="50" />
+          <Property Name="FeedbackDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Milestones">
+          <Key>
+            <PropertyRef Name="MilestoneID" />
+          </Key>
+          <Property Name="MilestoneID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MilestoneName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="DisplayOrder" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" />
+          <Property Name="IsRead" Type="bit" />
+          <Property Name="SentDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProgressReports">
+          <Key>
+            <PropertyRef Name="ProgressReportID" />
+          </Key>
+          <Property Name="ProgressReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="ReportNumber" Type="int" />
+          <Property Name="SubmissionDate" Type="datetime" />
+          <Property Name="Summary" Type="nvarchar(max)" />
+          <Property Name="SupervisorComments" Type="nvarchar(max)" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ProposalDocuments">
+          <Key>
+            <PropertyRef Name="DocumentID" />
+          </Key>
+          <Property Name="DocumentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="255" />
+          <Property Name="FilePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="FileType" Type="nvarchar" MaxLength="50" />
+          <Property Name="VersionNo" Type="int" />
+          <Property Name="UploadDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Proposals">
+          <Key>
+            <PropertyRef Name="ProposalID" />
+          </Key>
+          <Property Name="ProposalID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="SubmissionPeriodID" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="ResearchField" Type="nvarchar" MaxLength="200" />
+          <Property Name="Abstract" Type="nvarchar(max)" />
+          <Property Name="Keywords" Type="nvarchar" MaxLength="500" />
+          <Property Name="SubmissionDate" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ProposalStatusHistory">
+          <Key>
+            <PropertyRef Name="HistoryID" />
+          </Key>
+          <Property Name="HistoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChangedBy" Type="int" />
+          <Property Name="ChangeDate" Type="datetime" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="StudentMilestones">
+          <Key>
+            <PropertyRef Name="StudentMilestoneID" />
+          </Key>
+          <Property Name="StudentMilestoneID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="MilestoneID" Type="int" Nullable="false" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompletionDate" Type="datetime" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="CompletedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="Students">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" Nullable="false" />
+          <Property Name="Qualification" Type="nvarchar" MaxLength="150" />
+          <Property Name="StudyType" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegistrationYear" Type="int" />
+        </EntityType>
+        <EntityType Name="SubmissionPeriods">
+          <Key>
+            <PropertyRef Name="SubmissionPeriodID" />
+          </Key>
+          <Property Name="SubmissionPeriodID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubmissionType" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AcademicYear" Type="int" Nullable="false" />
+          <Property Name="Semester" Type="int" Nullable="false" />
+          <Property Name="OpenDate" Type="datetime" Nullable="false" />
+          <Property Name="CloseDate" Type="datetime" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="SupervisorAssignments">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Name="AssignmentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProposalID" Type="int" Nullable="false" />
+          <Property Name="SupervisorID" Type="int" Nullable="false" />
+          <Property Name="AssignedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Supervisors">
+          <Key>
+            <PropertyRef Name="SupervisorID" />
+          </Key>
+          <Property Name="SupervisorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" Nullable="false" />
+          <Property Name="Office" Type="nvarchar" MaxLength="100" />
+          <Property Name="Specialisation" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TimelineEvents">
+          <Key>
+            <PropertyRef Name="TimelineEventID" />
+          </Key>
+          <Property Name="TimelineEventID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="EventType" Type="nvarchar" MaxLength="100" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="FacultyID" Type="int" />
+          <Property Name="DepartmentID" Type="int" />
+          <Property Name="IsVisible" Type="bit" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StudentNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="EmployeeNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="30" />
+          <Property Name="Role" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Assignment_Proposal">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="SupervisorAssignments" Type="Self.SupervisorAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="SupervisorAssignments">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignment_Supervisor">
+          <End Role="Supervisors" Type="Self.Supervisors" Multiplicity="1" />
+          <End Role="SupervisorAssignments" Type="Self.SupervisorAssignments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supervisors">
+              <PropertyRef Name="SupervisorID" />
+            </Principal>
+            <Dependent Role="SupervisorAssignments">
+              <PropertyRef Name="SupervisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Audit_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLogs" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Department_Faculty">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="1" />
+          <End Role="Department" Type="Self.Department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="FacultyID" />
+            </Principal>
+            <Dependent Role="Department">
+              <PropertyRef Name="FacultyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_Proposal">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="ProposalDocuments" Type="Self.ProposalDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="ProposalDocuments">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ethics_Proposal">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="EthicsApplications" Type="Self.EthicsApplications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="EthicsApplications">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Evaluator">
+          <End Role="Evaluators" Type="Self.Evaluators" Multiplicity="1" />
+          <End Role="Evaluations" Type="Self.Evaluations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evaluators">
+              <PropertyRef Name="EvaluatorID" />
+            </Principal>
+            <Dependent Role="Evaluations">
+              <PropertyRef Name="EvaluatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Proposal">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="Evaluations" Type="Self.Evaluations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="Evaluations">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluator_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Evaluators" Type="Self.Evaluators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Evaluators">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluator_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Evaluators" Type="Self.Evaluators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Evaluators">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notif_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PR_Proposal">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="ProgressReports" Type="Self.ProgressReports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="ProgressReports">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PR_Student">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="ProgressReports" Type="Self.ProgressReports" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="ProgressReports">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_Student">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Proposals">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_SubmissionPeriod">
+          <End Role="SubmissionPeriods" Type="Self.SubmissionPeriods" Multiplicity="0..1" />
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubmissionPeriods">
+              <PropertyRef Name="SubmissionPeriodID" />
+            </Principal>
+            <Dependent Role="Proposals">
+              <PropertyRef Name="SubmissionPeriodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PSH_Proposal">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="ProposalStatusHistory" Type="Self.ProposalStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="ProposalStatusHistory">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PSH_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="ProposalStatusHistory" Type="Self.ProposalStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ProposalStatusHistory">
+              <PropertyRef Name="ChangedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_Milestone">
+          <End Role="Milestones" Type="Self.Milestones" Multiplicity="1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Milestones">
+              <PropertyRef Name="MilestoneID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="MilestoneID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_Proposal">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_Student">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="CompletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Students" Type="Self.Students" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentFeedback_Proposals">
+          <End Role="Proposals" Type="Self.Proposals" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentFeedback_Students">
+          <End Role="Students" Type="Self.Students" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentFeedback_Supervisors">
+          <End Role="Supervisors" Type="Self.Supervisors" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supervisors">
+              <PropertyRef Name="SupervisorID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="SupervisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supervisor_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Supervisors" Type="Self.Supervisors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Supervisors">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supervisor_User">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Supervisors" Type="Self.Supervisors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Supervisors">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TE_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="TimelineEvents" Type="Self.TimelineEvents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="TimelineEvents">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TE_Faculty">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="0..1" />
+          <End Role="TimelineEvents" Type="Self.TimelineEvents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="FacultyID" />
+            </Principal>
+            <Dependent Role="TimelineEvents">
+              <PropertyRef Name="FacultyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EthicsApplications" EntityType="Self.EthicsApplications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Evaluations" EntityType="Self.Evaluations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Evaluators" EntityType="Self.Evaluators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Faculty" EntityType="Self.Faculty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Feedback" EntityType="Self.Feedback" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Milestones" EntityType="Self.Milestones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProgressReports" EntityType="Self.ProgressReports" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProposalDocuments" EntityType="Self.ProposalDocuments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Proposals" EntityType="Self.Proposals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProposalStatusHistory" EntityType="Self.ProposalStatusHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StudentMilestones" EntityType="Self.StudentMilestones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubmissionPeriods" EntityType="Self.SubmissionPeriods" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SupervisorAssignments" EntityType="Self.SupervisorAssignments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Supervisors" EntityType="Self.Supervisors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TimelineEvents" EntityType="Self.TimelineEvents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Assignment_Proposal" Association="Self.FK_Assignment_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="SupervisorAssignments" EntitySet="SupervisorAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignment_Supervisor" Association="Self.FK_Assignment_Supervisor">
+            <End Role="Supervisors" EntitySet="Supervisors" />
+            <End Role="SupervisorAssignments" EntitySet="SupervisorAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Audit_User" Association="Self.FK_Audit_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Department_Faculty" Association="Self.FK_Department_Faculty">
+            <End Role="Faculty" EntitySet="Faculty" />
+            <End Role="Department" EntitySet="Department" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_Proposal" Association="Self.FK_Document_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="ProposalDocuments" EntitySet="ProposalDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ethics_Proposal" Association="Self.FK_Ethics_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="EthicsApplications" EntitySet="EthicsApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Evaluator" Association="Self.FK_Evaluation_Evaluator">
+            <End Role="Evaluators" EntitySet="Evaluators" />
+            <End Role="Evaluations" EntitySet="Evaluations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Proposal" Association="Self.FK_Evaluation_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="Evaluations" EntitySet="Evaluations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluator_Department" Association="Self.FK_Evaluator_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Evaluators" EntitySet="Evaluators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluator_User" Association="Self.FK_Evaluator_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Evaluators" EntitySet="Evaluators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notif_User" Association="Self.FK_Notif_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PR_Proposal" Association="Self.FK_PR_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="ProgressReports" EntitySet="ProgressReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PR_Student" Association="Self.FK_PR_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="ProgressReports" EntitySet="ProgressReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_Student" Association="Self.FK_Proposal_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Proposals" EntitySet="Proposals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_SubmissionPeriod" Association="Self.FK_Proposal_SubmissionPeriod">
+            <End Role="SubmissionPeriods" EntitySet="SubmissionPeriods" />
+            <End Role="Proposals" EntitySet="Proposals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PSH_Proposal" Association="Self.FK_PSH_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="ProposalStatusHistory" EntitySet="ProposalStatusHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PSH_User" Association="Self.FK_PSH_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ProposalStatusHistory" EntitySet="ProposalStatusHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_Milestone" Association="Self.FK_SM_Milestone">
+            <End Role="Milestones" EntitySet="Milestones" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_Proposal" Association="Self.FK_SM_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_Student" Association="Self.FK_SM_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_User" Association="Self.FK_SM_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Department" Association="Self.FK_Student_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_User" Association="Self.FK_Student_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentFeedback_Proposals" Association="Self.FK_StudentFeedback_Proposals">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentFeedback_Students" Association="Self.FK_StudentFeedback_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentFeedback_Supervisors" Association="Self.FK_StudentFeedback_Supervisors">
+            <End Role="Supervisors" EntitySet="Supervisors" />
+            <End Role="Feedback" EntitySet="Feedback" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supervisor_Department" Association="Self.FK_Supervisor_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Supervisors" EntitySet="Supervisors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supervisor_User" Association="Self.FK_Supervisor_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Supervisors" EntitySet="Supervisors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TE_Department" Association="Self.FK_TE_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="TimelineEvents" EntitySet="TimelineEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TE_Faculty" Association="Self.FK_TE_Faculty">
+            <End Role="Faculty" EntitySet="Faculty" />
+            <End Role="TimelineEvents" EntitySet="TimelineEvents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AuditLog">
+          <Key>
+            <PropertyRef Name="AuditID" />
+          </Key>
+          <Property Name="AuditID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="ActionPerformed" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TableAffected" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RecordID" Type="Int32" />
+          <Property Name="ActionDate" Type="DateTime" Precision="3" />
+          <Property Name="IPAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Audit_User" FromRole="AuditLogs" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentID" />
+          </Key>
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FacultyID" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Faculty" Relationship="Self.FK_Department_Faculty" FromRole="Department" ToRole="Faculty" />
+          <NavigationProperty Name="Evaluators" Relationship="Self.FK_Evaluator_Department" FromRole="Department" ToRole="Evaluators" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Student_Department" FromRole="Department" ToRole="Students" />
+          <NavigationProperty Name="Supervisors" Relationship="Self.FK_Supervisor_Department" FromRole="Department" ToRole="Supervisors" />
+          <NavigationProperty Name="TimelineEvents" Relationship="Self.FK_TE_Department" FromRole="Department" ToRole="TimelineEvents" />
+        </EntityType>
+        <EntityType Name="EthicsApplication">
+          <Key>
+            <PropertyRef Name="EthicsID" />
+          </Key>
+          <Property Name="EthicsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ApprovalDate" Type="DateTime" Precision="3" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_Ethics_Proposal" FromRole="EthicsApplications" ToRole="Proposals" />
+        </EntityType>
+        <EntityType Name="Evaluation">
+          <Key>
+            <PropertyRef Name="EvaluationID" />
+          </Key>
+          <Property Name="EvaluationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="EvaluatorID" Type="Int32" Nullable="false" />
+          <Property Name="Score" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Recommendation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EvaluationDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Evaluator" Relationship="Self.FK_Evaluation_Evaluator" FromRole="Evaluations" ToRole="Evaluators" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_Evaluation_Proposal" FromRole="Evaluations" ToRole="Proposals" />
+        </EntityType>
+        <EntityType Name="Evaluator">
+          <Key>
+            <PropertyRef Name="EvaluatorID" />
+          </Key>
+          <Property Name="EvaluatorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentID" Type="Int32" />
+          <Property Name="Organisation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Evaluator_Department" FromRole="Evaluators" ToRole="Department" />
+          <NavigationProperty Name="Evaluations" Relationship="Self.FK_Evaluation_Evaluator" FromRole="Evaluators" ToRole="Evaluations" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Evaluator_User" FromRole="Evaluators" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Faculty">
+          <Key>
+            <PropertyRef Name="FacultyID" />
+          </Key>
+          <Property Name="FacultyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FacultyName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Departments" Relationship="Self.FK_Department_Faculty" FromRole="Faculty" ToRole="Department" />
+          <NavigationProperty Name="TimelineEvents" Relationship="Self.FK_TE_Faculty" FromRole="Faculty" ToRole="TimelineEvents" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="FeedbackID" />
+          </Key>
+          <Property Name="FeedbackID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="SupervisorID" Type="Int32" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Decision" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FeedbackDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_StudentFeedback_Proposals" FromRole="Feedback" ToRole="Proposals" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_StudentFeedback_Students" FromRole="Feedback" ToRole="Students" />
+          <NavigationProperty Name="Supervisor" Relationship="Self.FK_StudentFeedback_Supervisors" FromRole="Feedback" ToRole="Supervisors" />
+        </EntityType>
+        <EntityType Name="Milestone">
+          <Key>
+            <PropertyRef Name="MilestoneID" />
+          </Key>
+          <Property Name="MilestoneID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MilestoneName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayOrder" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="StudentMilestones" Relationship="Self.FK_SM_Milestone" FromRole="Milestones" ToRole="StudentMilestones" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsRead" Type="Boolean" />
+          <Property Name="SentDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Notif_User" FromRole="Notifications" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ProgressReport">
+          <Key>
+            <PropertyRef Name="ProgressReportID" />
+          </Key>
+          <Property Name="ProgressReportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="ReportNumber" Type="Int32" />
+          <Property Name="SubmissionDate" Type="DateTime" Precision="3" />
+          <Property Name="Summary" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SupervisorComments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_PR_Proposal" FromRole="ProgressReports" ToRole="Proposals" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_PR_Student" FromRole="ProgressReports" ToRole="Students" />
+        </EntityType>
+        <EntityType Name="ProposalDocument">
+          <Key>
+            <PropertyRef Name="DocumentID" />
+          </Key>
+          <Property Name="DocumentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="FilePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="FileType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VersionNo" Type="Int32" />
+          <Property Name="UploadDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_Document_Proposal" FromRole="ProposalDocuments" ToRole="Proposals" />
+        </EntityType>
+        <EntityType Name="Proposal">
+          <Key>
+            <PropertyRef Name="ProposalID" />
+          </Key>
+          <Property Name="ProposalID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="SubmissionPeriodID" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ResearchField" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Abstract" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Keywords" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="SubmissionDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EthicsApplications" Relationship="Self.FK_Ethics_Proposal" FromRole="Proposals" ToRole="EthicsApplications" />
+          <NavigationProperty Name="Evaluations" Relationship="Self.FK_Evaluation_Proposal" FromRole="Proposals" ToRole="Evaluations" />
+          <NavigationProperty Name="Feedbacks" Relationship="Self.FK_StudentFeedback_Proposals" FromRole="Proposals" ToRole="Feedback" />
+          <NavigationProperty Name="ProgressReports" Relationship="Self.FK_PR_Proposal" FromRole="Proposals" ToRole="ProgressReports" />
+          <NavigationProperty Name="ProposalDocuments" Relationship="Self.FK_Document_Proposal" FromRole="Proposals" ToRole="ProposalDocuments" />
+          <NavigationProperty Name="SupervisorAssignments" Relationship="Self.FK_Assignment_Proposal" FromRole="Proposals" ToRole="SupervisorAssignments" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Proposal_Student" FromRole="Proposals" ToRole="Students" />
+          <NavigationProperty Name="SubmissionPeriod" Relationship="Self.FK_Proposal_SubmissionPeriod" FromRole="Proposals" ToRole="SubmissionPeriods" />
+          <NavigationProperty Name="ProposalStatusHistories" Relationship="Self.FK_PSH_Proposal" FromRole="Proposals" ToRole="ProposalStatusHistory" />
+          <NavigationProperty Name="StudentMilestones" Relationship="Self.FK_SM_Proposal" FromRole="Proposals" ToRole="StudentMilestones" />
+        </EntityType>
+        <EntityType Name="ProposalStatusHistory">
+          <Key>
+            <PropertyRef Name="HistoryID" />
+          </Key>
+          <Property Name="HistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChangedBy" Type="Int32" />
+          <Property Name="ChangeDate" Type="DateTime" Precision="3" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_PSH_Proposal" FromRole="ProposalStatusHistory" ToRole="Proposals" />
+          <NavigationProperty Name="User" Relationship="Self.FK_PSH_User" FromRole="ProposalStatusHistory" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="StudentMilestone">
+          <Key>
+            <PropertyRef Name="StudentMilestoneID" />
+          </Key>
+          <Property Name="StudentMilestoneID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="MilestoneID" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompletionDate" Type="DateTime" Precision="3" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompletedBy" Type="Int32" />
+          <NavigationProperty Name="Milestone" Relationship="Self.FK_SM_Milestone" FromRole="StudentMilestones" ToRole="Milestones" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_SM_Proposal" FromRole="StudentMilestones" ToRole="Proposals" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_SM_Student" FromRole="StudentMilestones" ToRole="Students" />
+          <NavigationProperty Name="User" Relationship="Self.FK_SM_User" FromRole="StudentMilestones" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="StudentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" />
+          <Property Name="Qualification" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="StudyType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegistrationYear" Type="Int32" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Student_Department" FromRole="Students" ToRole="Department" />
+          <NavigationProperty Name="Feedbacks" Relationship="Self.FK_StudentFeedback_Students" FromRole="Students" ToRole="Feedback" />
+          <NavigationProperty Name="ProgressReports" Relationship="Self.FK_PR_Student" FromRole="Students" ToRole="ProgressReports" />
+          <NavigationProperty Name="Proposals" Relationship="Self.FK_Proposal_Student" FromRole="Students" ToRole="Proposals" />
+          <NavigationProperty Name="StudentMilestones" Relationship="Self.FK_SM_Student" FromRole="Students" ToRole="StudentMilestones" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Student_User" FromRole="Students" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="SubmissionPeriod">
+          <Key>
+            <PropertyRef Name="SubmissionPeriodID" />
+          </Key>
+          <Property Name="SubmissionPeriodID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubmissionType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AcademicYear" Type="Int32" Nullable="false" />
+          <Property Name="Semester" Type="Int32" Nullable="false" />
+          <Property Name="OpenDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CloseDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Proposals" Relationship="Self.FK_Proposal_SubmissionPeriod" FromRole="SubmissionPeriods" ToRole="Proposals" />
+        </EntityType>
+        <EntityType Name="SupervisorAssignment">
+          <Key>
+            <PropertyRef Name="AssignmentID" />
+          </Key>
+          <Property Name="AssignmentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProposalID" Type="Int32" Nullable="false" />
+          <Property Name="SupervisorID" Type="Int32" Nullable="false" />
+          <Property Name="AssignedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Proposal" Relationship="Self.FK_Assignment_Proposal" FromRole="SupervisorAssignments" ToRole="Proposals" />
+          <NavigationProperty Name="Supervisor" Relationship="Self.FK_Assignment_Supervisor" FromRole="SupervisorAssignments" ToRole="Supervisors" />
+        </EntityType>
+        <EntityType Name="Supervisor">
+          <Key>
+            <PropertyRef Name="SupervisorID" />
+          </Key>
+          <Property Name="SupervisorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" />
+          <Property Name="Office" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Specialisation" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Supervisor_Department" FromRole="Supervisors" ToRole="Department" />
+          <NavigationProperty Name="Feedbacks" Relationship="Self.FK_StudentFeedback_Supervisors" FromRole="Supervisors" ToRole="Feedback" />
+          <NavigationProperty Name="SupervisorAssignments" Relationship="Self.FK_Assignment_Supervisor" FromRole="Supervisors" ToRole="SupervisorAssignments" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Supervisor_User" FromRole="Supervisors" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TimelineEvent">
+          <Key>
+            <PropertyRef Name="TimelineEventID" />
+          </Key>
+          <Property Name="TimelineEventID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EventType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="FacultyID" Type="Int32" />
+          <Property Name="DepartmentID" Type="Int32" />
+          <Property Name="IsVisible" Type="Boolean" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_TE_Department" FromRole="TimelineEvents" ToRole="Department" />
+          <NavigationProperty Name="Faculty" Relationship="Self.FK_TE_Faculty" FromRole="TimelineEvents" ToRole="Faculty" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StudentNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AuditLogs" Relationship="Self.FK_Audit_User" FromRole="Users" ToRole="AuditLogs" />
+          <NavigationProperty Name="Evaluators" Relationship="Self.FK_Evaluator_User" FromRole="Users" ToRole="Evaluators" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notif_User" FromRole="Users" ToRole="Notifications" />
+          <NavigationProperty Name="ProposalStatusHistories" Relationship="Self.FK_PSH_User" FromRole="Users" ToRole="ProposalStatusHistory" />
+          <NavigationProperty Name="StudentMilestones" Relationship="Self.FK_SM_User" FromRole="Users" ToRole="StudentMilestones" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Student_User" FromRole="Users" ToRole="Students" />
+          <NavigationProperty Name="Supervisors" Relationship="Self.FK_Supervisor_User" FromRole="Users" ToRole="Supervisors" />
+        </EntityType>
+        <Association Name="FK_Audit_User">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="AuditLogs" Type="Self.AuditLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="AuditLogs">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Department_Faculty">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="1" />
+          <End Role="Department" Type="Self.Department" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="FacultyID" />
+            </Principal>
+            <Dependent Role="Department">
+              <PropertyRef Name="FacultyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluator_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="Evaluators" Type="Self.Evaluator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Evaluators">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Students" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supervisor_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Supervisors" Type="Self.Supervisor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="Supervisors">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TE_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+          <End Role="TimelineEvents" Type="Self.TimelineEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DepartmentID" />
+            </Principal>
+            <Dependent Role="TimelineEvents">
+              <PropertyRef Name="DepartmentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ethics_Proposal">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="EthicsApplications" Type="Self.EthicsApplication" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="EthicsApplications">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Evaluator">
+          <End Role="Evaluators" Type="Self.Evaluator" Multiplicity="1" />
+          <End Role="Evaluations" Type="Self.Evaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Evaluators">
+              <PropertyRef Name="EvaluatorID" />
+            </Principal>
+            <Dependent Role="Evaluations">
+              <PropertyRef Name="EvaluatorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluation_Proposal">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="Evaluations" Type="Self.Evaluation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="Evaluations">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Evaluator_User">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Evaluators" Type="Self.Evaluator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Evaluators">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TE_Faculty">
+          <End Role="Faculty" Type="Self.Faculty" Multiplicity="0..1" />
+          <End Role="TimelineEvents" Type="Self.TimelineEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Faculty">
+              <PropertyRef Name="FacultyID" />
+            </Principal>
+            <Dependent Role="TimelineEvents">
+              <PropertyRef Name="FacultyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentFeedback_Proposals">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentFeedback_Students">
+          <End Role="Students" Type="Self.Student" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StudentFeedback_Supervisors">
+          <End Role="Supervisors" Type="Self.Supervisor" Multiplicity="1" />
+          <End Role="Feedback" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supervisors">
+              <PropertyRef Name="SupervisorID" />
+            </Principal>
+            <Dependent Role="Feedback">
+              <PropertyRef Name="SupervisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_Milestone">
+          <End Role="Milestones" Type="Self.Milestone" Multiplicity="1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Milestones">
+              <PropertyRef Name="MilestoneID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="MilestoneID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notif_User">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PR_Proposal">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="ProgressReports" Type="Self.ProgressReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="ProgressReports">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PR_Student">
+          <End Role="Students" Type="Self.Student" Multiplicity="1" />
+          <End Role="ProgressReports" Type="Self.ProgressReport" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="ProgressReports">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Document_Proposal">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="ProposalDocuments" Type="Self.ProposalDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="ProposalDocuments">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignment_Proposal">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="SupervisorAssignments" Type="Self.SupervisorAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="SupervisorAssignments">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_Student">
+          <End Role="Students" Type="Self.Student" Multiplicity="1" />
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="Proposals">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Proposal_SubmissionPeriod">
+          <End Role="SubmissionPeriods" Type="Self.SubmissionPeriod" Multiplicity="0..1" />
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubmissionPeriods">
+              <PropertyRef Name="SubmissionPeriodID" />
+            </Principal>
+            <Dependent Role="Proposals">
+              <PropertyRef Name="SubmissionPeriodID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PSH_Proposal">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="ProposalStatusHistory" Type="Self.ProposalStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="ProposalStatusHistory">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_Proposal">
+          <End Role="Proposals" Type="Self.Proposal" Multiplicity="1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Proposals">
+              <PropertyRef Name="ProposalID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="ProposalID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PSH_User">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ProposalStatusHistory" Type="Self.ProposalStatusHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="ProposalStatusHistory">
+              <PropertyRef Name="ChangedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_Student">
+          <End Role="Students" Type="Self.Student" Multiplicity="1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Students">
+              <PropertyRef Name="StudentID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SM_User">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="StudentMilestones" Type="Self.StudentMilestone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="StudentMilestones">
+              <PropertyRef Name="CompletedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_User">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Students" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Students">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignment_Supervisor">
+          <End Role="Supervisors" Type="Self.Supervisor" Multiplicity="1" />
+          <End Role="SupervisorAssignments" Type="Self.SupervisorAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supervisors">
+              <PropertyRef Name="SupervisorID" />
+            </Principal>
+            <Dependent Role="SupervisorAssignments">
+              <PropertyRef Name="SupervisorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Supervisor_User">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Supervisors" Type="Self.Supervisor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Supervisors">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PostGradEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AuditLogs" EntityType="Self.AuditLog" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="EthicsApplications" EntityType="Self.EthicsApplication" />
+          <EntitySet Name="Evaluations" EntityType="Self.Evaluation" />
+          <EntitySet Name="Evaluators" EntityType="Self.Evaluator" />
+          <EntitySet Name="Faculties" EntityType="Self.Faculty" />
+          <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
+          <EntitySet Name="Milestones" EntityType="Self.Milestone" />
+          <EntitySet Name="Notifications" EntityType="Self.Notification" />
+          <EntitySet Name="ProgressReports" EntityType="Self.ProgressReport" />
+          <EntitySet Name="ProposalDocuments" EntityType="Self.ProposalDocument" />
+          <EntitySet Name="Proposals" EntityType="Self.Proposal" />
+          <EntitySet Name="ProposalStatusHistories" EntityType="Self.ProposalStatusHistory" />
+          <EntitySet Name="StudentMilestones" EntityType="Self.StudentMilestone" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="SubmissionPeriods" EntityType="Self.SubmissionPeriod" />
+          <EntitySet Name="SupervisorAssignments" EntityType="Self.SupervisorAssignment" />
+          <EntitySet Name="Supervisors" EntityType="Self.Supervisor" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TimelineEvents" EntityType="Self.TimelineEvent" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Audit_User" Association="Self.FK_Audit_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="AuditLogs" EntitySet="AuditLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Department_Faculty" Association="Self.FK_Department_Faculty">
+            <End Role="Faculty" EntitySet="Faculties" />
+            <End Role="Department" EntitySet="Departments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluator_Department" Association="Self.FK_Evaluator_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Evaluators" EntitySet="Evaluators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Department" Association="Self.FK_Student_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supervisor_Department" Association="Self.FK_Supervisor_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Supervisors" EntitySet="Supervisors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TE_Department" Association="Self.FK_TE_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="TimelineEvents" EntitySet="TimelineEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ethics_Proposal" Association="Self.FK_Ethics_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="EthicsApplications" EntitySet="EthicsApplications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Evaluator" Association="Self.FK_Evaluation_Evaluator">
+            <End Role="Evaluators" EntitySet="Evaluators" />
+            <End Role="Evaluations" EntitySet="Evaluations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluation_Proposal" Association="Self.FK_Evaluation_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="Evaluations" EntitySet="Evaluations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Evaluator_User" Association="Self.FK_Evaluator_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Evaluators" EntitySet="Evaluators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TE_Faculty" Association="Self.FK_TE_Faculty">
+            <End Role="Faculty" EntitySet="Faculties" />
+            <End Role="TimelineEvents" EntitySet="TimelineEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentFeedback_Proposals" Association="Self.FK_StudentFeedback_Proposals">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentFeedback_Students" Association="Self.FK_StudentFeedback_Students">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StudentFeedback_Supervisors" Association="Self.FK_StudentFeedback_Supervisors">
+            <End Role="Supervisors" EntitySet="Supervisors" />
+            <End Role="Feedback" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_Milestone" Association="Self.FK_SM_Milestone">
+            <End Role="Milestones" EntitySet="Milestones" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notif_User" Association="Self.FK_Notif_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PR_Proposal" Association="Self.FK_PR_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="ProgressReports" EntitySet="ProgressReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PR_Student" Association="Self.FK_PR_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="ProgressReports" EntitySet="ProgressReports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Document_Proposal" Association="Self.FK_Document_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="ProposalDocuments" EntitySet="ProposalDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignment_Proposal" Association="Self.FK_Assignment_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="SupervisorAssignments" EntitySet="SupervisorAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_Student" Association="Self.FK_Proposal_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="Proposals" EntitySet="Proposals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Proposal_SubmissionPeriod" Association="Self.FK_Proposal_SubmissionPeriod">
+            <End Role="SubmissionPeriods" EntitySet="SubmissionPeriods" />
+            <End Role="Proposals" EntitySet="Proposals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PSH_Proposal" Association="Self.FK_PSH_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="ProposalStatusHistory" EntitySet="ProposalStatusHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_Proposal" Association="Self.FK_SM_Proposal">
+            <End Role="Proposals" EntitySet="Proposals" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PSH_User" Association="Self.FK_PSH_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ProposalStatusHistory" EntitySet="ProposalStatusHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_Student" Association="Self.FK_SM_Student">
+            <End Role="Students" EntitySet="Students" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SM_User" Association="Self.FK_SM_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StudentMilestones" EntitySet="StudentMilestones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_User" Association="Self.FK_Student_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Students" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignment_Supervisor" Association="Self.FK_Assignment_Supervisor">
+            <End Role="Supervisors" EntitySet="Supervisors" />
+            <End Role="SupervisorAssignments" EntitySet="SupervisorAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Supervisor_User" Association="Self.FK_Supervisor_User">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Supervisors" EntitySet="Supervisors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="PostGradEntities">
+          <EntitySetMapping Name="AuditLogs">
+            <EntityTypeMapping TypeName="Model.AuditLog">
+              <MappingFragment StoreEntitySet="AuditLogs">
+                <ScalarProperty Name="AuditID" ColumnName="AuditID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ActionPerformed" ColumnName="ActionPerformed" />
+                <ScalarProperty Name="TableAffected" ColumnName="TableAffected" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+                <ScalarProperty Name="ActionDate" ColumnName="ActionDate" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="Model.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="FacultyID" ColumnName="FacultyID" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EthicsApplications">
+            <EntityTypeMapping TypeName="Model.EthicsApplication">
+              <MappingFragment StoreEntitySet="EthicsApplications">
+                <ScalarProperty Name="EthicsID" ColumnName="EthicsID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ApprovalDate" ColumnName="ApprovalDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evaluations">
+            <EntityTypeMapping TypeName="Model.Evaluation">
+              <MappingFragment StoreEntitySet="Evaluations">
+                <ScalarProperty Name="EvaluationID" ColumnName="EvaluationID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="EvaluatorID" ColumnName="EvaluatorID" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="Recommendation" ColumnName="Recommendation" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="EvaluationDate" ColumnName="EvaluationDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Evaluators">
+            <EntityTypeMapping TypeName="Model.Evaluator">
+              <MappingFragment StoreEntitySet="Evaluators">
+                <ScalarProperty Name="EvaluatorID" ColumnName="EvaluatorID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="Organisation" ColumnName="Organisation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Faculties">
+            <EntityTypeMapping TypeName="Model.Faculty">
+              <MappingFragment StoreEntitySet="Faculty">
+                <ScalarProperty Name="FacultyID" ColumnName="FacultyID" />
+                <ScalarProperty Name="FacultyName" ColumnName="FacultyName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feedbacks">
+            <EntityTypeMapping TypeName="Model.Feedback">
+              <MappingFragment StoreEntitySet="Feedback">
+                <ScalarProperty Name="FeedbackID" ColumnName="FeedbackID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Decision" ColumnName="Decision" />
+                <ScalarProperty Name="FeedbackDate" ColumnName="FeedbackDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Milestones">
+            <EntityTypeMapping TypeName="Model.Milestone">
+              <MappingFragment StoreEntitySet="Milestones">
+                <ScalarProperty Name="MilestoneID" ColumnName="MilestoneID" />
+                <ScalarProperty Name="MilestoneName" ColumnName="MilestoneName" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="Model.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
+                <ScalarProperty Name="SentDate" ColumnName="SentDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProgressReports">
+            <EntityTypeMapping TypeName="Model.ProgressReport">
+              <MappingFragment StoreEntitySet="ProgressReports">
+                <ScalarProperty Name="ProgressReportID" ColumnName="ProgressReportID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="ReportNumber" ColumnName="ReportNumber" />
+                <ScalarProperty Name="SubmissionDate" ColumnName="SubmissionDate" />
+                <ScalarProperty Name="Summary" ColumnName="Summary" />
+                <ScalarProperty Name="SupervisorComments" ColumnName="SupervisorComments" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProposalDocuments">
+            <EntityTypeMapping TypeName="Model.ProposalDocument">
+              <MappingFragment StoreEntitySet="ProposalDocuments">
+                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="FileType" ColumnName="FileType" />
+                <ScalarProperty Name="VersionNo" ColumnName="VersionNo" />
+                <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Proposals">
+            <EntityTypeMapping TypeName="Model.Proposal">
+              <MappingFragment StoreEntitySet="Proposals">
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="SubmissionPeriodID" ColumnName="SubmissionPeriodID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ResearchField" ColumnName="ResearchField" />
+                <ScalarProperty Name="Abstract" ColumnName="Abstract" />
+                <ScalarProperty Name="Keywords" ColumnName="Keywords" />
+                <ScalarProperty Name="SubmissionDate" ColumnName="SubmissionDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProposalStatusHistories">
+            <EntityTypeMapping TypeName="Model.ProposalStatusHistory">
+              <MappingFragment StoreEntitySet="ProposalStatusHistory">
+                <ScalarProperty Name="HistoryID" ColumnName="HistoryID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ChangedBy" ColumnName="ChangedBy" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StudentMilestones">
+            <EntityTypeMapping TypeName="Model.StudentMilestone">
+              <MappingFragment StoreEntitySet="StudentMilestones">
+                <ScalarProperty Name="StudentMilestoneID" ColumnName="StudentMilestoneID" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="MilestoneID" ColumnName="MilestoneID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CompletionDate" ColumnName="CompletionDate" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="CompletedBy" ColumnName="CompletedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="Model.Student">
+              <MappingFragment StoreEntitySet="Students">
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="Qualification" ColumnName="Qualification" />
+                <ScalarProperty Name="StudyType" ColumnName="StudyType" />
+                <ScalarProperty Name="RegistrationYear" ColumnName="RegistrationYear" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubmissionPeriods">
+            <EntityTypeMapping TypeName="Model.SubmissionPeriod">
+              <MappingFragment StoreEntitySet="SubmissionPeriods">
+                <ScalarProperty Name="SubmissionPeriodID" ColumnName="SubmissionPeriodID" />
+                <ScalarProperty Name="SubmissionType" ColumnName="SubmissionType" />
+                <ScalarProperty Name="AcademicYear" ColumnName="AcademicYear" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="OpenDate" ColumnName="OpenDate" />
+                <ScalarProperty Name="CloseDate" ColumnName="CloseDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SupervisorAssignments">
+            <EntityTypeMapping TypeName="Model.SupervisorAssignment">
+              <MappingFragment StoreEntitySet="SupervisorAssignments">
+                <ScalarProperty Name="AssignmentID" ColumnName="AssignmentID" />
+                <ScalarProperty Name="ProposalID" ColumnName="ProposalID" />
+                <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
+                <ScalarProperty Name="AssignedDate" ColumnName="AssignedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Supervisors">
+            <EntityTypeMapping TypeName="Model.Supervisor">
+              <MappingFragment StoreEntitySet="Supervisors">
+                <ScalarProperty Name="SupervisorID" ColumnName="SupervisorID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="Office" ColumnName="Office" />
+                <ScalarProperty Name="Specialisation" ColumnName="Specialisation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TimelineEvents">
+            <EntityTypeMapping TypeName="Model.TimelineEvent">
+              <MappingFragment StoreEntitySet="TimelineEvents">
+                <ScalarProperty Name="TimelineEventID" ColumnName="TimelineEventID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="FacultyID" ColumnName="FacultyID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Model.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="StudentNumber" ColumnName="StudentNumber" />
+                <ScalarProperty Name="EmployeeNumber" ColumnName="EmployeeNumber" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
