@@ -37,5 +37,27 @@ namespace PostGraduateRecord.Controllers
         {
             return View();
         }
+        //public ActionResult Applications()
+        //{
+        //    return View();
+        //}
+        public ActionResult ApplicationForm()
+        {
+            return View();
+        }
+
+        public ActionResult EthicsApplication()
+        {
+            return View();
+        }
+        public ActionResult NewProposal()
+        {
+            return View();
+        }
+        public ActionResult ProposalFeedback()
+        {
+            return View();
+        }
+
     }
 }

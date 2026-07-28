@@ -55,6 +55,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -129,7 +131,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\ProposalController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -231,6 +236,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Login.css" />
     <Content Include="Content\Student.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -290,6 +296,13 @@
     <Content Include="Views\Student\Submissions.cshtml" />
     <Content Include="Views\Student\NewSubmission.cshtml" />
     <Content Include="Views\Shared\_StudentLayout.cshtml" />
+    <Content Include="Views\Student\ApplicationForm.cshtml" />
+    <Content Include="Views\Student\EthicsApplication.cshtml" />
+    <Content Include="Views\Student\NewProposal.cshtml" />
+    <Content Include="Views\Student\ProposalFeedback.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Proposal\Create.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

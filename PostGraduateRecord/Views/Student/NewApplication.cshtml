@@ -1,8 +1,47 @@
 ﻿
+
 @{
-    ViewBag.Title = "NewApplication";
+    ViewBag.Title = "New Application";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-<h2>NewApplication</h2>
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-square-plus"></i>
+        New Application
+    </h2>
+
+    <p>
+        Manage your postgraduate applications.
+    </p>
+
+</div>
+
+
+
+<div class="card-section">
+
+
+    <h3>
+        Application Management
+    </h3>
+
+
+    <p>
+        Submit a new postgraduate application or view your existing applications.
+    </p>
+
+
+    <a href="@Url.Action("ApplicationForm","Student")"
+       class="btn btn-warning">
+
+        <i class="fa-solid fa-plus"></i>
+        Submit New Application
+
+    </a>
+
+
+</div>
 

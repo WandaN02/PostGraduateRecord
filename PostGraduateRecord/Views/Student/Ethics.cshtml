@@ -1,8 +1,45 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Ethics";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-<h2>Ethics</h2>
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-scale-balanced"></i>
+        Ethics Application
+    </h2>
+
+    <p>
+        Manage your research ethics applications.
+    </p>
+
+</div>
+
+
+
+<div class="card-section">
+
+
+    <h3>
+        Current Ethics Status
+    </h3>
+
+
+    <p>
+        No ethics application submitted yet.
+    </p>
+
+
+    <a href="@Url.Action("EthicsApplication","Student")"
+       class="btn btn-warning">
+
+        <i class="fa-solid fa-plus"></i>
+        New Ethics Application
+
+    </a>
+
+
+</div>
 

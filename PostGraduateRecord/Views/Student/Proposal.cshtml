@@ -1,45 +1,93 @@
-﻿
-@{
-    ViewBag.Title = "Proposal";
-    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+﻿@{
+        ViewBag.Title = "Proposal";
+        Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
+
 <div class="page-header">
-    <h2>Research Proposal</h2>
-    <p>View and manage your research proposal.</p>
+
+    <h2>
+        <i class="fa-solid fa-file-lines"></i>
+        Research Proposal
+    </h2>
+
+    <p>
+        Upload your research proposal and monitor its review progress.
+    </p>
+
 </div>
 
-<div class="card-container">
 
-    <div class="card-section">
 
-        <h4>Proposal Information</h4>
+<div class="card-section">
 
-        <table class="table table-bordered">
 
-            <tr>
-                <th width="25%">Title</th>
-                <td></td>
-            </tr>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
 
-            <tr>
-                <th>Research Field</th>
-                <td></td>
-            </tr>
+        <h3>
+            My Proposals
+        </h3>
 
-            <tr>
-                <th>Status</th>
-                <td></td>
-            </tr>
 
-            <tr>
-                <th>Submission Date</th>
-                <td></td>
-            </tr>
+        <a href="@Url.Action("NewProposal","Student")"
+           class="btn btn-warning">
 
-        </table>
+            <i class="fa-solid fa-upload"></i>
+            Upload New Proposal
+
+        </a>
+
 
     </div>
+
+
+    <br />
+
+
+    <<table class="table">
+
+    <tr>
+
+        <th>
+            Document
+        </th>
+
+        <th>
+            Research Title
+        </th>
+
+        <th>
+            Date Submitted
+        </th>
+
+        <th>
+            Status
+        </th>
+
+        <th>
+            Feedback
+        </th>
+
+        <th>
+            Action
+        </th>
+
+    </tr>
+
+
+    <tr>
+
+        <td colspan="6">
+
+            No proposal submitted yet.
+
+        </td>
+
+    </tr>
+
+
+</table>
+
 
 </div>
 

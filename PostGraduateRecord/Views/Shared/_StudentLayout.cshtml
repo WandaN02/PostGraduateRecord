@@ -26,7 +26,7 @@
                 </li>
 
                 <li>
-                    <a href="@Url.Action("Proposal","Student")">
+                    <a href="@Url.Action("Create","Proposal")">
                         <i class="fa-solid fa-file-lines"></i> Proposal
                     </a>
                 </li>
@@ -45,18 +45,12 @@
 
                 <li>
                     <a href="@Url.Action("Submissions","Student")">
-                        <i class="fa-solid fa-upload"></i> Submissions
+                        <i class="fa-solid fa-upload"></i> Submission
                     </a>
                 </li>
 
                 <li>
-                    <a href="@Url.Action("NewSubmission","Student")">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> New Submission
-                    </a>
-                </li>
-
-                <li>
-                    <a href="@Url.Action("Login","Account")">
+                    <a href="@Url.Action("Logout","Account")">
                         <i class="fa-solid fa-right-from-bracket"></i> Logout
                     </a>
                 </li>
@@ -65,23 +59,69 @@
 
         </div>
 
-        <!-- Main Content -->
+        <!-- Main -->
         <div class="main">
 
+            <!-- Topbar -->
             <div class="topbar">
 
                 <h3>🎓 SPGS Record Management System</h3>
 
-                <div>
-                    <i class="fa-solid fa-bell"></i>
+                <div style="display:flex;align-items:center;gap:25px;">
 
-                    <span style="margin-left:20px;">
-                        Welcome Student
-                    </span>
+                    <!-- Notifications -->
+                    <div class="notification-container">
+
+                        <div class="notification-icon" onclick="toggleNotifications()">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                            <span class="notification-badge">
+                                3
+                            </span>
+
+                        </div>
+
+                        <div class="notification-panel" id="notificationPanel">
+
+                            <h5>Notifications</h5>
+
+                            <hr />
+
+                            <p>No new notifications.</p>
+
+                        </div>
+
+                    </div>
+
+                    <!-- User -->
+                    <div class="user-area">
+                        <a href="@Url.Action("Index","Profile")"
+                           style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+
+                            <i class="fa-solid fa-circle-user fa-2x"></i>
+
+                            <div style="display:flex;flex-direction:column;text-align:right;">
+
+                                <div class="student-name">
+                                    @Session["StudentName"]
+                                </div>
+
+                                <small>
+                                    @DateTime.Now.ToString("dd MMMM yyyy")
+                                </small>
+
+                            </div>
+
+                        </a>
+
+                    </div>
+
                 </div>
 
             </div>
 
+            <!-- Content -->
             <div class="content">
 
                 @RenderBody()
@@ -92,6 +132,35 @@
 
     </div>
 
+    <script>
+
+        function toggleNotifications() {
+
+            var panel = document.getElementById("notificationPanel");
+
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            }
+            else {
+                panel.style.display = "block";
+            }
+        }
+
+        window.onclick = function (event) {
+
+            if (!event.target.closest('.notification-container')) {
+
+                var panel = document.getElementById("notificationPanel");
+
+                if (panel) {
+                    panel.style.display = "none";
+                }
+
+            }
+
+        };
+
+    </script>
+
 </body>
 </html>
-

@@ -234,3 +234,152 @@
     .table tr:last-child th {
         border-bottom: none;
     }
+
+.student-info {
+    display: flex;
+    align-items: center;
+    color: #002147;
+}
+
+    .student-info strong {
+        font-size: 15px;
+    }
+
+    .student-info small {
+        color: #777;
+    }
+.notification-icon {
+    position: relative;
+    font-size: 22px;
+    color: #FDB913;
+    cursor: pointer;
+}
+
+
+    .notification-icon:hover {
+        color: #002147;
+    }
+
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 11px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.notification-icon i {
+    color: #FDB913 !important;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+    .notification-icon i:hover {
+        color: #002147 !important;
+    }
+    .notification-container {
+    position: relative;
+}
+
+
+.notification-panel {
+
+    display: none;
+
+    position: absolute;
+
+    right: 0;
+    top: 35px;
+
+    width: 280px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,.2);
+
+    z-index: 1000;
+}
+
+
+.notification-panel h4 {
+
+    color: #002147;
+
+    margin-top: 0;
+
+}
+
+
+.notification-panel p {
+
+    color: #777;
+
+}
+
+
+.notification-icon {
+
+    cursor: pointer;
+
+}
+
+v.profile-container {
+    position: relative;
+}
+
+.profile-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.profile-name {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.profile-panel {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 65px;
+    width: 320px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.2);
+    padding: 20px;
+    z-index: 9999;
+}
+
+    .profile-panel h5 {
+        color: #002147;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .profile-panel p {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+.profile-button i.fa-circle-user {
+    color: #FDB913;
+}
+
+.profile-button:hover {
+    opacity: .8;
+}

@@ -1,0 +1,79 @@
+﻿@model PostGraduateRecord.Models.Student
+
+@{
+    ViewBag.Title = "Student Profile";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+
+<div class="container">
+
+    <div class="card shadow p-4">
+
+        <h2>
+            <i class="fa-solid fa-user"></i>
+            Student Profile
+        </h2>
+
+        <hr />
+
+
+        <p>
+            <strong>Name:</strong>
+            @Model.User.FirstName @Model.User.LastName
+        </p>
+
+
+        <p>
+            <strong>Student Number:</strong>
+            @Model.User.StudentNumber
+        </p>
+
+
+        <p>
+            <strong>Email:</strong>
+            @Model.User.Email
+        </p>
+
+
+        <p>
+            <strong>Faculty:</strong>
+            @Model.Department.Faculty.FacultyName
+        </p>
+
+
+        <p>
+            <strong>Department:</strong>
+            @Model.Department.DepartmentName
+        </p>
+
+
+        <p>
+            <strong>Qualification:</strong>
+            @Model.Qualification
+        </p>
+
+
+        <p>
+            <strong>Study Type:</strong>
+            @Model.StudyType
+        </p>
+
+
+        <p>
+            <strong>Registration Year:</strong>
+            @Model.RegistrationYear
+        </p>
+
+
+        <a href="@Url.Action("Dashboard","Student")"
+           class="btn btn-primary">
+
+            Back to Dashboard
+
+        </a>
+
+
+    </div>
+
+</div>

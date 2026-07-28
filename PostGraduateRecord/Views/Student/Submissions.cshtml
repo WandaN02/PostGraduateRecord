@@ -4,5 +4,90 @@
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-<h2>Submissions</h2>
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-upload"></i>
+        Research Submissions
+    </h2>
+
+    <p>
+        View your submitted research documents and upload new submissions.
+    </p>
+
+</div>
+
+
+
+<div class="card-section">
+
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+
+        <h3>
+            Submission History
+        </h3>
+
+
+        <a href="@Url.Action("NewSubmission","Student")"
+           class="btn btn-warning">
+
+            <i class="fa-solid fa-plus"></i>
+            New Submission
+
+        </a>
+
+
+    </div>
+
+
+
+    <br />
+    <table class="table">
+
+        <tr>
+
+            <th>
+                Document
+            </th>
+
+            <th>
+                Type
+            </th>
+
+            <th>
+                Date Submitted
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th>
+                Feedback
+            </th>
+
+            <th>
+                Action
+            </th>
+
+        </tr>
+
+
+        <tr>
+
+            <td colspan="6">
+
+                No submissions available.
+
+            </td>
+
+        </tr>
+
+
+    </table>
+
+
+</div>
 
