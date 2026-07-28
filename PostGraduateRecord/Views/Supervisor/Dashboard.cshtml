@@ -1,0 +1,121 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.SupervisorAssignment>
+
+@{
+    ViewBag.Title = "Supervisor Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <h2>Supervisor Dashboard</h2>
+
+    <h4>Welcome @ViewBag.SupervisorName</h4>
+
+    <hr />
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center">
+                    <strong>Assigned Students</strong>
+                </div>
+                <div class="panel-body text-center">
+                    <h2>@ViewBag.TotalStudents</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading text-center">
+                    <strong>Assigned Proposals</strong>
+                </div>
+                <div class="panel-body text-center">
+                    <h2>@ViewBag.TotalProposals</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-warning">
+                <div class="panel-heading text-center">
+                    <strong>Pending Proposals</strong>
+                </div>
+                <div class="panel-body text-center">
+                    <h2>@ViewBag.PendingProposals</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-danger">
+                <div class="panel-heading text-center">
+                    <strong>Progress Reports</strong>
+                </div>
+                <div class="panel-body text-center">
+                    <h2>@ViewBag.ProgressReports</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <h3>Assigned Students</h3>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Student Number</th>
+                    <th>Student Name</th>
+                    <th>Proposal Title</th>
+                    <th>Research Field</th>
+                    <th>Status</th>
+                    <th>Submission Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>@item.Proposal.Student.User.StudentNumber</td>
+
+                        <td>
+                            @item.Proposal.Student.User.FirstName
+                            @item.Proposal.Student.User.LastName
+                        </td>
+
+                        <td>@item.Proposal.Title</td>
+
+                        <td>@item.Proposal.ResearchField</td>
+
+                        <td>@item.Proposal.Status</td>
+
+                        <td>
+                            @(item.Proposal.SubmissionDate.HasValue
+                                ? item.Proposal.SubmissionDate.Value.ToString("dd MMM yyyy")
+                                : "N/A")
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No students have been assigned to you yet.
+        </div>
+    }
+
+</div>
