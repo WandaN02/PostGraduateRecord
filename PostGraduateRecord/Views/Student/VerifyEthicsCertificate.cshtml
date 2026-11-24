@@ -1,0 +1,95 @@
+﻿
+@model PostGraduateRecord.ViewModels.EthicsCertificateViewModel
+
+@{
+    ViewBag.Title = "Verify Ethics Certificate";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-certificate"></i>
+        Ethics Clearance Certificate
+    </h2>
+
+    <p>
+        Enter your ethics reference number to view your certificate.
+    </p>
+
+</div>
+
+<div class="card-section">
+
+    <div class="certificate-verification">
+
+        <div class="verification-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <h3>Verify Your Ethics Certificate</h3>
+
+        <p>
+            Enter the ethics reference number provided when your
+            ethics application was approved.
+        </p>
+
+        @using (Html.BeginForm(
+            "EthicsCertificate",
+            "Student",
+            FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+
+                @Html.LabelFor(
+                    m => m.ReferenceNumber
+                )
+
+                @Html.TextBoxFor(
+                    m => m.ReferenceNumber,
+                    new
+                    {
+                        @class = "form-control",
+                        placeholder = "Example: ETH-2026-0001"
+                    }
+                )
+
+                @Html.ValidationMessageFor(
+                    m => m.ReferenceNumber,
+                    "",
+                    new
+                    {
+                        @class = "text-danger"
+                    }
+                )
+
+            </div>
+
+            <br />
+
+            <button type="submit"
+                    class="btn btn-warning">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Verify Reference Number
+
+            </button>
+        }
+
+    </div>
+
+</div>
+
+<div class="back-section">
+
+    <a href="@Url.Action("Ethics", "Student")"
+       class="back-button">
+
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Ethics
+
+    </a>
+
+</div>

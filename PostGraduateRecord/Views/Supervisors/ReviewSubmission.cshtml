@@ -1,0 +1,256 @@
+﻿
+
+@model PostGraduateRecord.ViewModels.SupervisorSubmissionReviewViewModel
+
+@{
+    ViewBag.Title = "Review Submission";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<link href="~/Content/SupervisorSubmissions.css" rel="stylesheet" />
+
+<div class="submission-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <h2>
+            <i class="fa-solid fa-clipboard-check"></i>
+            Review @Model.SubmissionType
+        </h2>
+
+        <p>
+            Review the submission and provide your supervisor decision.
+        </p>
+
+    </div>
+
+
+    <!-- SUBMISSION INFORMATION -->
+
+    <div class="submission-card">
+
+        <div class="submission-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-file-pdf"></i>
+                    @Model.DocumentName
+                </h3>
+
+                <span class="submission-type">
+                    @Model.SubmissionType
+                </span>
+
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Status))
+            {
+                <span class="status pending">
+                    @Model.Status
+                </span>
+            }
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="submission-details">
+
+            <div>
+                <label>Student</label>
+                <strong>
+                    @Model.StudentName
+                </strong>
+            </div>
+
+            <div>
+                <label>Student Number</label>
+                <strong>
+                    @Model.StudentNumber
+                </strong>
+            </div>
+
+            <div>
+                <label>Qualification</label>
+                <strong>
+                    @Model.Qualification
+                </strong>
+            </div>
+
+            <div>
+                <label>Study Type</label>
+                <strong>
+                    @Model.StudyType
+                </strong>
+            </div>
+
+            <div>
+                <label>Research Title</label>
+                <strong>
+                    @Model.ResearchTitle
+                </strong>
+            </div>
+
+            <div>
+                <label>Submitted</label>
+                <strong>
+                    @(Model.SubmittedDate.HasValue
+                        ? Model.SubmittedDate.Value.ToString("dd MMM yyyy")
+                        : "N/A")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <!-- DOCUMENT -->
+
+        @if (!string.IsNullOrWhiteSpace(Model.FilePath))
+        {
+            <div class="submission-actions">
+
+                <a href="@Url.Content(Model.FilePath)"
+                   target="_blank"
+                   class="btn-view">
+
+                    <i class="fa-solid fa-eye"></i>
+                    View Document
+
+                </a>
+
+                <a href="@Url.Content(Model.FilePath)"
+                   download
+                   class="btn-download">
+
+                    <i class="fa-solid fa-download"></i>
+                    Download
+
+                </a>
+
+            </div>
+        }
+
+
+        <!-- REVIEW FORM -->
+
+        <div class="submission-feedback">
+
+            <h3>
+                <i class="fa-solid fa-pen-to-square"></i>
+                Supervisor Review
+            </h3>
+
+            @using (Html.BeginForm(
+                "ReviewSubmission",
+                "Supervisors",
+                FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(m => m.SubmissionID)
+
+                @Html.HiddenFor(m => m.SubmissionType)
+
+
+                <div class="form-group">
+
+                    <label>
+                        Decision
+                    </label>
+
+                    <select name="Status"
+                            class="form-control"
+                            required>
+
+                        <option value="">
+                            Select Decision
+                        </option>
+
+                        <option value="Approved"
+                                @(Model.Status == "Approved" ? "selected" : "")>
+                            Approved
+                        </option>
+
+                        <option value="Revision Required"
+                                @(Model.Status == "Revision Required" ? "selected" : "")>
+                            Revision Required
+                        </option>
+
+                        <option value="Rejected"
+                                @(Model.Status == "Rejected" ? "selected" : "")>
+                            Rejected
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                if (Model.SubmissionType == "Progress Report")
+                {
+                    <div class="form-group">
+
+                        <label>
+                            Supervisor Comments
+                        </label>
+
+                        <textarea name="Comments"
+                                  class="form-control"
+                                  rows="6"
+                                  placeholder="Enter your feedback for the student...">@Model.Comments</textarea>
+
+                    </div>
+                }
+
+                if (Model.SubmissionType == "Final Thesis")
+                {
+                    <div class="form-group">
+
+                        <label>
+                            Supervisor Comments
+                        </label>
+
+                        <textarea name="Comments"
+                                  class="form-control"
+                                  rows="6"
+                                  placeholder="Enter your feedback for the student..."></textarea>
+
+                        <small>
+                            Thesis comments are currently not stored in the Thesis table.
+                        </small>
+
+                    </div>
+                }
+
+
+                <div class="submission-actions">
+
+                    <button type="submit"
+                            class="btn-review">
+
+                        <i class="fa-solid fa-check"></i>
+                        Submit Review
+
+                    </button>
+
+
+                    <a href="@Url.Action("Submissions", "Supervisors")"
+                       class="btn-download">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back to Submissions
+
+                    </a>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>

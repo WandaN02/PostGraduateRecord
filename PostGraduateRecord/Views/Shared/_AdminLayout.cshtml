@@ -1,0 +1,471 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>SPGS Admin</title>
+
+    <link rel="stylesheet"
+          href="@Url.Content("~/Content/admin.css")" />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+
+    <style>
+
+        /* =========================================
+           ADMIN POPUP NOTIFICATIONS
+        ========================================== */
+
+        #adminPopup {
+            position: fixed !important;
+            top: 25px !important;
+            right: 25px !important;
+            min-width: 320px !important;
+            max-width: 450px !important;
+            padding: 16px 20px !important;
+            border-radius: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            z-index: 99999 !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25) !important;
+            animation: adminPopupSlideIn 0.3s ease;
+        }
+
+
+            /* SUCCESS */
+
+            #adminPopup.success {
+                background: #001B44 !important;
+                color: #ffffff !important;
+            }
+
+
+                #adminPopup.success i {
+                    color: #FDB913 !important;
+                    font-size: 21px !important;
+                }
+
+
+            /* ERROR */
+
+            #adminPopup.error {
+                background: #8B0000 !important;
+                color: #ffffff !important;
+            }
+
+
+                #adminPopup.error i {
+                    color: #FDB913 !important;
+                    font-size: 21px !important;
+                }
+
+
+            /* HIDE ANIMATION */
+
+            #adminPopup.hide {
+                animation: adminPopupSlideOut 0.3s ease forwards;
+            }
+
+
+        /* SLIDE IN */
+
+        @@keyframes adminPopupSlideIn {
+
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+
+        /* SLIDE OUT */
+
+        @@keyframes adminPopupSlideOut {
+
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="admin-container">
+
+
+        <!-- =========================================
+             SIDEBAR
+        ========================================== -->
+
+        <aside class="admin-sidebar">
+
+            <div class="sidebar-brand">
+
+                <h2>SPGS</h2>
+
+            </div>
+
+
+            <ul class="sidebar-menu">
+
+
+                <!-- DASHBOARD -->
+
+                <li>
+
+                    <a href="@Url.Action("Dashboard", "Admin")"
+                       class="@(ViewContext.RouteData.Values["action"].ToString() == "Dashboard" ? "active" : "")">
+
+                        <i class="fa-solid fa-gauge"></i>
+
+                        <span>Dashboard</span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- APPLICATIONS -->
+
+                <li>
+
+                    <a href="@Url.Action("Applications", "Admin")"
+                       class="@(ViewContext.RouteData.Values["action"].ToString() == "Applications" ? "active" : "")">
+
+                        <i class="fa-solid fa-file-circle-check"></i>
+
+                        <span>Applications</span>
+
+                    </a>
+
+                </li>
+
+                <!-- APPROVED STUDENTS -->
+
+                <li>
+
+                    <a href="@Url.Action("ApprovedStudents", "Admin")"
+                       class="@(ViewContext.RouteData.Values["action"].ToString() == "ApprovedStudents" ? "active" : "")">
+
+                        <i class="fa-solid fa-user-graduate"></i>
+
+                        <span>Approved Students</span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- TIMELINE -->
+
+                <li>
+
+                    <a href="@Url.Action("Timeline", "Admin")"
+                       class="@(ViewContext.RouteData.Values["action"].ToString() == "Timeline" ? "active" : "")">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                        <span>Timeline</span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- REPORTS -->
+
+                <li>
+
+                    <a href="@Url.Action("Reports", "Admin")"
+                       class="@(ViewContext.RouteData.Values["action"].ToString() == "Reports" ? "active" : "")">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                        <span>Reports</span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- LOGOUT -->
+
+                <li class="sidebar-logout">
+
+                    <a href="@Url.Action("Logout", "Account")">
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                        <span>Logout</span>
+
+                    </a>
+
+                </li>
+
+
+            </ul>
+
+        </aside>
+
+
+
+        <!-- =========================================
+             MAIN
+        ========================================== -->
+
+        <div class="admin-main">
+
+
+            <!-- =========================================
+                 TOP NAVIGATION
+            ========================================== -->
+
+            <header class="top-navbar">
+
+
+                <div class="navbar-title">
+
+                    <h2>Administration Portal</h2>
+
+                </div>
+
+
+
+                <div class="navbar-right">
+
+
+                    <!-- =================================
+                         DATE
+                    ================================== -->
+
+                    <span class="today-date">
+
+                        @DateTime.Now.ToString("dddd, dd MMM yyyy")
+
+                    </span>
+
+
+
+                    <!-- =================================
+                         NOTIFICATION BELL
+                    ================================== -->
+
+                    <div class="notification-wrapper">
+
+
+                        <!-- BELL -->
+
+                        <button type="button"
+                                class="nav-icon notification-bell"
+                                id="notificationBell"
+                                title="Notifications">
+
+                            <i class="fa-solid fa-bell"></i>
+
+
+                            <span class="badge">
+
+                                @Html.Action(
+                                    "NotificationCount",
+                                    "Admin"
+                                )
+
+                            </span>
+
+                        </button>
+
+
+
+                        <!-- =================================
+                             NOTIFICATION DROPDOWN
+                        ================================== -->
+
+                        <div class="notification-dropdown"
+                             id="notificationDropdown">
+
+
+                            <!-- HEADER -->
+
+                            <div class="notification-dropdown-header">
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+
+                                <span>
+
+                                    @Html.Action(
+                                        "NotificationCount",
+                                        "Admin"
+                                    )
+
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- NOTIFICATION CONTENT -->
+
+                            <div class="notification-list">
+
+                                @Html.Action(
+                                    "NotificationDropdown",
+                                    "Admin"
+                                )
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================
+                         PROFILE
+                    ================================== -->
+
+                    <a href="@Url.Action("Profile", "Admin")"
+                       class="profile"
+                       title="My Profile">
+
+                        <i class="fa-solid fa-circle-user"></i>
+
+
+                        <span>
+
+                            @Session["FullName"]
+
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+            </header>
+
+
+
+            <!-- =========================================
+                 PAGE CONTENT
+            ========================================== -->
+            <main class="admin-content">
+
+                @if (TempData["Success"] != null)
+                {
+                    <div id="adminPopup" class="success">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+                            @TempData["Success"]
+                        </span>
+
+                    </div>
+                }
+
+                @if (TempData["Error"] != null)
+                {
+                    <div id="adminPopup" class="error">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                        <span>
+                            @TempData["Error"]
+                        </span>
+
+                    </div>
+                }
+
+                @RenderBody()
+
+            </main>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NOTIFICATION JAVASCRIPT
+    ========================================== -->
+
+    <script>
+
+            const notificationBell =
+                document.getElementById("notificationBell");
+
+            const notificationDropdown =
+                document.getElementById("notificationDropdown");
+
+
+            if (notificationBell && notificationDropdown) {
+
+
+                // =========================================
+                // OPEN / CLOSE NOTIFICATION DROPDOWN
+                // =========================================
+
+                notificationBell.addEventListener("click", function (event) {
+
+                    event.stopPropagation();
+
+                    notificationDropdown.classList.toggle("show");
+
+                });
+
+
+                // =========================================
+                // CLOSE WHEN CLICKING OUTSIDE
+                // =========================================
+
+                document.addEventListener("click", function () {
+
+                    notificationDropdown.classList.remove("show");
+
+                });
+
+
+                // =========================================
+                // KEEP DROPDOWN OPEN WHEN CLICKING INSIDE
+                // =========================================
+
+                notificationDropdown.addEventListener("click", function (event) {
+
+                    event.stopPropagation();
+
+                });
+
+            }
+
+    </script>
+
+    <script src="~/Content/AdminNotificationPopup.js"></script>
+</body>
+
+</html>

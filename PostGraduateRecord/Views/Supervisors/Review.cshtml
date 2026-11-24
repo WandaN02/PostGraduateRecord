@@ -1,0 +1,1271 @@
+﻿
+@model PostGraduateRecord.ViewModels.ProposalReviewViewModel
+
+@{
+    ViewBag.Title = "Review Proposal";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<style>
+    /* =========================================================
+       MODERN SUPERVISOR PROPOSAL REVIEW
+       ========================================================= */
+
+    .proposal-review-page {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 10px 0 50px;
+    }
+
+    /* =========================================================
+       PAGE HEADER
+       ========================================================= */
+
+    .proposal-review-header {
+        background: #001B44;
+        border-radius: 18px;
+        padding: 30px 34px;
+        margin-bottom: 25px;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        box-shadow: 0 8px 25px rgba(0, 27, 68, 0.12);
+    }
+
+        .proposal-review-header::before {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background: rgba(253, 185, 19, 0.10);
+            right: -70px;
+            top: -100px;
+        }
+
+        .proposal-review-header::after {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: rgba(253, 185, 19, 0.07);
+            right: 120px;
+            bottom: -70px;
+        }
+
+    .header-content {
+        position: relative;
+        z-index: 2;
+    }
+
+    .header-icon {
+        width: 50px;
+        height: 50px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #FDB913;
+        color: #001B44;
+        border-radius: 13px;
+        font-size: 21px;
+        margin-right: 13px;
+        vertical-align: middle;
+    }
+
+    .proposal-review-header h2 {
+        margin: 0 0 9px;
+        font-size: 28px;
+        font-weight: 700;
+        letter-spacing: -.3px;
+    }
+
+    .proposal-review-header p {
+        margin: 0;
+        color: rgba(255,255,255,.78);
+        font-size: 14px;
+    }
+
+    /* =========================================================
+       ALERT
+       ========================================================= */
+
+    .modern-alert {
+        border: none;
+        border-radius: 12px;
+        padding: 15px 18px;
+        margin-bottom: 22px;
+        box-shadow: 0 4px 14px rgba(0,0,0,.05);
+    }
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
+
+    .review-card {
+        background: #fff;
+        border: 1px solid #e6eaf0;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,27,68,.055);
+    }
+
+    .review-card-header {
+        min-height: 64px;
+        padding: 17px 23px;
+        background: #fbfcfe;
+        border-bottom: 1px solid #e9edf2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .review-card-title {
+        margin: 0;
+        color: #001B44;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+        .review-card-title i {
+            color: #FDB913;
+            margin-right: 9px;
+        }
+
+    .review-card-body {
+        padding: 25px;
+    }
+
+    /* =========================================================
+       FEEDBACK HISTORY
+       ========================================================= */
+
+    .feedback-item {
+        border: 1px solid #e5e9ef;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 14px;
+        background: #fff;
+    }
+
+        .feedback-item:last-child {
+            margin-bottom: 0;
+        }
+
+    .feedback-top {
+        padding: 13px 16px;
+        background: #f8fafc;
+        border-bottom: 1px solid #edf0f3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .feedback-supervisor {
+        color: #001B44;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+        .feedback-supervisor i {
+            color: #FDB913;
+            margin-right: 7px;
+        }
+
+    .feedback-date {
+        color: #7b8595;
+        font-size: 12px;
+    }
+
+    .feedback-content {
+        padding: 16px;
+    }
+
+        .feedback-content p {
+            color: #4c5667;
+            font-size: 13px;
+            line-height: 1.65;
+            margin: 11px 0 0;
+            white-space: pre-wrap;
+        }
+
+    .decision-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 20px;
+        padding: 5px 11px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .decision-approved {
+        color: #18794e;
+        background: #e9f7ef;
+    }
+
+    .decision-rejected {
+        color: #b42318;
+        background: #fdecec;
+    }
+
+    .decision-revision {
+        color: #946200;
+        background: #fff5d9;
+    }
+
+    .empty-history {
+        padding: 30px 15px;
+        text-align: center;
+        color: #8a94a3;
+        font-size: 13px;
+    }
+
+        .empty-history i {
+            display: block;
+            font-size: 29px;
+            color: #c5ccd5;
+            margin-bottom: 10px;
+        }
+
+    /* =========================================================
+       PROPOSAL INFORMATION
+       ========================================================= */
+
+    .proposal-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .proposal-field {
+        min-width: 0;
+    }
+
+        .proposal-field.full {
+            grid-column: 1 / -1;
+            width: 100%;
+            min-width: 0;
+        }
+
+    .field-label {
+        display: block;
+        color: #6d7787;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .55px;
+        margin-bottom: 7px;
+    }
+
+    .field-value {
+        min-height: 45px;
+        background: #f7f9fc;
+        border: 1px solid #e2e7ed;
+        border-radius: 10px;
+        padding: 12px 14px;
+        color: #273142;
+        font-size: 14px;
+        line-height: 1.55;
+        word-break: break-word;
+    }
+
+    .title-value {
+        font-weight: 600;
+        color: #001B44;
+    }
+
+    .abstract-value {
+        width: 100%;
+        min-height: 145px;
+        white-space: pre-wrap;
+        line-height: 1.7;
+        text-align: left;
+        margin: 0;
+        padding: 14px;
+        box-sizing: border-box;
+    }
+
+    /* =========================================================
+       DOCUMENT
+       ========================================================= */
+
+    .document-container {
+        padding-top: 2px;
+    }
+
+    .document-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 11px 17px;
+        background: #001B44;
+        color: #fff !important;
+        border-radius: 9px;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all .2s ease;
+    }
+
+        .document-button i {
+            color: #FDB913;
+            font-size: 15px;
+        }
+
+        .document-button:hover {
+            background: #082b5c;
+            transform: translateY(-1px);
+        }
+
+    /* =========================================================
+       FORM
+       ========================================================= */
+
+    .form-group-modern {
+        margin-bottom: 21px;
+    }
+
+    .form-label-modern {
+        display: block;
+        color: #273142;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+        .form-label-modern i {
+            color: #FDB913;
+            margin-right: 6px;
+        }
+
+    .modern-textarea,
+    .modern-select,
+    .modern-input {
+        width: 100%;
+        border: 1px solid #d9dfe7;
+        background: #fff;
+        color: #273142;
+        border-radius: 10px;
+        padding: 11px 13px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .modern-textarea {
+        min-height: 155px;
+        resize: vertical;
+        line-height: 1.65;
+    }
+
+        .modern-textarea:focus,
+        .modern-select:focus,
+        .modern-input:focus {
+            border-color: #001B44;
+            box-shadow: 0 0 0 3px rgba(0,27,68,.08);
+        }
+
+    .modern-input {
+        height: 45px;
+    }
+
+    .modern-select {
+        height: 45px;
+    }
+
+    .field-validation-error {
+        display: block;
+        color: #b42318;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    /* =========================================================
+       BUTTONS
+       ========================================================= */
+
+    .action-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-top: 4px;
+    }
+
+    .btn-modern {
+        border: none;
+        border-radius: 9px;
+        padding: 11px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none !important;
+        cursor: pointer;
+        transition: all .2s ease;
+    }
+
+    .btn-submit {
+        background: #18794e;
+        color: #fff !important;
+    }
+
+        .btn-submit:hover {
+            background: #12613e;
+            transform: translateY(-1px);
+        }
+
+    .btn-cancel {
+        background: #eef1f5;
+        color: #465164 !important;
+    }
+
+        .btn-cancel:hover {
+            background: #e1e5eb;
+        }
+
+    .btn-primary-modern {
+        background: #001B44;
+        color: #fff !important;
+    }
+
+        .btn-primary-modern:hover {
+            background: #082b5c;
+            transform: translateY(-1px);
+        }
+
+    /* =========================================================
+       EVALUATOR ASSIGNMENT
+       ========================================================= */
+
+    .assignment-info {
+        background: #f7f9fc;
+        border: 1px solid #e2e7ed;
+        border-radius: 11px;
+        padding: 14px 16px;
+        margin-bottom: 21px;
+        color: #596579;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+        .assignment-info i {
+            color: #001B44;
+            margin-right: 7px;
+        }
+
+    .assignment-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .helper-text {
+        display: block;
+        margin-top: 7px;
+        color: #7d8796;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .assigned-evaluator {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: #f7f9fc;
+        border: 1px solid #e0e6ed;
+        border-radius: 12px;
+        padding: 17px;
+    }
+
+    .evaluator-avatar {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 50%;
+        background: #001B44;
+        color: #FDB913;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 17px;
+    }
+
+    .assigned-caption {
+        color: #7c8696;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+        margin-bottom: 3px;
+    }
+
+    .assigned-name {
+        color: #001B44;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    /* =========================================================
+       WARNING
+       ========================================================= */
+
+    .review-warning {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        background: #fff8e5;
+        border: 1px solid #f3dfaa;
+        border-radius: 11px;
+        padding: 15px;
+        color: #725700;
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+        .review-warning i {
+            color: #d39b00;
+            margin-top: 2px;
+        }
+
+    /* =========================================================
+       BACK BUTTON
+       ========================================================= */
+
+    .back-container {
+        margin-top: 28px;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid #dce2e9;
+        border-radius: 9px;
+        padding: 10px 15px;
+        color: #001B44 !important;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all .2s ease;
+    }
+
+        .back-button:hover {
+            border-color: #001B44;
+            background: #f6f8fa;
+        }
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 800px) {
+
+        .proposal-review-page {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .proposal-review-header {
+            padding: 24px;
+        }
+
+            .proposal-review-header h2 {
+                font-size: 23px;
+            }
+
+        .proposal-grid,
+        .assignment-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .proposal-field.full {
+            grid-column: auto;
+        }
+
+        .review-card-body {
+            padding: 19px;
+        }
+
+        .feedback-top {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .action-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-modern {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="proposal-review-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="proposal-review-header">
+
+        <div class="header-content">
+
+            <h2>
+
+                <span class="header-icon">
+                    <i class="fa-solid fa-file-pen"></i>
+                </span>
+
+                Review Research Proposal
+
+            </h2>
+
+            <p>
+                Review the student's research proposal and provide
+                your feedback and decision.
+            </p>
+
+        </div>
+
+    </div>
+
+
+   
+    <!-- =====================================================
+         FEEDBACK HISTORY
+         ONLY DISPLAY AFTER A PREVIOUS REVIEW EXISTS
+         ===================================================== -->
+
+    @if (Model.PreviousFeedback != null &&
+         Model.PreviousFeedback.Any())
+    {
+        <div class="review-card">
+
+            <div class="review-card-header">
+
+                <h4 class="review-card-title">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    Feedback History
+
+                </h4>
+
+            </div>
+
+
+            <div class="review-card-body">
+
+                @foreach (var feedback in Model.PreviousFeedback)
+                {
+                    <div class="feedback-item">
+
+                        <div class="feedback-top">
+
+                            <div class="feedback-supervisor">
+
+                                <i class="fa-solid fa-user-tie"></i>
+
+                                @feedback.Supervisor.User.FirstName
+                                @feedback.Supervisor.User.LastName
+
+                            </div>
+
+
+                            <span class="feedback-date">
+
+                                @(feedback.FeedbackDate.HasValue
+                                ? feedback.FeedbackDate.Value.ToString("dd MMM yyyy")
+                                : "N/A")
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="feedback-content">
+
+                            <span class="decision-badge
+                            @(feedback.Decision == "Approved"
+                                ? "decision-approved"
+                                : feedback.Decision == "Rejected"
+                                    ? "decision-rejected"
+                                    : "decision-revision")">
+
+                                @feedback.Decision
+
+                            </span>
+
+
+                            <p>
+                                @feedback.Comments
+                            </p>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- =====================================================
+         PROPOSAL INFORMATION
+         ===================================================== -->
+
+    <div class="review-card">
+
+        <div class="review-card-header">
+
+            <h4 class="review-card-title">
+
+                <i class="fa-solid fa-file-lines"></i>
+
+                Proposal Information
+
+            </h4>
+
+        </div>
+
+
+        <div class="review-card-body">
+
+            <div class="proposal-grid">
+
+
+                <!-- STUDENT -->
+
+                <div class="proposal-field">
+
+                    <span class="field-label">
+                        Student
+                    </span>
+
+                    <div class="field-value">
+
+                        <i class="fa-solid fa-user"
+                           style="color:#001B44;margin-right:7px;"></i>
+
+                        @Model.Proposal.Student.User.FirstName
+                        @Model.Proposal.Student.User.LastName
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESEARCH FIELD -->
+
+                <div class="proposal-field">
+
+                    <span class="field-label">
+                        Research Field
+                    </span>
+
+                    <div class="field-value">
+
+                        @Model.Proposal.ResearchField
+
+                    </div>
+
+                </div>
+
+
+                <!-- TITLE -->
+
+                <div class="proposal-field full">
+
+                    <span class="field-label">
+                        Research Title
+                    </span>
+
+                    <div class="field-value title-value">
+
+                        @Model.Proposal.Title
+
+                    </div>
+
+                </div>
+
+
+                <!-- KEYWORDS -->
+
+                <div class="proposal-field full">
+
+                    <span class="field-label">
+                        Keywords
+                    </span>
+
+                    <div class="field-value">
+
+                        @Model.Proposal.Keywords
+
+                    </div>
+
+                </div>
+
+
+                <!-- SUMMARY -->
+
+                <div class="proposal-field full">
+
+                    <span class="field-label">
+                        Summary
+                    </span>
+
+                    <div class="field-value abstract-value">
+                        @Model.Proposal.Abstract
+                    </div>
+
+                </div>
+
+
+                <!-- DOCUMENT -->
+
+                @if (!string.IsNullOrWhiteSpace(Model.Proposal.DocumentPath))
+                {
+                    <div class="proposal-field full">
+
+                        <span class="field-label">
+                            Proposal Document
+                        </span>
+
+                        <div class="document-container">
+                        <a href="@Url.Action(
+                                    "ViewDocument",
+                                    "Supervisors",
+                                    new { id = Model.Proposal.ProposalID })"
+                           target="_blank"
+                           class="document-button">
+
+                            <i class="fa-solid fa-file-pdf"></i>
+
+                            View Proposal Document
+
+                        </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUPERVISOR REVIEW
+         ===================================================== -->
+
+    @{
+        bool proposalApproved =
+            Model.PreviousFeedback != null &&
+            Model.PreviousFeedback.Any(f => f.Decision == "Approved");
+    }
+
+
+    @if (!proposalApproved)
+    {
+        using (Html.BeginForm(
+            "Review",
+            "Supervisors",
+            FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(
+                m => m.Proposal.ProposalID)
+
+
+            <div class="review-card">
+
+                <div class="review-card-header">
+
+                    <h4 class="review-card-title">
+
+                        <i class="fa-solid fa-comment-pen"></i>
+
+                        Supervisor Review
+
+                    </h4>
+
+                </div>
+
+
+                <div class="review-card-body">
+
+
+                    <!-- COMMENTS -->
+
+                    <div class="form-group-modern">
+
+                        <label class="form-label-modern">
+
+                            <i class="fa-solid fa-message"></i>
+
+                            Supervisor Feedback
+
+                        </label>
+
+
+                        @Html.TextAreaFor(
+                            m => m.Comments,
+                            new
+                            {
+                                @class = "modern-textarea",
+                                rows = 6,
+                                placeholder = "Enter your comments and feedback on the student's proposal..."
+                            })
+
+
+                        @Html.ValidationMessageFor(
+                            m => m.Comments)
+
+                    </div>
+
+
+                    <!-- DECISION -->
+
+                    <div class="form-group-modern">
+
+                        <label class="form-label-modern">
+
+                            <i class="fa-solid fa-gavel"></i>
+
+                            Review Decision
+
+                        </label>
+
+
+                        @Html.DropDownListFor(
+                            m => m.Decision,
+                            new SelectList(new[]
+                            {
+                                "Approved",
+                                "Revision Required",
+                                "Rejected"
+                            }),
+                            "-- Select Decision --",
+                            new
+                            {
+                                @class = "modern-select"
+                            })
+
+
+                        @Html.ValidationMessageFor(
+                            m => m.Decision)
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="action-row">
+
+                        <button type="submit"
+                                class="btn-modern btn-submit">
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            Submit Review
+
+                        </button>
+
+
+                        <a href="@Url.Action(
+                        "Proposals",
+                        "Supervisors")"
+                           class="btn-modern btn-cancel">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <!-- =================================================
+             APPROVED PROPOSAL - REVIEW LOCKED
+             ================================================= -->
+
+        <div class="review-card">
+
+            <div class="review-card-header">
+
+                <h4 class="review-card-title">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Supervisor Review Completed
+
+                </h4>
+
+            </div>
+
+
+            <div class="review-card-body">
+
+                <div class="review-warning"
+                     style="background:#e9f7ef;
+                        border-color:#b7e4ca;
+                        color:#17633d;">
+
+                    <i class="fa-solid fa-circle-check"
+                       style="color:#18794e;"></i>
+
+                    <div>
+
+                        <strong>Proposal Approved</strong>
+
+                        <br />
+
+                        This proposal has already been approved.
+                        The supervisor review can no longer be submitted
+                        or changed.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- =====================================================
+         EVALUATOR ASSIGNMENT
+         ===================================================== -->
+
+    <div class="review-card">
+
+        <div class="review-card-header">
+
+            <h4 class="review-card-title">
+
+                <i class="fa-solid fa-user-check"></i>
+
+                Evaluator Assignment
+
+            </h4>
+
+        </div>
+
+
+        <div class="review-card-body">
+
+
+            @if (ViewBag.EvaluatorAssignment == null)
+            {
+                if (Model.PreviousFeedback != null &&
+                    Model.PreviousFeedback.Any())
+                {
+                    <div class="assignment-info">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        The supervisor review has been completed.
+                        You can now assign an evaluator to review
+                        this proposal.
+
+                    </div>
+
+
+                    <!-- ASSIGN EVALUATOR -->
+
+                    using (Html.BeginForm(
+                        "AssignEvaluator",
+                        "Supervisors",
+                        FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+
+                        @Html.Hidden(
+                            "proposalId",
+                            Model.Proposal.ProposalID)
+
+
+                        <div class="assignment-grid">
+
+
+                            <!-- EVALUATOR -->
+
+                            <div class="form-group-modern">
+
+                                <label for="evaluatorId"
+                                       class="form-label-modern">
+
+                                    <i class="fa-solid fa-user-check"></i>
+
+                                    Select Evaluator
+
+                                </label>
+
+
+                                @Html.DropDownList(
+                                    "evaluatorId",
+                                    ViewBag.Evaluators
+                                        as IEnumerable<SelectListItem>,
+                                    "-- Select Evaluator --",
+                                    new
+                                    {
+                                        @class = "modern-select",
+                                        id = "evaluatorId",
+                                        required = "required"
+                                    })
+
+                            </div>
+
+
+                            <!-- DEADLINE -->
+
+                            <div class="form-group-modern">
+
+                                <label for="deadline"
+                                       class="form-label-modern">
+
+                                    <i class="fa-solid fa-calendar-days"></i>
+
+                                    Evaluation Deadline
+
+                                </label>
+
+
+                                <input type="date"
+                                       id="deadline"
+                                       name="deadline"
+                                       class="modern-input"
+                                       min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                       required />
+
+
+                                <small class="helper-text">
+
+                                    Select the date by which the evaluator
+                                    must complete the evaluation.
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="action-row">
+
+                            <button type="submit"
+                                    class="btn-modern btn-primary-modern">
+
+                                <i class="fa-solid fa-user-check"></i>
+
+                                Assign Evaluator
+
+                            </button>
+
+                        </div>
+
+                    }
+                }
+                else
+                {
+                    <div class="review-warning">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <div>
+
+                            <strong>Supervisor Review Required</strong>
+
+                            <br />
+
+                            You must complete the supervisor review
+                            before assigning an evaluator.
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                var assignedEvaluator =
+                    ViewBag.EvaluatorAssignment;
+
+
+                <div class="assigned-evaluator">
+
+                    <div class="evaluator-avatar">
+
+                        <i class="fa-solid fa-user-check"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="assigned-caption">
+                            Evaluator Assigned
+                        </div>
+
+
+                        <div class="assigned-name">
+
+                            @assignedEvaluator.Evaluator.User.FirstName
+                            @assignedEvaluator.Evaluator.User.LastName
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BACK TO PROPOSALS
+         ===================================================== -->
+
+    <div class="back-container">
+
+        <a href="@Url.Action(
+            "Proposals",
+            "Supervisors")"
+           class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Proposals
+
+        </a>
+
+    </div>
+
+</div>

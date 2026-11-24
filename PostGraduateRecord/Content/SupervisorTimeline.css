@@ -1,0 +1,451 @@
+﻿/* ==========================================
+   SUPERVISOR RESEARCH TIMELINE
+   ========================================== */
+
+.timeline-page {
+    padding: 10px 5px 40px 5px;
+}
+
+
+    /* ==========================================
+   PAGE HEADER
+   ========================================== */
+
+    .timeline-page .page-header {
+        margin-bottom: 25px;
+    }
+
+        .timeline-page .page-header h2 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 700;
+            color: #001b44;
+        }
+
+            .timeline-page .page-header h2 i {
+                margin-right: 10px;
+            }
+
+        .timeline-page .page-header p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 15px;
+        }
+
+
+/* ==========================================
+   STUDENT CARD
+   ========================================== */
+
+.student-timeline-card {
+    background: #ffffff;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ==========================================
+   STUDENT HEADER
+   ========================================== */
+
+.student-timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.student-information {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+}
+
+.student-avatar {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: #001b44;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.student-information h3 {
+    margin: 0 0 5px 0;
+    font-size: 20px;
+    color: #001b44;
+}
+
+.student-information p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+.student-progress {
+    width: 260px;
+    flex-shrink: 0;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 7px;
+}
+
+    .progress-text span {
+        font-size: 13px;
+        color: #6c757d;
+    }
+
+    .progress-text strong {
+        font-size: 14px;
+        color: #001b44;
+    }
+
+.progress-bar {
+    width: 100%;
+    height: 9px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #fdb913;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.student-progress small {
+    display: block;
+    margin-top: 6px;
+    color: #6c757d;
+    font-size: 11px;
+}
+
+
+/* ==========================================
+   TIMELINE
+   ========================================== */
+
+.research-timeline {
+    position: relative;
+    padding: 30px 10px 10px 10px;
+}
+
+
+    /* Vertical line */
+
+    .research-timeline::before {
+        content: "";
+        position: absolute;
+        left: 28px;
+        top: 30px;
+        bottom: 30px;
+        width: 2px;
+        background: #dee2e6;
+    }
+
+
+/* ==========================================
+   TIMELINE STAGE
+   ========================================== */
+
+.timeline-stage {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    padding-bottom: 30px;
+}
+
+    .timeline-stage:last-child {
+        padding-bottom: 0;
+    }
+
+
+/* ==========================================
+   MARKER
+   ========================================== */
+
+.timeline-marker {
+    position: relative;
+    z-index: 2;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 3px solid #adb5bd;
+    color: #6c757d;
+    flex-shrink: 0;
+    font-size: 13px;
+}
+
+
+/* Completed */
+
+.timeline-stage.completed .timeline-marker {
+    background: #198754;
+    border-color: #198754;
+    color: #ffffff;
+}
+
+
+/* In progress */
+
+.timeline-stage.in-progress .timeline-marker {
+    background: #fdb913;
+    border-color: #fdb913;
+    color: #001b44;
+}
+
+
+/* Pending */
+
+.timeline-stage.pending .timeline-marker {
+    background: #ffffff;
+    border-color: #adb5bd;
+    color: #6c757d;
+}
+
+
+/* ==========================================
+   STAGE CONTENT
+   ========================================== */
+
+.timeline-stage-content {
+    flex: 1;
+    padding: 3px 0 0 0;
+}
+
+.timeline-stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+    .timeline-stage-header h4 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        color: #001b44;
+        font-weight: 700;
+    }
+
+    .timeline-stage-header p {
+        margin: 0;
+        color: #6c757d;
+        font-size: 13px;
+    }
+
+
+/* ==========================================
+   STATUS
+   ========================================== */
+
+.timeline-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.timeline-stage.completed .timeline-status {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.timeline-stage.in-progress .timeline-status {
+    background: #fff3cd;
+    color: #664d03;
+}
+
+.timeline-stage.pending .timeline-status {
+    background: #e9ecef;
+    color: #495057;
+}
+
+
+/* ==========================================
+   STAGE DETAILS
+   ========================================== */
+
+.timeline-stage-details {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.timeline-detail {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+    .timeline-detail i {
+        width: 15px;
+        margin-top: 2px;
+        color: #001b44;
+    }
+
+
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
+.timeline-empty {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 60px 30px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.empty-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    background: #f1f3f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-size: 28px;
+}
+
+.timeline-empty h3 {
+    margin-bottom: 8px;
+    color: #001b44;
+}
+
+.timeline-empty p {
+    margin: 0;
+    color: #6c757d;
+}
+
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 900px) {
+
+    .student-timeline-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .student-progress {
+        width: 100%;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .student-timeline-card {
+        padding: 18px;
+    }
+
+    .research-timeline {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .timeline-stage-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .timeline-stage {
+        gap: 12px;
+    }
+
+    .research-timeline::before {
+        left: 18px;
+    }
+
+    .timeline-marker {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* ==========================================
+   STUDENT FILTERS
+   ========================================== */
+
+.timeline-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0 25px 0;
+}
+
+.filter-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-right: 5px;
+    color: #002147;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.timeline-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 17px;
+    background: #ffffff;
+    color: #002147;
+    border: 1px solid #d9e0e8;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+    .timeline-filter:hover {
+        background: #f5f7fa;
+        color: #002147;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
+    .timeline-filter.active {
+        background: #FDB913;
+        color: #002147;
+        border-color: #FDB913;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .timeline-filter i {
+        font-size: 13px;
+    }

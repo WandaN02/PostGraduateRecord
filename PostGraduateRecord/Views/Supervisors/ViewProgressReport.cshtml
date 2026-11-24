@@ -1,0 +1,494 @@
+﻿@model PostGraduateRecord.Models.ProgressReport
+
+@{
+    ViewBag.Title = "Progress Report";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+
+    string studentName = "N/A";
+
+    if (Model.Student != null && Model.Student.User != null)
+    {
+        studentName = Model.Student.User.FirstName + " " + Model.Student.User.LastName;
+    }
+
+    string studentNumber = "N/A";
+
+    if (Model.Student != null && Model.Student.User != null)
+    {
+        studentNumber = Model.Student.User.StudentNumber;
+    }
+
+    string qualification = "N/A";
+
+    if (Model.Student != null)
+    {
+        qualification = Model.Student.Qualification;
+    }
+
+    string studyType = "N/A";
+
+    if (Model.Student != null)
+    {
+        studyType = Model.Student.StudyType;
+    }
+
+    string researchTitle = "N/A";
+
+    if (Model.Proposal != null)
+    {
+        researchTitle = Model.Proposal.Title;
+    }
+
+    string reportDate = Model.ReportDate.ToString();
+}
+
+<style>
+
+    .progress-report-page {
+        padding: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .report-header {
+        background: #001B44;
+        color: white;
+        border-radius: 16px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .report-header-left h1 {
+        margin: 0 0 8px 0;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .report-header-left p {
+        margin: 0;
+        opacity: 0.85;
+        font-size: 14px;
+    }
+
+    .report-status {
+        background: #FDB913;
+        color: #001B44;
+        padding: 9px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .report-section {
+        background: #ffffff;
+        border: 1px solid #e5e9ef;
+        border-radius: 16px;
+        padding: 26px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #001B44;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+        .section-title i {
+            color: #FDB913;
+        }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px 30px;
+    }
+
+    .info-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .info-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #687386;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 15px;
+        color: #202936;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .research-title {
+        font-size: 17px;
+        font-weight: 600;
+        color: #001B44;
+        line-height: 1.6;
+    }
+
+    .assessment {
+        border-left: 5px solid #FDB913;
+        background: #fffaf0;
+        border-radius: 10px;
+        padding: 18px 20px;
+    }
+
+    .assessment-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: #687386;
+        margin-bottom: 6px;
+    }
+
+    .assessment-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #001B44;
+    }
+
+    .text-content {
+        color: #394454;
+        font-size: 15px;
+        line-height: 1.7;
+        white-space: pre-line;
+    }
+
+    .report-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 20px;
+        background: #001B44;
+        color: white !important;
+        text-decoration: none !important;
+        border-radius: 9px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+        .back-button:hover {
+            background: #002b69;
+            color: white !important;
+        }
+
+    @@media (max-width: 768px) {
+
+        .progress-report-page {
+            padding: 18px;
+        }
+
+        .report-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="progress-report-page">
+
+    <!-- HEADER -->
+
+    <div class="report-header">
+
+        <div class="report-header-left">
+
+            <h1>
+                <i class="fa-solid fa-file-lines"></i>
+                Progress Report
+            </h1>
+
+            <p>
+                Supervisor-issued research progress report
+            </p>
+
+        </div>
+
+        <div class="report-status">
+            @Model.Status
+        </div>
+
+    </div>
+
+
+    <!-- STUDENT INFORMATION -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-user-graduate"></i>
+            Student Information
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-item">
+                <div class="info-label">
+                    Student
+                </div>
+
+                <div class="info-value">
+                    @studentName
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">
+                    Student Number
+                </div>
+
+                <div class="info-value">
+                    @studentNumber
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">
+                    Qualification
+                </div>
+
+                <div class="info-value">
+                    @qualification
+                </div>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label">
+                    Study Type
+                </div>
+
+                <div class="info-value">
+                    @studyType
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RESEARCH INFORMATION -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-book-open"></i>
+            Research Information
+        </div>
+
+        <div class="info-item">
+
+            <div class="info-label">
+                Research Title
+            </div>
+
+            <div class="research-title">
+                @researchTitle
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REPORT INFORMATION -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-calendar-days"></i>
+            Report Information
+        </div>
+
+        <div class="info-grid">
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Report Number
+                </div>
+
+                <div class="info-value">
+                    @Model.ReportNumber
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Report Date
+                </div>
+
+                <div class="info-value">
+                    @reportDate
+                </div>
+
+            </div>
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Reporting Period
+                </div>
+
+                <div class="info-value">
+                    @Model.ReportingPeriod
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS ASSESSMENT -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-chart-line"></i>
+            Progress Assessment
+        </div>
+
+        <div class="assessment">
+
+            <div class="assessment-label">
+                Current Assessment
+            </div>
+
+            <div class="assessment-value">
+                @Model.ProgressStatus
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS SUMMARY -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-align-left"></i>
+            Progress Summary
+        </div>
+
+        <div class="text-content">
+            @Model.Summary
+        </div>
+
+    </div>
+
+
+    <!-- CURRENT PROGRESS -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-spinner"></i>
+            Current Progress
+        </div>
+
+        <div class="text-content">
+            @Model.CurrentProgress
+        </div>
+
+    </div>
+
+
+    <!-- CHALLENGES -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Challenges
+        </div>
+
+        <div class="text-content">
+            @Model.Challenges
+        </div>
+
+    </div>
+
+
+    <!-- SUPERVISOR COMMENTS -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-comment"></i>
+            Supervisor Comments
+        </div>
+
+        <div class="text-content">
+            @Model.SupervisorComments
+        </div>
+
+    </div>
+
+
+    <!-- NEXT STEPS -->
+
+    <div class="report-section">
+
+        <div class="section-title">
+            <i class="fa-solid fa-arrow-right"></i>
+            Next Steps
+        </div>
+
+        <div class="text-content">
+            @Model.NextSteps
+        </div>
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <div class="report-footer">
+
+        <a href="@Url.Action("AssignedStudents", "Supervisors")"
+           class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Assigned Students
+
+        </a>
+
+    </div>
+
+</div>
+

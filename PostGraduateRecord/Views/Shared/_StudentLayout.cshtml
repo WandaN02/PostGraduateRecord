@@ -2,56 +2,272 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - SPGS Record System</title>
+    <title>@ViewBag.Title - Record System</title>
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/Student.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+
+    @{
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+
+        bool isDashboard =
+            currentController == "Student" &&
+            currentAction == "Dashboard";
+
+        bool isApplication =
+            currentController == "Student" &&
+            (
+                currentAction == "NewApplication" ||
+                currentAction == "ApplicationForm"
+            );
+
+        bool isProposal =
+            currentController == "Student" &&
+            (
+                currentAction == "Proposal" ||
+                currentAction == "NewProposal" ||
+                currentAction == "ProposalDetails" ||
+                currentAction == "EditProposal"
+            );
+
+        bool isEthics =
+            currentController == "Student" &&
+            (
+                currentAction == "Ethics" ||
+                currentAction == "EthicsApplication" ||
+                currentAction == "EditEthicsApplication"
+            );
+
+        bool isSubmission =
+            currentController == "Student" &&
+            (
+                currentAction == "Submissions" ||
+                currentAction == "NewSubmission"
+            );
+
+        bool isProgressReports =
+            currentController == "Student" &&
+            currentAction == "ProgressReports";
+    }
+
+    <style>
+
+            /* =========================================
+           STUDENT POPUP NOTIFICATIONS
+        ========================================== */
+
+            #studentPopup {
+                position: fixed !important;
+                top: 25px !important;
+                right: 25px !important;
+                min-width: 320px !important;
+                max-width: 450px !important;
+                padding: 16px 20px !important;
+                border-radius: 8px !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 12px !important;
+                z-index: 99999 !important;
+                font-size: 14px !important;
+                font-weight: 600 !important;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25) !important;
+                animation: studentPopupSlideIn 0.3s ease;
+            }
+
+
+                /* SUCCESS */
+
+                #studentPopup.success {
+                    background: #001B44 !important;
+                    color: #ffffff !important;
+                }
+
+
+                    #studentPopup.success i {
+                        color: #FDB913 !important;
+                        font-size: 21px !important;
+                    }
+
+
+                /* ERROR */
+
+                #studentPopup.error {
+                    background: #8B0000 !important;
+                    color: #ffffff !important;
+                }
+
+
+                    #studentPopup.error i {
+                        color: #FDB913 !important;
+                        font-size: 21px !important;
+                    }
+
+
+                /* HIDE ANIMATION */
+
+                #studentPopup.hide {
+                    animation: studentPopupSlideOut 0.3s ease forwards;
+                }
+
+
+            /* SLIDE IN */
+
+            @@keyframes studentPopupSlideIn {
+
+                from {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+
+            /* SLIDE OUT */
+
+            @@keyframes studentPopupSlideOut {
+
+                from {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+
+                to {
+                    opacity: 0;
+                    transform: translateX(100px);
+                }
+            }
+    </style>
 </head>
+
 <body>
 
     <div class="wrapper">
 
-        <!-- Sidebar -->
+        <!-- ================= SIDEBAR ================= -->
         <div class="sidebar">
 
             <h2>SPGS</h2>
 
             <ul>
 
+                <!-- DASHBOARD -->
                 <li>
-                    <a href="@Url.Action("Dashboard","Student")">
-                        <i class="fa-solid fa-house"></i> Dashboard
+                    <a href="@Url.Action("Dashboard", "Student")"
+                       class="@(isDashboard ? "active" : "")">
+
+                        <i class="fa-solid fa-house"></i>
+                        Dashboard
+
                     </a>
                 </li>
 
+
+                <!-- NEW APPLICATION -->
                 <li>
-                    <a href="@Url.Action("Create","Proposal")">
-                        <i class="fa-solid fa-file-lines"></i> Proposal
+                    <a href="@Url.Action("NewApplication", "Student")"
+                       class="@(isApplication ? "active" : "")">
+
+                        <i class="fa-solid fa-square-plus"></i>
+                        New Application
+
                     </a>
                 </li>
 
-                <li>
-                    <a href="@Url.Action("Ethics","Student")">
-                        <i class="fa-solid fa-scale-balanced"></i> Ethics
-                    </a>
-                </li>
 
-                <li>
-                    <a href="@Url.Action("NewApplication","Student")">
-                        <i class="fa-solid fa-square-plus"></i> New Application
-                    </a>
-                </li>
+                @{
+                    int currentUserId = Convert.ToInt32(Session["UserID"]);
 
-                <li>
-                    <a href="@Url.Action("Submissions","Student")">
-                        <i class="fa-solid fa-upload"></i> Submission
-                    </a>
-                </li>
+                    var db = new PostGraduateRecord.Models.PostGradEntities();
 
+                    var student = db.Students
+                        .FirstOrDefault(s => s.UserID == currentUserId);
+
+                    var application = student != null
+                        ? db.Applications
+                            .Where(a => a.StudentID == student.StudentID)
+                            .OrderByDescending(a => a.SubmittedDate)
+                            .FirstOrDefault()
+                        : null;
+
+                    bool applicationApproved =
+                        application != null &&
+                        application.Status == "Approved";
+
+                    bool proposalApproved = false;
+
+                    if (student != null)
+                    {
+                        proposalApproved = db.Proposals
+                            .Any(p =>
+                                p.StudentID == student.StudentID &&
+                                p.Status == "Approved");
+                    }
+                }
+
+
+                @if (applicationApproved)
+                {
+
+                    <!-- PROPOSAL -->
+                    <li>
+                        <a href="@Url.Action("Proposal", "Student")"
+                           class="@(isProposal ? "active" : "")">
+
+                            <i class="fa-solid fa-file-lines"></i>
+                            Proposal
+
+                        </a>
+                    </li>
+
+
+                    <!-- ETHICS -->
+                    if (proposalApproved)
+                    {
+                        <li>
+                            <a href="@Url.Action("Ethics", "Student")"
+                               class="@(isEthics ? "active" : "")">
+
+                                <i class="fa-solid fa-scale-balanced"></i>
+                                Ethics
+
+                            </a>
+                        </li>
+                    }
+
+
+                    <!-- SUBMISSION -->
+                    <li>
+                        <a href="@Url.Action("FinalDissertation", "Student")">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                            <span>Final Dissertation</span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="@Url.Action("ProgressReports", "Student")"
+                           class="@(isProgressReports ? "active" : "")">
+                            <i class="fa-solid fa-chart-line"></i>
+                            Progress Reports
+                        </a>
+                    </li>
+
+                }
+
+
+                <!-- LOGOUT -->
                 <li>
-                    <a href="@Url.Action("Logout","Account")">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    <a href="@Url.Action("Logout", "Account")">
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+
                     </a>
                 </li>
 
@@ -59,49 +275,93 @@
 
         </div>
 
-        <!-- Main -->
-        <div class="main">
 
-            <!-- Topbar -->
+        <!-- ================= MAIN ================= -->
+        <div class="main" style="min-width: 0; width: 100%;">
+
+            <!-- ================= TOPBAR ================= -->
             <div class="topbar">
 
-                <h3>🎓 SPGS Record Management System</h3>
+                <h3>🎓 Student Portal</h3>
 
                 <div style="display:flex;align-items:center;gap:25px;">
 
-                    <!-- Notifications -->
+                    <!-- ================= NOTIFICATIONS ================= -->
                     <div class="notification-container">
 
-                        <div class="notification-icon" onclick="toggleNotifications()">
+                        <div class="notification-icon"
+                             onclick="toggleNotifications()">
 
                             <i class="fa-solid fa-bell"></i>
 
                             <span class="notification-badge">
-                                3
+                                @(ViewBag.NotificationCount ?? 0)
                             </span>
 
                         </div>
 
-                        <div class="notification-panel" id="notificationPanel">
+
+                        <div class="notification-panel"
+                             id="notificationPanel">
 
                             <h5>Notifications</h5>
 
                             <hr />
 
-                            <p>No new notifications.</p>
+                            @if (ViewBag.Notifications != null)
+                            {
+                                foreach (var notification in ViewBag.Notifications)
+                                {
+                                    <a href="@Url.Action(
+                                        "OpenNotification",
+                                        "Student",
+                                        new { id = notification.NotificationID })"
+                                       class="notification-item"
+                                       style="display:block;
+                                              text-decoration:none;
+                                              color:inherit;">
+
+                                        <p>
+                                            @notification.Message
+                                        </p>
+
+                                        <small>
+
+                                            @if (notification.SentDate != null)
+                                            {
+                                                @notification.SentDate.ToString(
+                                                    "dd MMM yyyy HH:mm")
+                                            }
+
+                                        </small>
+
+                                    </a>
+
+                                    <hr />
+                                }
+                            }
 
                         </div>
 
                     </div>
 
-                    <!-- User -->
+
+                    <!-- ================= USER ================= -->
                     <div class="user-area">
-                        <a href="@Url.Action("Index","Profile")"
-                           style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+
+                        <a href="@Url.Action("Index", "Profile")"
+                           style="display:flex;
+                                  align-items:center;
+                                  gap:10px;
+                                  text-decoration:none;
+                                  color:inherit;">
 
                             <i class="fa-solid fa-circle-user fa-2x"></i>
 
-                            <div style="display:flex;flex-direction:column;text-align:right;">
+
+                            <div style="display:flex;
+                                        flex-direction:column;
+                                        text-align:right;">
 
                                 <div class="student-name">
                                     @Session["StudentName"]
@@ -121,46 +381,90 @@
 
             </div>
 
-            <!-- Content -->
-            <div class="content">
+
+            <!-- ================= CONTENT ================= -->
+            <div class="content"
+                 style="min-width:0;
+            max-width:100%;
+            overflow-x:hidden;">
+
+                @if (TempData["Success"] != null)
+                {
+                    <div id="studentPopup"
+                         class="success">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+                            @TempData["Success"]
+                        </span>
+
+                    </div>
+                }
+
+
+                @if (TempData["Error"] != null)
+                {
+                    <div id="studentPopup"
+                         class="error">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                        <span>
+                            @TempData["Error"]
+                        </span>
+
+                    </div>
+                }
+
 
                 @RenderBody()
 
             </div>
-
         </div>
 
     </div>
 
+
+    <!-- ================= JAVASCRIPT ================= -->
     <script>
+                    function toggleNotifications() {
+                        var panel = document.getElementById("notificationPanel");
 
-        function toggleNotifications() {
+                        if (!panel) {
+                            return;
+                        }
 
-            var panel = document.getElementById("notificationPanel");
+                        if (panel.style.display === "block") {
+                            panel.style.display = "none";
+                        } else {
+                            panel.style.display = "block";
+                        }
+                    }
 
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
-            }
-            else {
-                panel.style.display = "block";
-            }
-        }
+                    window.addEventListener("click", function (event) {
+                        var target = event.target;
 
-        window.onclick = function (event) {
+                        if (!(target instanceof Element)) {
+                            return;
+                        }
 
-            if (!event.target.closest('.notification-container')) {
+                        var notificationContainer =
+                            target.closest(".notification-container");
 
-                var panel = document.getElementById("notificationPanel");
+                        if (notificationContainer) {
+                            return;
+                        }
 
-                if (panel) {
-                    panel.style.display = "none";
-                }
+                        var panel =
+                            document.getElementById("notificationPanel");
 
-            }
-
-        };
-
+                        if (panel) {
+                            panel.style.display = "none";
+                        }
+                    });
     </script>
-
+    <script src="~/Scripts/StudentNotificationPopup.js"></script>
 </body>
+
 </html>

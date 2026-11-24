@@ -1,0 +1,260 @@
+﻿@model PostGraduateRecord.Models.Proposal
+
+@{
+    ViewBag.Title = "Proposal Details";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-file-lines"></i>
+        Proposal Details
+    </h2>
+
+    <p>
+        View your submitted research proposal and evaluation results.
+    </p>
+
+</div>
+
+<div class="card-section">
+
+    <table class="table">
+
+        <tr>
+            <th>Research Title</th>
+            <td>@Model.Title</td>
+        </tr>
+
+        <tr>
+            <th>Research Field</th>
+            <td>@Model.ResearchField</td>
+        </tr>
+
+        <tr>
+            <th>Summary</th>
+            <td>@Model.Abstract</td>
+        </tr>
+
+        <tr>
+            <th>Keywords</th>
+            <td>@Model.Keywords</td>
+        </tr>
+
+        <tr>
+            <th>Submission Date</th>
+            <td>
+                @(Model.SubmissionDate.HasValue
+                    ? Model.SubmissionDate.Value.ToString("dd MMM yyyy HH:mm")
+                    : "N/A")
+            </td>
+        </tr>
+
+
+        <!-- ========================= -->
+        <!-- STATUS -->
+        <!-- ========================= -->
+
+        <tr>
+            <th>Status</th>
+
+            <td>
+
+                @if (Model.Status == "Pending")
+                {
+                    <span class="badge bg-warning text-dark">
+                        @Model.Status
+                    </span>
+                }
+                else if (Model.Status == "Approved")
+                {
+                    <span class="badge bg-success">
+                        @Model.Status
+                    </span>
+                }
+                else if (Model.Status == "Rejected")
+                {
+                    <span class="badge bg-danger">
+                        @Model.Status
+                    </span>
+                }
+                else if (Model.Status == "Revision Required")
+                {
+                    <span class="badge bg-warning text-dark">
+                        @Model.Status
+                    </span>
+                }
+                else if (Model.Status == "Approved for Evaluation")
+                {
+                    <span class="badge bg-info text-dark">
+                        @Model.Status
+                    </span>
+                }
+                else if (Model.Status == "Under Evaluation")
+                {
+                    <span class="badge bg-primary">
+                        @Model.Status
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">
+                        @Model.Status
+                    </span>
+                }
+
+            </td>
+        </tr>
+
+
+        <!-- ========================= -->
+        <!-- PROPOSAL DOCUMENT -->
+        <!-- ========================= -->
+
+        <tr>
+            <th>Proposal Document</th>
+
+            <td>
+
+                @if (!string.IsNullOrEmpty(Model.DocumentPath))
+                {
+                    <a href="@Url.Action(
+                        "DownloadProposal",
+                        "Student",
+                        new { id = Model.ProposalID })"
+                       class="btn btn-warning">
+
+                        <i class="fa-solid fa-download"></i>
+                        Download Proposal
+
+                    </a>
+                }
+                else
+                {
+                    <span>No document uploaded.</span>
+                }
+
+            </td>
+        </tr>
+
+
+        <!-- ========================= -->
+        <!-- SUPERVISOR FEEDBACK -->
+        <!-- ========================= -->
+
+        <tr>
+            <th>Supervisor Feedback</th>
+
+            <td>
+
+                @if (ViewBag.Feedback != null)
+                {
+                    <strong>Decision:</strong>
+                    <span>
+                        @ViewBag.Feedback.Decision
+                    </span>
+
+                    <br />
+                    <br />
+
+                    <strong>Comments:</strong>
+
+                    <p>
+                        @ViewBag.Feedback.Comments
+                    </p>
+
+                    <small class="text-muted">
+                        <i class="fa-solid fa-calendar"></i>
+
+                        @ViewBag.Feedback.FeedbackDate.ToString(
+                            "dd MMM yyyy HH:mm")
+                    </small>
+                }
+                else
+                {
+                    <span class="text-muted">
+                        No supervisor feedback has been provided yet.
+                    </span>
+                }
+
+            </td>
+        </tr>
+
+
+        <!-- ========================= -->
+        <!-- EVALUATOR EVALUATION -->
+        <!-- ========================= -->
+
+        <tr>
+            <th>Evaluator Evaluation</th>
+
+            <td>
+
+                @if (ViewBag.Evaluation == null)
+                {
+                    <span class="text-muted">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        Awaiting evaluator review.
+
+                    </span>
+                }
+                else
+                {
+                    <strong>Score:</strong>
+
+                    <span>
+                        @ViewBag.Evaluation.Score / 100
+                    </span>
+
+                    <br />
+                    <br />
+
+                    <strong>Recommendation:</strong>
+
+                    <span>
+                        @ViewBag.Evaluation.Recommendation
+                    </span>
+
+                    <br />
+                    <br />
+
+                    <strong>Evaluator Comments:</strong>
+
+                    <p>
+                        @ViewBag.Evaluation.Comments
+                    </p>
+
+                    <small class="text-muted">
+
+                        <i class="fa-solid fa-calendar"></i>
+
+                        Evaluated on:
+
+                        @(ViewBag.Evaluation != null && ViewBag.Evaluation.EvaluationDate != null
+                            ? ViewBag.Evaluation.EvaluationDate.ToString("dd MMM yyyy HH:mm")
+                            : "Not available")
+
+                    </small>
+                }
+
+            </td>
+        </tr>
+
+    </table>
+
+
+    <br />
+
+    <a href="@Url.Action("Proposal", "Student")"
+       class="btn btn-secondary">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back
+
+    </a>
+
+</div>

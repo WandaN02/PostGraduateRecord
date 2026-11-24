@@ -20,11 +20,11 @@ namespace PostGraduateRecord.Models
             this.EthicsApplications = new HashSet<EthicsApplication>();
             this.Evaluations = new HashSet<Evaluation>();
             this.Feedbacks = new HashSet<Feedback>();
-            this.ProgressReports = new HashSet<ProgressReport>();
             this.ProposalDocuments = new HashSet<ProposalDocument>();
-            this.SupervisorAssignments = new HashSet<SupervisorAssignment>();
             this.ProposalStatusHistories = new HashSet<ProposalStatusHistory>();
             this.StudentMilestones = new HashSet<StudentMilestone>();
+            this.EvaluatorAssignments = new HashSet<EvaluatorAssignment>();
+            this.ProgressReports = new HashSet<ProgressReport>();
         }
     
         public int ProposalID { get; set; }
@@ -36,6 +36,8 @@ namespace PostGraduateRecord.Models
         public string Keywords { get; set; }
         public Nullable<System.DateTime> SubmissionDate { get; set; }
         public string Status { get; set; }
+        public string DocumentPath { get; set; }
+        public Nullable<System.DateTime> ReviewDeadline { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EthicsApplication> EthicsApplications { get; set; }
@@ -44,16 +46,16 @@ namespace PostGraduateRecord.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProposalDocument> ProposalDocuments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SupervisorAssignment> SupervisorAssignments { get; set; }
         public virtual Student Student { get; set; }
         public virtual SubmissionPeriod SubmissionPeriod { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProposalStatusHistory> ProposalStatusHistories { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StudentMilestone> StudentMilestones { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EvaluatorAssignment> EvaluatorAssignments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProgressReport> ProgressReports { get; set; }
     }
 }

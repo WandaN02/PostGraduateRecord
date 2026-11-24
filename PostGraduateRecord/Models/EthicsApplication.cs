@@ -19,7 +19,21 @@ namespace PostGraduateRecord.Models
         public string Status { get; set; }
         public Nullable<System.DateTime> ApprovalDate { get; set; }
         public string Comments { get; set; }
+        public Nullable<int> StudentID { get; set; }
+        public string ResearchTitle { get; set; }
+        public string ResearchMethodology { get; set; }
+        public string ParticipantInformation { get; set; }
+        public string DocumentPath { get; set; }
+        public Nullable<System.DateTime> SubmissionDate { get; set; }
+        public Nullable<System.DateTime> ReviewDeadline { get; set; }
+        public string ProjectTitle { get; set; }
+        public string RiskLevel { get; set; }
+        public string DataCollectionMethods { get; set; }
+        public string ConsentProcess { get; set; }
+        public string PrivacyDataProtectionMeasures { get; set; }
+        public string ReferenceNumber { get; set; }
     
         public virtual Proposal Proposal { get; set; }
+        public virtual Student Student { get; set; }
     }
 }

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Notification>
+
+@if (Model != null && Model.Any())
+{
+    foreach (var notification in Model)
+    {
+        <div class="notification-dropdown-item
+             @(notification.IsRead == true ? "read" : "unread")">
+
+            <div class="notification-dropdown-icon">
+
+                <i class="fa-solid fa-bell"></i>
+
+            </div>
+
+
+            <div class="notification-dropdown-content">
+
+                <p>
+                    @notification.Message
+                </p>
+
+                <small>
+
+                    @(notification.SentDate.HasValue
+                        ? notification.SentDate.Value.ToString("dd MMM yyyy HH:mm")
+                        : "Date not available")
+
+                </small>
+
+            </div>
+
+        </div>
+    }
+}
+else
+{
+    <div class="no-dropdown-notifications">
+
+        <i class="fa-solid fa-bell-slash"></i>
+
+        <p>
+            No new notifications
+        </p>
+
+    </div>
+}
+
+
+<div class="notification-dropdown-footer">
+
+    <a href="@Url.Action("Notifications", "Admin")">
+
+        View All Notifications
+
+    </a>
+
+</div>

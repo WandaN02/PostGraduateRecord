@@ -1,0 +1,121 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Application>
+
+@{
+    ViewBag.Title = "Pending Applications";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="dashboard-header">
+
+    <h2>Pending Applications</h2>
+
+    <p>
+        Review postgraduate applications that are waiting for approval.
+    </p>
+
+</div>
+
+<hr />
+
+<h3>Applications Awaiting Approval</h3>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Student Number</th>
+
+            <th>Student Name</th>
+
+            <th>Submission Date</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var application in Model)
+            {
+                <tr>
+
+                    <td>
+                        @application.Student.User.StudentNumber
+                    </td>
+
+                    <td>
+                        @application.Student.User.FirstName
+                        @application.Student.User.LastName
+                    </td>
+
+                    <td>
+                        @application.SubmittedDate.ToString("dd MMM yyyy")
+                    </td>
+
+                    <td>
+                        @application.Status
+                    </td>
+
+                    <td>
+
+                        <form @*action="@Url.Action("ApproveApplication", "Admin")"
+                              method="post"*@>
+                            <a href="@Url.Action(
+         "ReviewApplication",
+         "Admin",
+         new { id = application.ApplicationID })"
+                               class="application-action review-action">
+
+                                <i class="fa-solid fa-eye"></i>
+                                Review
+
+                            </a>
+
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@application.ApplicationID" />
+
+
+
+                        </form>
+
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+
+                <td colspan="5" class="text-center">
+
+                    There are no pending applications.
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>
+

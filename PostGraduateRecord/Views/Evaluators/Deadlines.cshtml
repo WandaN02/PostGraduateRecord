@@ -1,0 +1,346 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Evaluation>
+
+@{
+    ViewBag.Title = "Upcoming Deadlines";
+    Layout = "~/Views/Shared/_EvaluatorLayout.cshtml";
+}
+
+<link href="~/Content/Supervisor.css" rel="stylesheet" />
+
+
+<div class="evaluator-dashboard">
+
+
+    <!-- =========================================================
+         PAGE HEADER
+         ========================================================= -->
+
+    <div class="dashboard-header">
+
+        <div>
+
+            <h2>
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+                Upcoming Deadlines
+
+            </h2>
+
+            <p>
+
+                Review the evaluation deadlines for proposals
+                assigned to you.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         DEADLINES
+         ========================================================= -->
+
+    @if (Model == null || !Model.Any())
+    {
+        <!-- =====================================================
+             EMPTY STATE
+             ===================================================== -->
+
+        <div class="dashboard-section">
+
+            <div class="empty-dashboard">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                <h4>
+
+                    No Upcoming Deadlines
+
+                </h4>
+
+                <p>
+
+                    You currently have no pending evaluation deadlines.
+
+                </p>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- =====================================================
+             DEADLINE SECTION
+             ===================================================== -->
+
+        <div class="dashboard-section">
+
+
+            <!-- SECTION HEADER -->
+
+            <div class="section-header">
+
+                <div>
+
+                    <h3>
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        Evaluation Deadlines
+
+                    </h3>
+
+                    <p>
+
+                        Complete these evaluations before their deadlines.
+
+                    </p>
+
+                </div>
+
+
+                <!-- VIEW PROPOSALS -->
+
+                <a href="@Url.Action("Proposals", "Evaluators")">
+
+                    View Proposals
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 EVALUATION LIST
+                 ================================================= -->
+
+            <div class="evaluation-list">
+
+                @foreach (var evaluation in Model)
+                {
+                    var daysRemaining =
+                        (evaluation.Deadline.Value.Date -
+                         DateTime.Now.Date).Days;
+
+
+                    <div class="evaluation-item">
+
+
+                        <!-- ICON -->
+
+                        <div class="evaluation-icon">
+
+                            <i class="fa-solid fa-file-lines"></i>
+
+                        </div>
+
+
+                        <!-- INFORMATION -->
+
+                        <div class="evaluation-info">
+
+                            <h4>
+
+                                @(evaluation.Proposal != null
+                                    ? evaluation.Proposal.Title
+                                    : "Research Proposal")
+
+                            </h4>
+
+
+                            <!-- STUDENT -->
+
+                            @if (evaluation.Proposal != null &&
+                                 evaluation.Proposal.Student != null &&
+                                 evaluation.Proposal.Student.User != null)
+                            {
+                                <p>
+
+                                    Student:
+
+                                    @evaluation.Proposal.Student.User.FirstName
+                                    @evaluation.Proposal.Student.User.LastName
+
+                                </p>
+                            }
+
+
+                            <!-- DEADLINE -->
+
+                            <p>
+
+                                <i class="fa-solid fa-calendar"></i>
+
+                                Deadline:
+
+                                <strong>
+
+                                    @evaluation.Deadline.Value.ToString(
+                                        "dd MMM yyyy")
+
+                                </strong>
+
+                            </p>
+
+
+                            <!-- DAYS REMAINING -->
+
+                            @if (daysRemaining == 0)
+                            {
+                                <span class="recommendation">
+
+                                    Due Today
+
+                                </span>
+                            }
+                            else if (daysRemaining == 1)
+                            {
+                                <span class="recommendation">
+
+                                    1 Day Remaining
+
+                                </span>
+                            }
+                            else if (daysRemaining < 0)
+                            {
+                                <span class="recommendation">
+
+                                    Overdue
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="recommendation">
+
+                                    @daysRemaining Days Remaining
+
+                                </span>
+                            }
+
+                        </div>
+
+
+                        <!-- REVIEW BUTTON -->
+
+                        <div class="evaluation-action">
+
+                            <a href="@Url.Action(
+                                "Review",
+                                "Evaluators",
+                                new
+                                {
+                                    id = evaluation.EvaluationID
+                                })"
+                               class="btn-review">
+
+                                <i class="fa-solid fa-clipboard-check"></i>
+
+                                Review
+
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    }
+
+
+    <!-- =========================================================
+         BACK TO DASHBOARD
+         ========================================================= -->
+
+    <div class="evaluator-deadline-back-container">
+
+        <a href="@Url.Action("Dashboard", "Evaluators")"
+           class="evaluator-deadline-back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<!-- =============================================================
+     PAGE-SPECIFIC STYLING
+     ============================================================= -->
+
+<style>
+
+    /* =========================================================
+       BACK BUTTON CONTAINER
+       ========================================================= */
+
+    .evaluator-deadline-back-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+
+    /* =========================================================
+       BACK BUTTON
+       ========================================================= */
+
+    .evaluator-deadline-back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: #002147;
+        color: #ffffff;
+        border: 1px solid #002147;
+        border-radius: 6px;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+
+        /* =========================================================
+       HOVER
+       ========================================================= */
+
+        .evaluator-deadline-back-button:hover {
+            background: #FDB913;
+            color: #002147;
+            border-color: #FDB913;
+            text-decoration: none !important;
+        }
+
+
+        /* =========================================================
+       ICON
+       ========================================================= */
+
+        .evaluator-deadline-back-button i {
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+
+        .evaluator-deadline-back-button:hover i {
+            transform: translateX(-3px);
+        }
+</style>

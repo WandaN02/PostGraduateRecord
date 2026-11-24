@@ -1,93 +1,327 @@
-﻿
+﻿@model IEnumerable<PostGraduateRecord.ViewModels.SubmissionHistoryViewModel>
+
 @{
     ViewBag.Title = "Submissions";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
+<!-- ========================= -->
+<!-- SUCCESS / ERROR MESSAGES -->
+<!-- ========================= -->
 
-<div class="page-header">
+@if (TempData["Success"] != null)
+{
+    <div class="submission-alert success">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>@TempData["Success"]</span>
+    </div>
+}
 
-    <h2>
-        <i class="fa-solid fa-upload"></i>
-        Research Submissions
-    </h2>
+@if (TempData["Error"] != null)
+{
+    <div class="submission-alert error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>@TempData["Error"]</span>
+    </div>
+}
 
-    <p>
-        View your submitted research documents and upload new submissions.
-    </p>
+
+<!-- ========================= -->
+<!-- PAGE HEADER -->
+<!-- ========================= -->
+
+<div class="page-header submission-page-header">
+
+    <div class="submission-title-icon">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+    </div>
+
+    <div>
+        <h2>
+            Research Submissions
+        </h2>
+
+        <p>
+            View your submitted research documents.
+        </p>
+    </div>
 
 </div>
 
 
+<!-- ========================= -->
+<!-- SUBMISSION CARD -->
+<!-- ========================= -->
 
-<div class="card-section">
+<div class="submission-card">
+
+    <!-- Card Header -->
+    <div class="submission-card-header">
+
+        <div class="submission-history-title">
+
+            <div class="history-icon">
+                <i class="fa-solid fa-clipboard-list"></i>
+            </div>
+
+            <div>
+                <h3>Submission History</h3>
+
+                <p>
+                    Track the documents you have submitted and their current status.
+                </p>
+            </div>
+
+        </div>
 
 
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-
-        <h3>
-            Submission History
-        </h3>
-
-
-        <a href="@Url.Action("NewSubmission","Student")"
-           class="btn btn-warning">
+        <!-- New Submission -->
+        <a href="@Url.Action("NewSubmission", "Student")"
+           class="new-submission-btn">
 
             <i class="fa-solid fa-plus"></i>
             New Submission
 
         </a>
 
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- TABLE -->
+    <!-- ========================= -->
+
+    <div class="submission-table-wrapper">
+
+        <table class="submission-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Submission</th>
+
+                    <th>Date Submitted</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <!-- ========================= -->
+                            <!-- SUBMISSION -->
+                            <!-- ========================= -->
+
+                            <td>
+
+                                <div class="submission-name">
+
+                                    <div class="submission-document-icon">
+                                        <i class="fa-solid fa-file-lines"></i>
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            @item.SubmissionType
+                                        </strong>
+
+                                        <span>
+                                            Research Document
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- ========================= -->
+                            <!-- DATE -->
+                            <!-- ========================= -->
+
+                            <td>
+
+                                <div class="submission-date">
+
+                                    <i class="fa-regular fa-calendar"></i>
+
+                                    <span>
+                                        @(item.DateSubmitted.HasValue
+                                            ? item.DateSubmitted.Value.ToString("dd MMM yyyy")
+                                            : "N/A")
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- ========================= -->
+                            <!-- STATUS -->
+                            <!-- ========================= -->
+
+                            <td>
+
+                                @{
+                                    string statusClass = "submission-status-default";
+
+                                    if (!string.IsNullOrEmpty(item.Status))
+                                    {
+                                        if (item.Status.Equals("Approved",
+                                            StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            statusClass = "submission-status-approved";
+                                        }
+                                        else if (item.Status.Equals("Submitted",
+                                            StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            statusClass = "submission-status-submitted";
+                                        }
+                                        else if (item.Status.Equals("Pending",
+                                            StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            statusClass = "submission-status-pending";
+                                        }
+                                        else if (item.Status.Equals("Rejected",
+                                            StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            statusClass = "submission-status-rejected";
+                                        }
+                                    }
+                                }
+
+                                <span class="submission-status @statusClass">
+
+                                    @if (item.Status == "Approved")
+                                    {
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    }
+                                    else if (item.Status == "Submitted")
+                                    {
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    }
+                                    else if (item.Status == "Pending")
+                                    {
+                                        <i class="fa-solid fa-clock"></i>
+                                    }
+                                    else if (item.Status == "Rejected")
+                                    {
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    }
+
+                                    @item.Status
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ========================= -->
+                            <!-- ACTION -->
+                            <!-- ========================= -->
+
+                            <td>
+
+                                @if (!String.IsNullOrWhiteSpace(item.FilePath))
+                                {
+                                    <a href="@Url.Content(item.FilePath)"
+                                       target="_blank"
+                                       class="submission-view-btn">
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                        View
+
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="submission-no-document">
+
+                                        <i class="fa-regular fa-file"></i>
+
+                                        No document
+
+                                    </span>
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="4">
+
+                            <div class="no-submissions">
+
+                                <i class="fa-regular fa-folder-open"></i>
+
+                                <h4>No submissions available</h4>
+
+                                <p>
+                                    You have not submitted any research documents yet.
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
 
     </div>
 
 
+    <!-- ========================= -->
+    <!-- INFORMATION NOTE -->
+    <!-- ========================= -->
 
-    <br />
-    <table class="table">
+    <div class="submission-note">
 
-        <tr>
+        <i class="fa-solid fa-circle-info"></i>
 
-            <th>
-                Document
-            </th>
+        <div>
 
-            <th>
-                Type
-            </th>
+            <strong>Note:</strong>
 
-            <th>
-                Date Submitted
-            </th>
+            You can view documents that have been uploaded.
+            @*For items without documents, please submit your document.*@
 
-            <th>
-                Status
-            </th>
+        </div>
 
-            <th>
-                Feedback
-            </th>
-
-            <th>
-                Action
-            </th>
-
-        </tr>
-
-
-        <tr>
-
-            <td colspan="6">
-
-                No submissions available.
-
-            </td>
-
-        </tr>
-
-
-    </table>
-
+    </div>
 
 </div>
 
+
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
+
+<div class="submission-footer">
+
+    © @DateTime.Now.Year Record Management System. All rights reserved.
+
+</div>

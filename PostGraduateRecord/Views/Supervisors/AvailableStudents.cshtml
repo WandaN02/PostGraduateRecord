@@ -1,0 +1,656 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Application>
+
+@{
+    ViewBag.Title = "Available Students";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<div class="available-students-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+
+        <div class="page-title-section">
+
+            <div class="page-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+                <h2>Available Students</h2>
+
+                <p>
+                    Choose a postgraduate student you would like to supervise.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+    @if (Model != null && Model.Any())
+    {
+        <!-- STUDENT CARD -->
+        <div class="students-card">
+
+            <!-- CARD HEADER -->
+            <div class="students-card-header">
+
+                <div>
+
+                    <div class="card-title">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        <h3>Available Students</h3>
+
+                    </div>
+
+                    <p>
+                        Students approved by the administrator and available
+                        for supervisor selection.
+                    </p>
+
+                </div>
+
+                <div class="student-count">
+                    @Model.Count() Students
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+            <div class="students-table-wrapper">
+
+                <table class="students-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Student</th>
+
+                            <th>Research Title</th>
+
+                            <th>Degree</th>
+
+                            <th>Research Field</th>
+
+                            <th>Submitted Date</th>
+
+                            <th>Status</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (var application in Model)
+                        {
+                            <tr>
+
+                                <!-- STUDENT -->
+                                <td>
+
+                                    <div class="student-name">
+
+                                        <div class="student-avatar">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+
+                                        <div>
+
+                                            @if (application.Student != null &&
+                                                 application.Student.User != null)
+                                            {
+                                                <strong>
+                                                    @application.Student.User.FirstName
+                                                    @application.Student.User.LastName
+                                                </strong>
+                                            }
+                                            else
+                                            {
+                                                <strong>Unknown Student</strong>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- RESEARCH TITLE -->
+                                <td>
+
+                                    <span class="research-title">
+                                        @application.ResearchTitle
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DEGREE -->
+                                <td>
+                                    @application.DegreeType
+                                </td>
+
+
+                                <!-- RESEARCH FIELD -->
+                                <td>
+                                    @application.ResearchField
+                                </td>
+
+
+                                <!-- DATE -->
+                                <td>
+                                    @application.SubmittedDate.ToString("dd MMM yyyy")
+                                </td>
+
+
+                                <!-- STATUS -->
+                                <td>
+
+                                    <span class="status-badge approved">
+                                        <i class="fa-solid fa-check"></i>
+                                        Approved
+                                    </span>
+
+                                </td>
+
+
+                                <!-- ACTION -->
+                                <td>
+
+                                    @using (Html.BeginForm(
+                                        "ChooseStudent",
+                                        "Supervisors",
+                                        FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        @Html.Hidden(
+                                            "applicationId",
+                                            application.ApplicationID)
+
+                                        <button type="submit"
+                                                class="select-student-btn"
+                                                onclick="return confirm('Are you sure you want to choose this student?');">
+
+                                            <i class="fa-solid fa-user-check"></i>
+
+                                            Select
+
+                                        </button>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- EMPTY STATE -->
+        <div class="empty-students-card">
+
+            <div class="empty-icon">
+                <i class="fa-solid fa-user-group"></i>
+            </div>
+
+            <h3>No Students Available</h3>
+
+            <p>
+                There are currently no approved students available
+                for supervision.
+            </p>
+
+        </div>
+    }
+
+</div>
+
+
+<style>
+
+    /* ==============================
+       MAIN PAGE
+       ============================== */
+
+    .available-students-page {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 5px 0 40px 0;
+        color: #222;
+    }
+
+
+    /* ==============================
+       PAGE HEADER
+       ============================== */
+
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+
+    .page-title-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+
+    .page-icon {
+        width: 52px;
+        height: 52px;
+        background: #001B44;
+        color: #FDB913;
+        border-radius: 12px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+
+    .page-header h2 {
+        margin: 0 0 6px 0;
+        color: #001B44;
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+
+    .page-header p {
+        margin: 0;
+        color: #667085;
+        font-size: 15px;
+    }
+
+
+    /* ==============================
+       ALERTS
+       ============================== */
+
+    .student-alert {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        padding: 14px 18px;
+        border-radius: 8px;
+
+        margin-bottom: 20px;
+
+        font-size: 14px;
+    }
+
+
+    .success-alert {
+        background: #e8f7ee;
+        border: 1px solid #b8dfc7;
+        color: #176b39;
+    }
+
+
+    .error-alert {
+        background: #fdecec;
+        border: 1px solid #efb5b5;
+        color: #9b2222;
+    }
+
+
+    /* ==============================
+       STUDENT CARD
+       ============================== */
+
+    .students-card {
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+
+        overflow: hidden;
+    }
+
+
+    /* ==============================
+       CARD HEADER
+       ============================== */
+
+    .students-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 20px;
+
+        padding: 22px 25px;
+
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+
+    .card-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+
+    .card-title i {
+        color: #001B44;
+        font-size: 18px;
+    }
+
+
+    .card-title h3 {
+        margin: 0;
+        color: #001B44;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+
+    .students-card-header p {
+        margin: 6px 0 0 28px;
+        color: #777;
+        font-size: 13px;
+    }
+
+
+    .student-count {
+        background: #FDB913;
+        color: #001B44;
+
+        padding: 7px 13px;
+
+        border-radius: 20px;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+
+    /* ==============================
+       TABLE
+       ============================== */
+
+    .students-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+
+    .students-table {
+        width: 100%;
+        min-width: 1000px;
+
+        border-collapse: collapse;
+        background: #ffffff;
+    }
+
+
+    .students-table th {
+        background: #f1f4f8;
+        color: #334e68;
+
+        padding: 14px 16px;
+
+        text-align: left;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+
+        white-space: nowrap;
+
+        border-bottom: 1px solid #dfe4ea;
+    }
+
+
+    .students-table td {
+        padding: 16px;
+
+        border-bottom: 1px solid #eeeeee;
+
+        color: #444;
+
+        font-size: 14px;
+
+        background: #ffffff;
+
+        vertical-align: middle;
+    }
+
+
+    .students-table tbody tr:hover td {
+        background: #f8fafc;
+    }
+
+
+    .students-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+
+    /* ==============================
+       STUDENT NAME
+       ============================== */
+
+    .student-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        min-width: 170px;
+    }
+
+
+    .student-avatar {
+        width: 36px;
+        height: 36px;
+
+        background: #eaf0f8;
+        color: #001B44;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        flex-shrink: 0;
+    }
+
+
+    .student-name strong {
+        color: #1f2937;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+
+    /* ==============================
+       RESEARCH TITLE
+       ============================== */
+
+    .research-title {
+        color: #374151;
+        line-height: 1.4;
+        display: inline-block;
+        max-width: 260px;
+    }
+
+
+    /* ==============================
+       STATUS
+       ============================== */
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 6px 12px;
+
+        border-radius: 20px;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        white-space: nowrap;
+    }
+
+
+    .status-badge.approved {
+        background: #e8f7ee;
+        color: #176b39;
+    }
+
+
+    /* ==============================
+       SELECT BUTTON
+       ============================== */
+
+    .select-student-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+
+        border: none;
+
+        background: #001B44;
+        color: #ffffff;
+
+        padding: 9px 16px;
+
+        border-radius: 7px;
+
+        font-size: 13px;
+        font-weight: 600;
+
+        cursor: pointer;
+
+        white-space: nowrap;
+
+        transition: all 0.2s ease;
+    }
+
+
+    .select-student-btn:hover {
+        background: #FDB913;
+        color: #001B44;
+
+        transform: translateY(-1px);
+    }
+
+
+    /* ==============================
+       EMPTY STATE
+       ============================== */
+
+    .empty-students-card {
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+
+        border-radius: 12px;
+
+        padding: 60px 30px;
+
+        text-align: center;
+
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    }
+
+
+    .empty-icon {
+        width: 70px;
+        height: 70px;
+
+        margin: 0 auto 18px;
+
+        background: #eef2f7;
+        color: #001B44;
+
+        border-radius: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 27px;
+    }
+
+
+    .empty-students-card h3 {
+        margin: 0 0 10px;
+
+        color: #001B44;
+
+        font-size: 22px;
+    }
+
+
+    .empty-students-card p {
+        margin: 0;
+
+        color: #777;
+
+        font-size: 14px;
+    }
+
+
+    /* ==============================
+       RESPONSIVE
+       ============================== */
+
+    @@media (max-width: 768px) {
+
+        .available-students-page {
+            padding: 5px 10px 30px;
+        }
+
+
+        .page-header h2 {
+            font-size: 26px;
+        }
+
+
+        .students-card-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+    }
+
+</style>

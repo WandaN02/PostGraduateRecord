@@ -24,6 +24,7 @@ namespace PostGraduateRecord.Models
             this.StudentMilestones = new HashSet<StudentMilestone>();
             this.Students = new HashSet<Student>();
             this.Supervisors = new HashSet<Supervisor>();
+            this.UserSettings = new HashSet<UserSetting>();
         }
     
         public int UserID { get; set; }
@@ -51,5 +52,7 @@ namespace PostGraduateRecord.Models
         public virtual ICollection<Student> Students { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Supervisor> Supervisors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserSetting> UserSettings { get; set; }
     }
 }

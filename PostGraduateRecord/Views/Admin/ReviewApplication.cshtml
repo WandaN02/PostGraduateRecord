@@ -1,0 +1,430 @@
+﻿@model PostGraduateRecord.Models.Application
+
+@{
+    ViewBag.Title = "Review Application";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="review-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="review-page-header">
+
+        <div>
+
+            <h2>
+                <i class="fa-solid fa-file-circle-check"></i>
+                Review Application
+            </h2>
+
+            <p>
+                Review the student's application and make an administrative decision.
+            </p>
+
+        </div>
+
+        <a href="@Url.Action("Applications", "Admin")"
+           class="review-back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Applications
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         STUDENT INFORMATION
+    ====================================================== -->
+
+    <div class="review-card">
+
+        <div class="review-section">
+
+            <h3>
+                <i class="fa-solid fa-user-graduate"></i>
+                Student Information
+            </h3>
+
+            <div class="review-details-grid">
+
+                <div class="review-detail">
+
+                    <span>
+                        Name
+                    </span>
+
+                    <strong>
+                        @Model.Student.User.FirstName
+                        @Model.Student.User.LastName
+                    </strong>
+
+                </div>
+
+
+                <div class="review-detail">
+
+                    <span>
+                        Student Number
+                    </span>
+
+                    <strong>
+                        @Model.Student.User.StudentNumber
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RESEARCH DETAILS
+    ====================================================== -->
+
+    <div class="review-card">
+
+        <div class="review-section">
+
+            <h3>
+                <i class="fa-solid fa-book-open"></i>
+                Research Details
+            </h3>
+
+
+            <div class="review-details-grid">
+
+                <!-- RESEARCH TITLE -->
+
+                <div class="review-detail full-width">
+
+                    <span>
+                        Research Title
+                    </span>
+
+                    <div class="review-research-title">
+                        @Model.ResearchTitle
+                    </div>
+
+                </div>
+
+
+                <!-- DEGREE -->
+
+                <div class="review-detail">
+
+                    <span>
+                        Degree
+                    </span>
+
+                    <strong>
+                        @Model.DegreeType
+                    </strong>
+
+                </div>
+
+
+                <!-- RESEARCH FIELD -->
+
+                <div class="review-detail">
+
+                    <span>
+                        Research Field
+                    </span>
+
+                    <strong>
+                        @Model.ResearchField
+                    </strong>
+
+                </div>
+
+
+                <!-- SUBMITTED DATE -->
+
+                <div class="review-detail">
+
+                    <span>
+                        Submitted Date
+                    </span>
+
+                    <strong>
+                        @Model.SubmittedDate.ToString("dd MMM yyyy")
+                    </strong>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="review-detail">
+
+                    <span>
+                        Status
+                    </span>
+
+                    @if (Model.Status == "Approved")
+                    {
+                        <span class="review-status approved">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Approved
+                        </span>
+                    }
+                    else if (Model.Status == "Rejected")
+                    {
+                        <span class="review-status rejected">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            Rejected
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="review-status pending">
+                            <i class="fa-solid fa-clock"></i>
+                            @Model.Status
+                        </span>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             APPLICATION DOCUMENT
+        ================================================== -->
+
+        <div class="review-section">
+
+            <h3>
+                <i class="fa-solid fa-file-lines"></i>
+                Application Document
+            </h3>
+
+
+            @if (Model.ApplicationDocuments != null &&
+                 Model.ApplicationDocuments.Any())
+            {
+
+                foreach (var document in Model.ApplicationDocuments)
+                {
+
+                    <div class="review-document">
+
+                        <div class="review-document-info">
+
+                            <div class="review-document-icon">
+
+                                <i class="fa-solid fa-file-word"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    @document.FileName
+                                </strong>
+
+                                <span>
+                                    Supporting document submitted with this application
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="review-actions">
+
+                            <!-- VIEW DOCUMENT -->
+
+                            <a href="@Url.Action(
+                                    "ViewApplicationDocument",
+                                    "Admin",
+                                    new { id = Model.ApplicationID })"
+                               target="_blank"
+                               class="download-application-button">
+
+                                <i class="fa-solid fa-eye"></i>
+                                View Document
+
+                            </a>
+
+
+                            <!-- DOWNLOAD DOCUMENT -->
+
+                            <a href="@Url.Action(
+                                    "DownloadApplication",
+                                    "Admin",
+                                    new { id = Model.ApplicationID })"
+                               class="download-application-button">
+
+                                <i class="fa-solid fa-download"></i>
+                                Download
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                }
+
+            }
+            else
+            {
+
+                <div class="review-document">
+
+                    <div class="review-document-info">
+
+                        <div class="review-document-icon">
+
+                            <i class="fa-solid fa-file-circle-xmark"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                No document uploaded
+                            </strong>
+
+                            <span>
+                                The student did not submit a supporting document.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ADMIN DECISION
+    ====================================================== -->
+
+    <div class="review-card">
+
+        <div class="review-section">
+
+            <h3>
+                <i class="fa-solid fa-gavel"></i>
+                Admin Decision
+            </h3>
+
+
+            <div class="review-decision">
+
+                <p>
+                    Review the application and provide comments for the student.
+                </p>
+
+
+                @using (Html.BeginForm(
+                    "ApproveApplication",
+                    "Admin",
+                    FormMethod.Post))
+                {
+
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="id"
+                           value="@Model.ApplicationID" />
+
+
+                    <!-- COMMENTS -->
+
+                    <div class="review-detail full-width">
+
+                        <span>
+                            Admin Comments
+                        </span>
+
+                        <textarea name="adminComments"
+                                  rows="5"
+                                  style="width:100%;
+                                         margin-top:8px;
+                                         padding:12px;
+                                         border:1px solid #d1d5db;
+                                         border-radius:7px;
+                                         resize:vertical;
+                                         font-family:inherit;
+                                         font-size:14px;"
+                                  placeholder="Enter comments for the student...">@Model.AdminComments</textarea>
+
+                    </div>
+
+
+                    <!-- DECISION BUTTONS -->
+
+            <div class="review-actions"
+                 style="margin-top:18px;">
+
+
+                <!-- APPROVE -->
+
+                <button type="submit"
+                        formaction="@Url.Action("ApproveApplication", "Admin")"
+                        class="approve-application-button">
+
+                    <i class="fa-solid fa-check"></i>
+                    Approve Application
+
+                </button>
+
+                <!-- REJECT -->
+
+                <button type="submit"
+                        formaction="@Url.Action(
+                                    "RejectApplication",
+                                    "Admin")"
+                        class="reject-application-button">
+
+                    <i class="fa-solid fa-xmark"></i>
+                    Reject Application
+
+                </button>
+
+
+                <!-- CANCEL -->
+
+                <a href="@Url.Action(
+                                    "Applications",
+                                    "Admin")"
+                   class="review-back-button">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Cancel
+
+                </a>
+
+            </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

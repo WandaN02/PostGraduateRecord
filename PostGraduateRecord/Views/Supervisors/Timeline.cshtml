@@ -1,0 +1,280 @@
+﻿@model IEnumerable<PostGraduateRecord.ViewModels.SupervisorTimelineViewModel>
+
+@{
+    ViewBag.Title = "Research Timeline";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<link href="~/Content/SupervisorTimeline.css" rel="stylesheet" />
+
+<div class="timeline-page">
+
+    <!-- =========================
+         PAGE HEADER
+    ========================== -->
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+                <i class="fa-solid fa-route"></i>
+                Research Timeline
+            </h2>
+
+            <p>
+                Monitor the postgraduate research progress of your assigned students.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         STUDENT FILTER
+    ========================== -->
+    @if (ViewBag.Students != null)
+    {
+        <div class="timeline-filters">
+
+            @*<span class="filter-label">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </span>*@
+
+
+            <!-- ALL STUDENTS -->
+            <a href="@Url.Action("Timeline", "Supervisors")"
+               class="timeline-filter @(ViewBag.SelectedStudentId == null ? "active" : "")">
+
+                <i class="fa-solid fa-users"></i>
+                All Students
+
+            </a>
+
+
+            @foreach (var student in ViewBag.Students)
+            {
+                var studentName = student.User != null
+                    ? student.User.FirstName + " " + student.User.LastName
+                    : "Unknown Student";
+
+                <a href="@Url.Action("Timeline", "Supervisors", new { studentId = student.StudentID })"
+                   class="timeline-filter @(ViewBag.SelectedStudentId == student.StudentID ? "active" : "")">
+
+                    <i class="fa-solid fa-user-graduate"></i>
+
+                    @studentName
+
+                </a>
+            }
+
+        </div>
+    }
+
+
+    <!-- =========================
+         TIMELINES
+    ========================== -->
+    @if (Model == null || !Model.Any())
+    {
+        <div class="timeline-empty">
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-calendar-xmark"></i>
+
+            </div>
+
+            <h3>
+                No research timelines available
+            </h3>
+
+            <p>
+                You currently have no assigned students with research activity.
+            </p>
+
+        </div>
+    }
+    else
+    {
+
+        foreach (var student in Model)
+        {
+
+            <!-- =========================
+                 STUDENT TIMELINE CARD
+            ========================== -->
+            <div class="student-timeline-card">
+
+                <!-- STUDENT HEADER -->
+                <div class="student-timeline-header">
+
+                    <div class="student-information">
+
+                        <div class="student-avatar">
+
+                            <i class="fa-solid fa-user-graduate"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                @student.StudentName
+                            </h3>
+
+                            <p>
+                                @student.ResearchTitle
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- RESEARCH PROGRESS -->
+                    <div class="student-progress">
+
+                        <div class="progress-text">
+
+                            <span>
+                                Research Progress
+                            </span>
+
+                            <strong>
+                                @student.ProgressPercentage%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+                                 style="width:@student.ProgressPercentage%;">
+                            </div>
+
+                        </div>
+
+                        <small>
+                            @student.CompletedStages of
+                            @student.TotalStages stages completed
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     RESEARCH TIMELINE
+                ========================== -->
+                <div class="research-timeline">
+
+                    @foreach (var stage in student.Stages)
+                    {
+                        string statusClass = "pending";
+
+                        if (stage.Status == "Completed" ||
+                            stage.Status == "Approved")
+                        {
+                            statusClass = "completed";
+                        }
+                        else if (stage.Status == "In Progress")
+                        {
+                            statusClass = "in-progress";
+                        }
+
+
+                        <div class="timeline-stage @statusClass"
+                             data-status="@stage.Status">
+
+                            <!-- TIMELINE MARKER -->
+                            <div class="timeline-marker">
+
+                                @if (statusClass == "completed")
+                                {
+                                    <i class="fa-solid fa-check"></i>
+                                }
+                                else if (statusClass == "in-progress")
+                                {
+                                    <i class="fa-solid fa-spinner"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-clock"></i>
+                                }
+
+                            </div>
+
+
+                            <!-- STAGE CONTENT -->
+                            <div class="timeline-stage-content">
+
+                                <div class="timeline-stage-header">
+
+                                    <div>
+
+                                        <h4>
+                                            @stage.StageName
+                                        </h4>
+
+                                        <p>
+                                            @stage.Description
+                                        </p>
+
+                                    </div>
+
+
+                                    <span class="timeline-status">
+                                        @stage.Status
+                                    </span>
+
+                                </div>
+
+
+                                <div class="timeline-stage-details">
+
+                                    @if (stage.Date.HasValue)
+                                    {
+                                        <div class="timeline-detail">
+
+                                            <i class="fa-solid fa-calendar"></i>
+
+                                            <span>
+                                                @stage.Date.Value.ToString("dd MMM yyyy")
+                                            </span>
+
+                                        </div>
+                                    }
+
+
+                                    @if (!string.IsNullOrWhiteSpace(stage.Comments))
+                                    {
+                                        <div class="timeline-detail">
+
+                                            <i class="fa-solid fa-comment"></i>
+
+                                            <span>
+                                                @stage.Comments
+                                            </span>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        }
+
+    }
+
+</div>

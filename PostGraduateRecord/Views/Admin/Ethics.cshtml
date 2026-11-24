@@ -1,0 +1,384 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.EthicsApplication>
+
+@{
+    ViewBag.Title = "Ethics Applications";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="page-header">
+
+    <div>
+
+        <h2>
+            <i class="fa-solid fa-scale-balanced"></i>
+            Ethics Applications
+        </h2>
+
+        <p>
+            Monitor postgraduate research ethics applications and their review status.
+        </p>
+
+    </div>
+
+</div>
+
+<br />
+
+<!-- ========================================= -->
+<!-- ETHICS SUMMARY -->
+<!-- ========================================= -->
+
+<div class="ethics-summary">
+
+    <!-- TOTAL -->
+
+    <div class="ethics-summary-item">
+
+        <span>
+            Total Applications
+        </span>
+
+        <strong>
+            @Model.Count()
+        </strong>
+
+    </div>
+
+
+    <!-- SUBMITTED -->
+
+    <div class="ethics-summary-item">
+
+        <span>
+            Submitted
+        </span>
+
+        <strong>
+            @Model.Count(e =>
+                e.Status == "Submitted")
+        </strong>
+
+    </div>
+
+
+    <!-- RESUBMISSION REQUIRED -->
+
+    <div class="ethics-summary-item">
+
+        <span>
+            Resubmission Required
+        </span>
+
+        <strong>
+            @Model.Count(e =>
+                e.Status == "Resubmission Required")
+        </strong>
+
+    </div>
+
+
+    <!-- APPROVED -->
+
+    <div class="ethics-summary-item">
+
+        <span>
+            Approved
+        </span>
+
+        <strong>
+            @Model.Count(e =>
+                e.Status == "Approved")
+        </strong>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================= -->
+<!-- ETHICS APPLICATIONS -->
+<!-- ========================================= -->
+
+<div class="dashboard-panel ethics-panel">
+
+    <div class="panel-header">
+
+        <div>
+
+            <h3>
+                <i class="fa-solid fa-file-shield"></i>
+                Ethics Applications
+            </h3>
+
+            <p>
+                View postgraduate research ethics applications and supervisor review outcomes.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+
+            <table class="table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Student
+                        </th>
+
+                        <th>
+                            Project Title
+                        </th>
+
+                        <th>
+                            Research Title
+                        </th>
+
+                        <th>
+                            Risk Level
+                        </th>
+
+                        <th>
+                            Submission Date
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Reference Number
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @foreach (var ethics in Model)
+                    {
+                        <tr>
+
+                            <!-- STUDENT -->
+
+                            <td>
+
+                                @if (ethics.Student != null &&
+                                    ethics.Student.User != null)
+                                {
+                                    <strong>
+                                        @ethics.Student.User.FirstName
+                                        @ethics.Student.User.LastName
+                                    </strong>
+                                }
+                                else
+                                {
+                                    <span>
+                                        N/A
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- PROJECT TITLE -->
+
+                            <td>
+
+                                @if (!string.IsNullOrWhiteSpace(
+                                    ethics.ProjectTitle))
+                                {
+                                    @ethics.ProjectTitle
+                                }
+                                else
+                                {
+                                    <span>
+                                        N/A
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- RESEARCH TITLE -->
+
+                            <td>
+
+                                @if (!string.IsNullOrWhiteSpace(
+                                    ethics.ResearchTitle))
+                                {
+                                    @ethics.ResearchTitle
+                                }
+                                else
+                                {
+                                    <span>
+                                        N/A
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- RISK LEVEL -->
+
+                            <td>
+
+                                @if (!string.IsNullOrWhiteSpace(
+                                    ethics.RiskLevel))
+                                {
+                                    @ethics.RiskLevel
+                                }
+                                else
+                                {
+                                    <span>
+                                        N/A
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- SUBMISSION DATE -->
+
+                            <td>
+
+                                @(ethics.SubmissionDate.HasValue
+                                    ? ethics.SubmissionDate.Value.ToString("dd MMM yyyy")
+                                    : "N/A")
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                @if (ethics.Status == "Approved")
+                                {
+                                    <span class="status-badge approved">
+                                        Approved
+                                    </span>
+                                }
+                                else if (
+                                    ethics.Status ==
+                                    "Resubmission Required")
+                                {
+                                    <span class="status-badge pending">
+                                        Resubmission Required
+                                    </span>
+                                }
+                                else if (
+                                    ethics.Status ==
+                                    "Submitted")
+                                {
+                                    <span class="status-badge pending">
+                                        Submitted
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge pending">
+                                        @ethics.Status
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- REFERENCE NUMBER -->
+
+                            <td>
+
+                                @if (!string.IsNullOrWhiteSpace(
+                                    ethics.ReferenceNumber))
+                                {
+                                    <strong>
+                                        @ethics.ReferenceNumber
+                                    </strong>
+                                }
+                                else
+                                {
+                                    <span>
+                                        —
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- VIEW -->
+
+                            <td>
+
+                                <a href="@Url.Action(
+                                    "ViewEthics",
+                                    "Admin",
+                                    new
+                                    {
+                                        id = ethics.EthicsID
+                                    })"
+                                   class="view-ethics-button">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-state">
+
+            <i class="fa-solid fa-scale-balanced"></i>
+
+            <h3>
+                No Ethics Applications
+            </h3>
+
+            <p>
+                There are currently no ethics applications in the system.
+            </p>
+
+        </div>
+    }
+
+</div>
+
+<br />
+
+<!-- ========================================= -->
+<!-- BACK TO DASHBOARD -->
+<!-- ========================================= -->
+
+<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>

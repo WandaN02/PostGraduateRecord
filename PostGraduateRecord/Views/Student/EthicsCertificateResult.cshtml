@@ -1,0 +1,942 @@
+﻿@model PostGraduateRecord.Models.EthicsApplication
+
+@{
+    ViewBag.Title = "Ethics Clearance Certificate";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<style>
+
+    /* ==========================================
+       PAGE
+    ========================================== */
+
+    .certificate-page {
+        padding: 35px 15px 50px;
+        background: #f4f6f9;
+        min-height: 100vh;
+    }
+
+
+    /* ==========================================
+       CERTIFICATE
+    ========================================== */
+
+    .certificate {
+        max-width: 950px;
+        margin: 0 auto;
+        background: #ffffff;
+        border: 8px solid #001B44;
+        padding: 10px;
+        box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+    }
+
+
+    .certificate-inner {
+        border: 3px solid #FDB913;
+        padding: 45px 55px;
+        position: relative;
+        overflow: hidden;
+    }
+
+
+    /* ==========================================
+       DECORATIVE CORNERS
+    ========================================== */
+
+    .corner {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border-color: #FDB913;
+        border-style: solid;
+    }
+
+    .corner-top-left {
+        top: 15px;
+        left: 15px;
+        border-width: 4px 0 0 4px;
+    }
+
+    .corner-top-right {
+        top: 15px;
+        right: 15px;
+        border-width: 4px 4px 0 0;
+    }
+
+    .corner-bottom-left {
+        bottom: 15px;
+        left: 15px;
+        border-width: 0 0 4px 4px;
+    }
+
+    .corner-bottom-right {
+        bottom: 15px;
+        right: 15px;
+        border-width: 0 4px 4px 0;
+    }
+
+
+    /* ==========================================
+       HEADER
+    ========================================== */
+
+    .certificate-top {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+
+    .certificate-logo {
+        width: 82px;
+        height: 82px;
+        margin: 0 auto 18px;
+        background: #001B44;
+        color: #FDB913;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        border: 5px solid #FDB913;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    }
+
+
+    .certificate-university {
+        color: #001B44;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+
+    .certificate-system {
+        color: #777;
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+    }
+
+
+    .certificate-title {
+        color: #001B44;
+        font-size: 34px;
+        font-weight: 800;
+        margin: 8px 0;
+        letter-spacing: 1px;
+    }
+
+
+    .certificate-subtitle {
+        color: #666;
+        font-size: 14px;
+        margin-top: 8px;
+    }
+
+
+    .gold-line {
+        width: 150px;
+        height: 4px;
+        background: #FDB913;
+        margin: 20px auto;
+        border-radius: 5px;
+    }
+
+
+    /* ==========================================
+       APPROVAL BADGE
+    ========================================== */
+
+    .approval-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        background: #001B44;
+        color: #ffffff;
+        padding: 11px 25px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: .4px;
+        margin-top: 8px;
+        box-shadow: 0 4px 10px rgba(0,27,68,0.20);
+    }
+
+
+        .approval-badge i {
+            color: #FDB913;
+        }
+
+
+    /* ==========================================
+       INTRODUCTION
+    ========================================== */
+
+    .certificate-introduction {
+        max-width: 760px;
+        margin: 0 auto 30px;
+        text-align: center;
+        color: #444;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+
+    /* ==========================================
+       SECTION TITLE
+    ========================================== */
+
+    .certificate-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 28px;
+        margin-bottom: 10px;
+        color: #001B44;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: .8px;
+        text-transform: uppercase;
+    }
+
+
+        .certificate-section-title i {
+            color: #FDB913;
+            font-size: 17px;
+        }
+
+
+    /* ==========================================
+       DETAILS
+    ========================================== */
+
+    .certificate-details {
+        border: 1px solid #dfe3e8;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+
+    .certificate-row {
+        display: flex;
+        min-height: 54px;
+        border-bottom: 1px solid #e5e8ec;
+    }
+
+
+        .certificate-row:last-child {
+            border-bottom: none;
+        }
+
+
+    .certificate-label {
+        width: 34%;
+        background: #f5f7fa;
+        color: #001B44;
+        font-weight: 700;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+    }
+
+
+    .certificate-value {
+        width: 66%;
+        padding: 16px 18px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        word-break: break-word;
+        line-height: 1.5;
+    }
+
+
+    /* ==========================================
+       STATUS
+    ========================================== */
+
+    .status-approved {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #155724;
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        padding: 6px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    /* ==========================================
+       ETHICS REFERENCE
+    ========================================== */
+
+    .certificate-reference {
+        background: linear-gradient( 135deg, #fff8df, #fffdf4 );
+        border: 2px solid #FDB913;
+        border-radius: 8px;
+        text-align: center;
+        padding: 23px 20px;
+        margin: 32px 0;
+        box-shadow: 0 5px 15px rgba(253,185,19,0.12);
+    }
+
+
+    .certificate-reference-label {
+        color: #001B44;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+
+    .certificate-reference-number {
+        color: #001B44;
+        font-size: 30px;
+        font-weight: 900;
+        margin-top: 8px;
+        letter-spacing: 4px;
+    }
+
+
+    /* ==========================================
+       CERTIFICATE STATEMENT
+    ========================================== */
+
+    .certificate-statement {
+        text-align: center;
+        color: #555;
+        font-size: 14px;
+        line-height: 1.8;
+        max-width: 760px;
+        margin: 30px auto;
+    }
+
+
+        .certificate-statement strong {
+            color: #001B44;
+        }
+
+
+    /* ==========================================
+       SIGNATURES
+    ========================================== */
+
+    .certificate-signatures {
+        display: flex;
+        justify-content: space-between;
+        gap: 60px;
+        margin-top: 50px;
+    }
+
+
+    .signature-box {
+        width: 50%;
+        text-align: center;
+    }
+
+
+    .signature-space {
+        height: 35px;
+    }
+
+
+    .signature-line {
+        border-top: 1px solid #333;
+        margin-bottom: 10px;
+    }
+
+
+    .signature-name {
+        color: #001B44;
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+
+    .signature-title {
+        color: #001B44;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+
+    .signature-status {
+        color: #777;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+
+    /* ==========================================
+       FOOTER
+    ========================================== */
+
+    .certificate-footer {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 18px;
+        border-top: 1px solid #ddd;
+        color: #777;
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+
+        .certificate-footer strong {
+            color: #001B44;
+            font-size: 12px;
+        }
+
+
+    /* ==========================================
+       ACTION BUTTONS
+    ========================================== */
+
+    .certificate-actions {
+        max-width: 950px;
+        margin: 30px auto 0;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+
+    .certificate-download-button,
+    .certificate-back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 5px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+
+    .certificate-download-button {
+        background: #FDB913;
+        color: #001B44;
+        border: 2px solid #FDB913;
+    }
+
+
+        .certificate-download-button:hover {
+            background: #e5a600;
+            color: #001B44;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+
+    .certificate-back-button {
+        background: #001B44;
+        color: #ffffff;
+        border: 2px solid #001B44;
+    }
+
+
+        .certificate-back-button:hover {
+            background: #FDB913;
+            border-color: #FDB913;
+            color: #001B44;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+
+    /* ==========================================
+       PRINT
+    ========================================== */
+
+    @@media print {
+
+        .certificate-page {
+            background: #ffffff;
+            padding: 0;
+        }
+
+        .certificate {
+            box-shadow: none;
+            max-width: none;
+        }
+
+        .certificate-actions {
+            display: none;
+        }
+    }
+
+
+    /* ==========================================
+       MOBILE
+    ========================================== */
+
+    @@media (max-width: 768px) {
+
+        .certificate-page {
+            padding: 15px 5px 30px;
+        }
+
+        .certificate {
+            border-width: 5px;
+            padding: 5px;
+        }
+
+        .certificate-inner {
+            padding: 30px 18px;
+        }
+
+        .certificate-title {
+            font-size: 25px;
+        }
+
+        .certificate-university {
+            font-size: 14px;
+        }
+
+        .certificate-row {
+            display: block;
+        }
+
+        .certificate-label,
+        .certificate-value {
+            width: 100%;
+        }
+
+        .certificate-label {
+            padding-bottom: 8px;
+        }
+
+        .certificate-value {
+            padding-top: 8px;
+        }
+
+        .certificate-signatures {
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        .signature-box {
+            width: 100%;
+        }
+
+        .certificate-reference-number {
+            font-size: 23px;
+            letter-spacing: 2px;
+        }
+    }
+</style>
+
+
+<div class="certificate-page">
+
+    <div class="certificate">
+
+        <div class="certificate-inner">
+
+            <!-- DECORATIVE CORNERS -->
+
+            <div class="corner corner-top-left"></div>
+            <div class="corner corner-top-right"></div>
+            <div class="corner corner-bottom-left"></div>
+            <div class="corner corner-bottom-right"></div>
+
+
+            <!-- ==========================================
+                 HEADER
+            =========================================== -->
+
+            <div class="certificate-top">
+
+                <div class="certificate-logo">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+
+                <div class="certificate-university">
+                    Nelson Mandela University
+                </div>
+
+                <div class="certificate-system">
+                    Postgraduate Research Management System
+                </div>
+
+                <h1 class="certificate-title">
+                    ETHICS CLEARANCE CERTIFICATE
+                </h1>
+
+                <div class="gold-line"></div>
+
+                <div class="certificate-subtitle">
+                    Postgraduate Research Ethics Approval
+                </div>
+
+                <div class="approval-badge">
+                    <i class="fa-solid fa-circle-check"></i>
+                    ETHICS APPLICATION APPROVED
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 INTRODUCTION
+            =========================================== -->
+
+            <div class="certificate-introduction">
+
+                This certificate confirms that the postgraduate research
+                project identified below has received ethics clearance
+                recorded in the Postgraduate Research Management System.
+
+            </div>
+
+
+            <!-- ==========================================
+                 STUDENT INFORMATION
+            =========================================== -->
+
+            <div class="certificate-section-title">
+
+                <i class="fa-solid fa-user-graduate"></i>
+
+                Student Information
+
+            </div>
+
+            <div class="certificate-details">
+
+                <div class="certificate-row">
+
+                    <div class="certificate-label">
+                        Student Name
+                    </div>
+
+                    <div class="certificate-value">
+
+                        <strong>
+                            @Model.Student.User.FirstName
+                            @Model.Student.User.LastName
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="certificate-row">
+
+                    <div class="certificate-label">
+                        Student Number
+                    </div>
+
+                    <div class="certificate-value">
+
+                        <strong>
+                            @Model.Student.User.StudentNumber
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 RESEARCH INFORMATION
+            =========================================== -->
+
+            <div class="certificate-section-title">
+
+                <i class="fa-solid fa-book-open"></i>
+
+                Research Information
+
+            </div>
+
+            <div class="certificate-details">
+
+                <div class="certificate-row">
+
+                    <div class="certificate-label">
+                        Research Topic
+                    </div>
+
+                    <div class="certificate-value">
+
+                        <strong>
+                            @ViewBag.ResearchTitle
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="certificate-row">
+
+                    <div class="certificate-label">
+                        Research Field
+                    </div>
+
+                    <div class="certificate-value">
+
+                        @ViewBag.ResearchField
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 ETHICS INFORMATION
+            =========================================== -->
+
+            <div class="certificate-section-title">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Ethics Information
+
+            </div>
+
+            <div class="certificate-details">
+
+                <div class="certificate-row">
+
+                    <div class="certificate-label">
+                        Ethics Number
+                    </div>
+
+                    <div class="certificate-value">
+
+                        <strong>
+                            @Model.ReferenceNumber
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="certificate-row">
+
+                    <div class="certificate-label">
+                        Approval Date
+                    </div>
+
+                    <div class="certificate-value">
+
+                        @(Model.ApprovalDate.HasValue
+                            ? Model.ApprovalDate.Value.ToString("dd MMMM yyyy")
+                            : "N/A")
+
+                    </div>
+
+                </div>
+
+
+                <div class="certificate-row">
+
+                    <div class="certificate-label">
+                        Status
+                    </div>
+
+                    <div class="certificate-value">
+
+                        <span class="status-approved">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Approved
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 ETHICS REFERENCE
+            =========================================== -->
+
+            <div class="certificate-reference">
+
+                <div class="certificate-reference-label">
+
+                    Ethics Reference Number
+
+                </div>
+
+                <div class="certificate-reference-number">
+
+                    @Model.ReferenceNumber
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 STATEMENT
+            =========================================== -->
+
+            <div class="certificate-statement">
+
+                <p>
+                    This certificate confirms that the ethics application
+                    associated with the research project identified above
+                    has been recorded as <strong>Approved</strong>.
+                </p>
+
+                <p>
+                    The ethics reference number should be retained for
+                    future verification and postgraduate research
+                    record-keeping purposes.
+                </p>
+
+            </div>
+
+
+            <!-- ==========================================
+                 SIGNATURE / RECORD SECTION
+            =========================================== -->
+
+            <div class="certificate-signatures">
+
+                <div class="signature-box">
+
+                    <div class="signature-space">
+                        &nbsp;
+                    </div>
+
+                    <div class="signature-line"></div>
+
+                    <div class="signature-name">
+
+                        @ViewBag.SupervisorName
+
+                    </div>
+
+                    <div class="signature-title">
+
+                        Supervisor
+
+                    </div>
+
+                    <div class="signature-status">
+
+                        Postgraduate Research Supervisor
+
+                    </div>
+
+                </div>
+
+
+                <div class="signature-box">
+
+                    <div class="signature-space">
+                        &nbsp;
+                    </div>
+
+                    <div class="signature-line"></div>
+
+                    <div class="signature-name">
+
+                        @Model.ReferenceNumber
+
+                    </div>
+
+                    <div class="signature-title">
+
+                        Ethics Reference
+
+                    </div>
+
+                    <div class="signature-status">
+
+                        Official System Reference
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 FOOTER
+            =========================================== -->
+
+            <div class="certificate-footer">
+
+                <strong>
+                    Postgraduate Research Management System
+                </strong>
+
+                <br />
+
+                This is a system-generated ethics clearance certificate.
+
+                <br />
+
+                Nelson Mandela University
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         ACTION BUTTONS
+    =========================================== -->
+
+    <div class="certificate-actions">
+
+        <a href="@Url.Action(
+                    "DownloadEthicsCertificate",
+                    "Student",
+                    new { id = Model.EthicsID })"
+           class="certificate-download-button">
+
+            <i class="fa-solid fa-download"></i>
+
+            Download Certificate
+
+        </a>
+
+
+        <a href="@Url.Action(
+                    "Ethics",
+                    "Student")"
+           class="certificate-back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Ethics
+
+        </a>
+
+    </div>
+
+</div>

@@ -1,9 +1,10 @@
 ﻿using PostGraduateRecord.Models;
 using System;
-using System.Linq;
-using System.Web.Mvc;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 
 namespace PostGraduateRecord.Controllers
@@ -24,10 +25,86 @@ namespace PostGraduateRecord.Controllers
 
         // POST: Account/Login
         [HttpPost]
-        public ActionResult Login(string username, string password)
+        public ActionResult Login(string role, string username, string password, bool rememberMe = false)
         {
+            
             try
             {
+                // =========================================
+                // SUPERVISOR & ADMIN DATABASE LOGIN
+                // =========================================
+
+                if (role == "Supervisor" || role == "Admin")
+                {
+                    User user = db.Users.FirstOrDefault(u =>
+                        u.Email == username &&
+                        u.Role == role &&
+                        u.IsActive == true);
+
+                    if (user == null)
+                    {
+                        ViewBag.Message = "Invalid username or password.";
+                        return View();
+                    }
+
+                    Session["UserID"] = user.UserID;
+
+                    Session["FullName"] =
+                        user.FirstName + " " + user.LastName;
+
+                    Session["Role"] = user.Role;
+
+                    // Determine which roles this user can perform
+                    Session["IsSupervisor"] = db.Supervisors
+                        .Any(s => s.UserID == user.UserID);
+
+                    Session["IsEvaluator"] = db.Evaluators
+                        .Any(e => e.UserID == user.UserID);
+
+                    // Start in the role they selected at login
+                    Session["ActiveRole"] = user.Role;
+
+
+                    // =========================================
+                    // REMEMBER ME
+                    // =========================================
+
+                    if (rememberMe)
+                    {
+                        HttpCookie cookie =
+                            new HttpCookie("RememberUser");
+
+                        cookie["Username"] = username;
+
+                        cookie.Expires =
+                            DateTime.Now.AddDays(30);
+
+                        Response.Cookies.Add(cookie);
+                    }
+
+
+                    // =========================================
+                    // REDIRECT
+                    // =========================================
+
+                    if (role == "Supervisor")
+                    {
+                        return RedirectToAction(
+                            "Dashboard",
+                            "Supervisors");
+                    }
+
+                    if (role == "Admin")
+                    {
+                        return RedirectToAction(
+                            "Dashboard",
+                            "Admin");
+                    }
+                }
+
+                // =========================================
+                // STUDENT ACTIVE DIRECTORY LOGIN
+                // =========================================
                 using (PrincipalContext context =
                     new PrincipalContext(ContextType.Domain, "mandela.ac.za"))
                 {
@@ -51,6 +128,7 @@ namespace PostGraduateRecord.Controllers
                     DirectoryEntry de =
     (DirectoryEntry)adUser.GetUnderlyingObject();
 
+                  
 
                     foreach (string property in de.Properties.PropertyNames)
                     {
@@ -180,15 +258,22 @@ namespace PostGraduateRecord.Controllers
                     if (studentProfile == null)
                     {
                         // Read the department from Active Directory
+                        // Read Faculty from Active Directory
+                        string facultyName = "";
+
+                        if (de.Properties["extensionAttribute2"] != null &&
+                            de.Properties["extensionAttribute2"].Value != null)
+                        {
+                            facultyName = de.Properties["extensionAttribute2"].Value.ToString().Trim();
+                        }
+
+                        // Read Department from Active Directory
                         string departmentName = "";
 
                         if (de.Properties["department"] != null &&
                             de.Properties["department"].Value != null)
                         {
                             string adDepartment = de.Properties["department"].Value.ToString();
-
-                            // Example:
-                            // "Engineering Built Environ & It: Software Engineering"
 
                             if (adDepartment.Contains(":"))
                             {
@@ -199,25 +284,101 @@ namespace PostGraduateRecord.Controllers
                                 departmentName = adDepartment.Trim();
                             }
                         }
+                        // ==========================================
+                        // VALIDATE AD FACULTY AND DEPARTMENT
+                        // ==========================================
 
-                        // Find the department in the database
-                        Department department = db.Departments
-                            .FirstOrDefault(d => d.DepartmentName == departmentName);
-
-                        // If the department does not exist, use Software Engineering
-                        if (department == null)
+                        if (string.IsNullOrWhiteSpace(facultyName))
                         {
-                            department = db.Departments
-                                .FirstOrDefault(d => d.DepartmentName == "Software Engineering");
-                        }
+                            ViewBag.Message =
+                                "Faculty information was not provided by Active Directory.";
 
-                        // If it still doesn't exist, stop
-                        if (department == null)
-                        {
-                            ViewBag.Message = "Department '" + departmentName + "' was not found in the database.";
                             return View();
                         }
 
+                        if (string.IsNullOrWhiteSpace(departmentName))
+                        {
+                            ViewBag.Message =
+                                "Department information was not provided by Active Directory.";
+
+                            return View();
+                        }
+                        // ==========================================
+                        // FIND OR CREATE FACULTY
+                        // ==========================================
+
+                        Faculty faculty = db.Faculties
+                            .FirstOrDefault(f => f.FacultyName == facultyName);
+
+                        if (faculty == null)
+                        {
+                            // Faculty does not exist.
+                            // Create it automatically from Active Directory.
+
+                            faculty = new Faculty
+                            {
+                                FacultyName = facultyName,
+                                IsActive = true
+                            };
+
+                            db.Faculties.Add(faculty);
+                            db.SaveChanges();
+                        }
+
+
+                        // ==========================================
+                        // FIND OR CREATE DEPARTMENT
+                        // ==========================================
+
+                        Department department = db.Departments
+                            .FirstOrDefault(d =>
+                                d.ADDepartmentName == departmentName);
+
+                        if (department == null)
+                        {
+                            // Department does not exist.
+                            // Create it automatically from Active Directory.
+
+                            department = new Department
+                            {
+                                FacultyID = faculty.FacultyID,
+
+                                DepartmentName = departmentName,
+
+                                ADDepartmentName = departmentName,
+
+                                IsActive = true
+                            };
+
+                            db.Departments.Add(department);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            // Make sure the department is connected
+                            // to the correct faculty from Active Directory.
+
+                            if (department.FacultyID != faculty.FacultyID)
+                            {
+                                department.FacultyID = faculty.FacultyID;
+
+                                db.SaveChanges();
+                            }
+                        }
+
+
+                        // ==========================================
+                        // VERIFY DEPARTMENT
+                        // ==========================================
+
+                        if (department == null)
+                        {
+                            ViewBag.Message =
+                                "Unable to create department '" +
+                                departmentName + "'.";
+
+                            return View();
+                        }
                         // Get qualification from Active Directory
 
                         string qualification = "";
@@ -293,7 +454,14 @@ namespace PostGraduateRecord.Controllers
                     Session["Role"] =
                         existingUser.Role;
 
+                    if (rememberMe)
+                    {
+                        HttpCookie cookie = new HttpCookie("RememberUser");
+                        cookie["Username"] = username;
+                        cookie.Expires = DateTime.Now.AddDays(30);
 
+                        Response.Cookies.Add(cookie);
+                    }
 
                     return RedirectToAction(
                         "Dashboard",
@@ -323,8 +491,10 @@ namespace PostGraduateRecord.Controllers
                 ViewBag.Message = message;
 
                 return View();
+               
+                }
             }
-        }
+        
 
 
 

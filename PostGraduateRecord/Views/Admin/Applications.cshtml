@@ -1,0 +1,171 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Application>
+
+@{
+    ViewBag.Title = "Applications";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="applications-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div>
+            <h2>
+                <i class="fa-solid fa-file-circle-check"></i>
+                Student Applications
+            </h2>
+
+            <p>
+                View and review postgraduate student applications.
+            </p>
+        </div>
+
+        <a href="@Url.Action("RegisterStudent", "Admin")"
+           class="register-button">
+            <i class="fa-solid fa-user-plus"></i>
+            Register New Student
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            There are currently no applications.
+        </div>
+    }
+    else
+    {
+        <div class="applications-table-wrapper">
+
+            <table class="applications-table">
+
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Research Title</th>
+                        <th>Degree</th>
+                        <th>Research Field</th>
+                        <th>Submitted Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var application in Model)
+                    {
+                        <tr>
+
+                            <!-- STUDENT -->
+                            <td>
+                                <strong>
+                                    @application.Student.User.FirstName
+                                    @application.Student.User.LastName
+                                </strong>
+                            </td>
+
+
+                            <!-- RESEARCH TITLE -->
+                            <td>
+                                @application.ResearchTitle
+                            </td>
+
+
+                            <!-- DEGREE -->
+                            <td>
+                                @application.DegreeType
+                            </td>
+
+
+                            <!-- RESEARCH FIELD -->
+                            <td>
+                                @application.ResearchField
+                            </td>
+
+
+                            <!-- SUBMITTED DATE -->
+                            <td>
+                                @application.SubmittedDate.ToString("dd MMM yyyy")
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+                                @if (application.Status == "Approved")
+                                {
+                                    <span class="application-status approved">
+                                        Approved
+                                    </span>
+                                }
+                                else if (application.Status == "Rejected")
+                                {
+                                    <span class="application-status rejected">
+                                        Rejected
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="application-status pending">
+                                        @application.Status
+                                    </span>
+                                }
+                            </td>
+
+
+                            <td>
+
+                                <div class="application-actions">
+
+                                    <!-- REVIEW -->
+                                    <a href="@Url.Action(
+                                            "ReviewApplication",
+                                            "Admin",
+                                            new { id = application.ApplicationID })"
+                                       class="application-action review-action">
+
+                                        <i class="fa-solid fa-eye"></i>
+                                        Review
+
+                                    </a>
+
+
+                                    <!-- DOWNLOAD -->
+                                    <a href="@Url.Action(
+                                            "DownloadApplication",
+                                            "Admin",
+                                            new { id = application.ApplicationID })"
+                                       class="application-action download-action">
+
+                                        <i class="fa-solid fa-download"></i>
+                                        Download
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- BACK BUTTON -->
+
+        <a href="@Url.Action("Dashboard", "Admin")"
+           class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+    }
+
+</div>

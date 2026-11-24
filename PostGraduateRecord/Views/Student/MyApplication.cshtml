@@ -1,0 +1,620 @@
+﻿@model PostGraduateRecord.Models.Application
+
+@{
+    ViewBag.Title = "My Application";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+
+    string status = Model.Status ?? "Pending";
+
+    string statusClass = "status-pending";
+    string statusIcon = "fa-clock";
+    string statusMessage = "Your application has been successfully submitted and is currently awaiting administrator review.";
+    string statusTitle = "Application Pending";
+
+    if (status.Equals("Approved", StringComparison.OrdinalIgnoreCase))
+    {
+        statusClass = "status-approved";
+        statusIcon = "fa-circle-check";
+        statusMessage = "Your application has been approved. You may now proceed to the next stage of your postgraduate research journey.";
+        statusTitle = "Application Approved";
+    }
+    else if (status.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
+    {
+        statusClass = "status-rejected";
+        statusIcon = "fa-circle-xmark";
+        statusMessage = "Your application was not approved. Please review the administrator's comments below.";
+        statusTitle = "Application Rejected";
+    }
+
+
+}
+
+<style>
+
+    /* ==============================
+       APPLICATION PAGE
+       ============================== */
+
+    .application-page {
+        padding: 10px 0 40px 0;
+    }
+
+    /* ==============================
+       PAGE HEADER
+       ============================== */
+
+    .application-header {
+        margin-bottom: 25px;
+    }
+
+        .application-header h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #001B44;
+            margin: 0 0 8px 0;
+        }
+
+        .application-header p {
+            margin: 0;
+            color: #6c757d;
+            font-size: 15px;
+        }
+
+    /* ==============================
+       MAIN CARD
+       ============================== */
+
+    .application-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e1e5ea;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+    }
+
+    /* ==============================
+       CARD HEADER
+       ============================== */
+
+    .application-card-header {
+        background: #001B44;
+        color: white;
+        padding: 22px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .application-card-header h3 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .application-card-header i {
+            margin-right: 8px;
+        }
+
+    /* ==============================
+       STATUS BADGE
+       ============================== */
+
+    .application-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        border-radius: 20px;
+        color: white;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .status-approved {
+        background: #198754;
+        color: white;
+    }
+
+    .status-rejected {
+        background: #dc3545;
+        color: white;
+    }
+
+    /* ==============================
+       APPLICATION BODY
+       ============================== */
+
+    .application-body {
+        padding: 30px;
+    }
+
+    /* ==============================
+       STATUS SECTION
+       ============================== */
+
+    .status-section {
+        margin-bottom: 25px;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .status-section-title {
+        font-weight: 600;
+        margin: 0 0 5px 0;
+    }
+
+    .status-section small {
+        color: #555;
+    }
+
+    /* Pending */
+
+    .status-section.status-pending {
+        background: #fff8e1;
+        border: 1px solid #ffe08a;
+    }
+
+        .status-section.status-pending .status-section-title {
+            color: #856404;
+        }
+
+    /* Approved */
+
+    .status-section.status-approved {
+        background: #f1faf5;
+        border: 1px solid #cfe8d8;
+    }
+
+        .status-section.status-approved .status-section-title {
+            color: #198754;
+        }
+
+    /* Rejected */
+
+    .status-section.status-rejected {
+        background: #fff1f2;
+        border: 1px solid #f1b0b7;
+    }
+
+        .status-section.status-rejected .status-section-title {
+            color: #dc3545;
+        }
+
+    /* ==============================
+       INFORMATION GRID
+       ============================== */
+
+    .application-info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .application-info {
+        background: #f8f9fb;
+        border: 1px solid #e6e9ed;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+        .application-info.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .application-info label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .application-info .value {
+            font-size: 16px;
+            font-weight: 500;
+            color: #212529;
+            line-height: 1.5;
+        }
+
+    /* ==============================
+       RESEARCH TITLE
+       ============================== */
+
+    .research-title {
+        font-size: 18px !important;
+        font-weight: 600 !important;
+        color: #001B44 !important;
+    }
+
+    /* ==============================
+       ADMIN COMMENTS
+       ============================== */
+
+    .admin-comments {
+        margin-top: 25px;
+        padding: 22px;
+        border-left: 4px solid #FDB913;
+        background: #fffaf0;
+        border-radius: 8px;
+    }
+
+        .admin-comments h4 {
+            margin: 0 0 10px 0;
+            color: #001B44;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .admin-comments p {
+            margin: 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+    /* ==============================
+       NEXT STEP
+       ============================== */
+
+    .next-step {
+        margin-top: 25px;
+        padding: 18px 20px;
+        background: #f8f9fb;
+        border: 1px solid #e1e5ea;
+        border-radius: 10px;
+    }
+
+        .next-step h4 {
+            margin: 0 0 6px 0;
+            color: #001B44;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .next-step p {
+            margin: 0;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+    /* ==============================
+       BACK BUTTON
+       ============================== */
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: #001B44;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+        .back-button:hover {
+            background: #FDB913;
+            color: #001B44;
+            text-decoration: none;
+        }
+
+        .back-button i {
+            font-size: 13px;
+        }
+
+    /* ==============================
+       RESPONSIVE
+       ============================== */
+
+    @@media (max-width: 768px) {
+
+        .application-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .application-info.full-width {
+            grid-column: auto;
+        }
+
+        .application-card-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .application-body {
+            padding: 20px;
+        }
+
+        .application-header h2 {
+            font-size: 26px;
+        }
+
+        .status-section {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+    }
+</style>
+
+
+<div class="application-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="application-header">
+
+        <h2>
+            <i class="fa-solid fa-file-circle-check"></i>
+            My Application
+        </h2>
+
+        <p>
+            View the status and details of your postgraduate application.
+        </p>
+
+    </div>
+
+
+    <!-- APPLICATION CARD -->
+
+    <div class="application-card">
+
+        <!-- CARD HEADER -->
+
+        <div class="application-card-header">
+
+            <h3>
+                <i class="fa-solid fa-graduation-cap"></i>
+                Research Application
+            </h3>
+
+            <span class="application-status @statusClass">
+
+                <i class="fa-solid @statusIcon"></i>
+
+                @Model.Status
+
+            </span>
+
+        </div>
+
+
+        <!-- CARD BODY -->
+
+        <div class="application-body">
+
+            <!-- STATUS -->
+
+            <div class="status-section @statusClass">
+
+                <div>
+
+                    <p class="status-section-title">
+                        @statusTitle
+                    </p>
+
+                    <small>
+                        @statusMessage
+                    </small>
+
+                </div>
+
+                <span class="application-status @statusClass">
+
+                    <i class="fa-solid @statusIcon"></i>
+
+                    @Model.Status
+
+                </span>
+
+            </div>
+
+
+            <!-- APPLICATION INFORMATION -->
+
+            <div class="application-info-grid">
+
+                <!-- RESEARCH TITLE -->
+
+                <div class="application-info full-width">
+
+                    <label>
+                        Research Title
+                    </label>
+
+                    <div class="value research-title">
+                        @Model.ResearchTitle
+                    </div>
+
+                </div>
+
+
+                <!-- DEGREE -->
+
+                <div class="application-info">
+
+                    <label>
+                        Degree Type
+                    </label>
+
+                    <div class="value">
+                        @Model.DegreeType
+                    </div>
+
+                </div>
+
+
+                <!-- RESEARCH FIELD -->
+
+                <div class="application-info">
+
+                    <label>
+                        Research Field
+                    </label>
+
+                    <div class="value">
+                        @Model.ResearchField
+                    </div>
+
+                </div>
+
+
+                <!-- SUBMITTED DATE -->
+
+                <div class="application-info">
+
+                    <label>
+                        Submitted Date
+                    </label>
+
+                    <div class="value">
+
+                        <i class="fa-regular fa-calendar"></i>
+
+                        @Model.SubmittedDate.ToString("dd MMMM yyyy")
+
+                    </div>
+
+                </div>
+
+
+                <!-- REVIEWED DATE -->
+
+                <div class="application-info">
+
+                    <label>
+                        Reviewed Date
+                    </label>
+
+                    <div class="value">
+
+                        @if (Model.ReviewedDate.HasValue)
+                        {
+                            <i class="fa-regular fa-calendar-check"></i>
+
+                            @Model.ReviewedDate.Value.ToString("dd MMMM yyyy")
+                        }
+                        else
+                        {
+                            <span>
+                                Not yet reviewed
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ADMIN COMMENTS -->
+
+            @if (!string.IsNullOrWhiteSpace(Model.AdminComments))
+            {
+                <div class="admin-comments">
+
+                    <h4>
+
+                        <i class="fa-solid fa-comment-dots"></i>
+
+                        Administrator Comments
+
+                    </h4>
+
+                    <p>
+                        @Model.AdminComments
+                    </p>
+
+                </div>
+            }
+
+
+            <!-- NEXT STEP -->
+
+            @if (status.Equals("Pending", StringComparison.OrdinalIgnoreCase))
+            {
+                <div class="next-step">
+
+                    <h4>
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        What happens next?
+                    </h4>
+
+                    <p>
+                        Your application is currently being reviewed by the
+                        administrator. Please wait for the review to be completed.
+                    </p>
+
+                </div>
+            }
+            else if (status.Equals("Approved", StringComparison.OrdinalIgnoreCase))
+            {
+                <div class="next-step">
+
+                    <h4>
+                        <i class="fa-solid fa-arrow-right"></i>
+                        Next Step
+                    </h4>
+
+                    <p>
+                        Your application has been approved. You can now continue
+                        with the postgraduate research process by submitting your
+                        research proposal.
+                    </p>
+
+                </div>
+            }
+            else if (status.Equals("Rejected", StringComparison.OrdinalIgnoreCase))
+            {
+                <div class="next-step">
+
+                    <h4>
+                        <i class="fa-solid fa-circle-info"></i>
+                        What happens next?
+                    </h4>
+
+                    <p>
+                        Please review the administrator's comments above and
+                        contact the relevant postgraduate office if further
+                        clarification is required.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- BACK BUTTON -->
+
+    <div style="margin-top: 25px;">
+
+        <a href="@Url.Action("Dashboard", "Student")"
+           class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>

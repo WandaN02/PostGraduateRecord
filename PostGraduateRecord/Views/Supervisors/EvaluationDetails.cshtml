@@ -1,0 +1,978 @@
+﻿@model PostGraduateRecord.ViewModels.EvaluationDetailsViewModel
+
+@{
+    ViewBag.Title = "Evaluation Details";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<div class="evaluation-details-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="evaluation-page-header">
+
+        <div>
+            <div class="evaluation-page-label">
+                <i class="fa-solid fa-clipboard-check"></i>
+                EVALUATOR FEEDBACK
+            </div>
+
+            <h1>Evaluation Details</h1>
+
+            <p>
+                Review the evaluation submitted by the assigned evaluator
+                before sending it to the student.
+            </p>
+        </div>
+
+        <div class="evaluation-header-status">
+
+            @if (Model.EvaluationSentToStudent)
+            {
+                <span class="evaluation-status sent">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    Sent to Student
+                </span>
+            }
+            else
+            {
+                <span class="evaluation-status pending">
+                    <i class="fa-solid fa-clock"></i>
+                    Awaiting Release
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROPOSAL INFORMATION
+         ===================================================== -->
+
+    <div class="evaluation-card">
+
+        <div class="evaluation-card-header">
+
+            <div class="evaluation-card-title">
+                <i class="fa-solid fa-file-lines"></i>
+                Proposal Information
+            </div>
+
+        </div>
+
+        <div class="proposal-information">
+
+            <div class="information-item full-width">
+                <span class="information-label">
+                    Research Title
+                </span>
+
+                <span class="information-value research-title">
+                    @Model.ResearchTitle
+                </span>
+            </div>
+
+            <div class="information-item">
+                <span class="information-label">
+                    Student
+                </span>
+
+                <span class="information-value">
+                    @Model.StudentName
+                </span>
+            </div>
+
+            <div class="information-item">
+                <span class="information-label">
+                    Student Number
+                </span>
+
+                <span class="information-value">
+                    @Model.StudentNumber
+                </span>
+            </div>
+
+            <div class="information-item">
+                <span class="information-label">
+                    Evaluator
+                </span>
+
+                <span class="information-value">
+                    @Model.EvaluatorName
+                </span>
+            </div>
+
+            <div class="information-item">
+                <span class="information-label">
+                    Evaluation Date
+                </span>
+
+                <span class="information-value">
+                    @(Model.EvaluationDate.HasValue
+                        ? Model.EvaluationDate.Value.ToString("dd MMMM yyyy")
+                        : "Not available")
+                </span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SCORE SUMMARY
+         ===================================================== -->
+
+    <div class="evaluation-summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-star"></i>
+            </div>
+
+            <div>
+                <span class="summary-label">
+                    Total Score
+                </span>
+
+                <strong>
+                    @Model.TotalScore.ToString("0.##")
+                    /
+                    @Model.TotalPossibleScore.ToString("0.##")
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <div>
+                <span class="summary-label">
+                    Percentage
+                </span>
+
+                <strong>
+                    @Model.Percentage.ToString("0.##")%
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                <i class="fa-solid fa-award"></i>
+            </div>
+
+            <div>
+                <span class="summary-label">
+                    Final Mark
+                </span>
+
+                <strong>
+                    @Model.FinalMark.ToString("0.##") / 10
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CRITERION EVALUATION
+         ===================================================== -->
+
+    <div class="evaluation-card">
+
+        <div class="evaluation-card-header">
+
+            <div class="evaluation-card-title">
+                <i class="fa-solid fa-list-check"></i>
+                Criterion Evaluation
+            </div>
+
+            <span class="criterion-count">
+                @Model.Criteria.Count Criteria
+            </span>
+
+        </div>
+
+
+        <div class="criteria-list">
+
+            @foreach (var criterion in Model.Criteria)
+            {
+                <div class="criterion-card">
+
+                    <div class="criterion-top">
+
+                        <div class="criterion-number">
+                            @criterion.DisplayOrder
+                        </div>
+
+                        <div class="criterion-information">
+
+                            <h3>
+                                @criterion.CriterionName
+                            </h3>
+
+                            @if (!string.IsNullOrWhiteSpace(criterion.Description))
+                            {
+                                <p>
+                                    @criterion.Description
+                                </p>
+                            }
+
+                        </div>
+
+                        <div class="criterion-rating">
+
+                            <span class="rating-label">
+                                Rating
+                            </span>
+
+                            <strong>
+                                @criterion.Rating.ToString("0.##")
+                                /
+                                @criterion.MaxScore.ToString("0.##")
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    @if (!string.IsNullOrWhiteSpace(criterion.Comments))
+                    {
+                        <div class="criterion-feedback">
+
+                            <div class="feedback-label">
+                                <i class="fa-solid fa-comment"></i>
+                                Evaluator Feedback
+                            </div>
+
+                            <div class="feedback-text">
+                                @criterion.Comments
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="criterion-no-feedback">
+                            No additional feedback was provided for
+                            this criterion.
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         RECOMMENDATION
+         ===================================================== -->
+
+    <div class="evaluation-card">
+
+        <div class="evaluation-card-header">
+
+            <div class="evaluation-card-title">
+                <i class="fa-solid fa-gavel"></i>
+                Evaluator Recommendation
+            </div>
+
+        </div>
+
+        <div class="recommendation-box">
+
+            <div class="recommendation-badge
+                        @(Model.Recommendation == "Approved"
+                            ? "approved"
+                            : Model.Recommendation == "Approved with Changes"
+                                ? "changes"
+                                : Model.Recommendation == "Revision Required"
+                                    ? "revision"
+                                    : "rejected")">
+
+                @if (Model.Recommendation == "Approved")
+                {
+                    <i class="fa-solid fa-circle-check"></i>
+                }
+                else if (Model.Recommendation == "Approved with Changes")
+                {
+                    <i class="fa-solid fa-pen-to-square"></i>
+                }
+                else if (Model.Recommendation == "Revision Required")
+                {
+                    <i class="fa-solid fa-rotate"></i>
+                }
+                else
+                {
+                    <i class="fa-solid fa-circle-xmark"></i>
+                }
+
+                @Model.Recommendation
+
+            </div>
+
+
+            <div class="recommendation-description">
+
+                @if (Model.Recommendation == "Approved")
+                {
+                    <p>
+                        The evaluator has approved the proposal.
+                    </p>
+                }
+                else if (Model.Recommendation == "Approved with Changes")
+                {
+                    <p>
+                        Minor changes are required. The student does
+                        not need to resubmit the proposal.
+                    </p>
+                }
+                else if (Model.Recommendation == "Revision Required")
+                {
+                    <p>
+                        The evaluator has requested revisions to the
+                        proposal.
+                    </p>
+                }
+                else if (Model.Recommendation == "Rejected")
+                {
+                    <p>
+                        The evaluator has rejected the proposal.
+                    </p>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         OVERALL COMMENTS
+         ===================================================== -->
+
+    <div class="evaluation-card">
+
+        <div class="evaluation-card-header">
+
+            <div class="evaluation-card-title">
+                <i class="fa-solid fa-message"></i>
+                Overall Evaluator Comments
+            </div>
+
+        </div>
+
+        <div class="overall-comments">
+
+            @if (!string.IsNullOrWhiteSpace(Model.OverallComments))
+            {
+                @Model.OverallComments
+            }
+            else
+            {
+                <span class="no-comments">
+                    No overall comments were provided.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SEND TO STUDENT
+         ===================================================== -->
+
+    <div class="evaluation-release-card">
+
+        @if (Model.EvaluationSentToStudent)
+        {
+            <div class="release-status">
+
+                <div class="release-status-icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+                    <h3>
+                        Evaluation Sent to Student
+                    </h3>
+
+                    <p>
+                        This evaluation has already been released
+                        to the student.
+
+                        @if (Model.EvaluationSentDate.HasValue)
+                        {
+                            <span>
+                                Sent on
+                                @Model.EvaluationSentDate.Value.ToString(
+                                    "dd MMMM yyyy 'at' HH:mm")
+                            </span>
+                        }
+                    </p>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="release-content">
+
+                <div class="release-information">
+
+                    <div class="release-icon">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+
+                    <div>
+                        <h3>
+                            Send Evaluation to Student
+                        </h3>
+
+                        <p>
+                            Review the evaluator's feedback above.
+                            Once sent, the student will be able to
+                            view this evaluation.
+                        </p>
+                    </div>
+
+                </div>
+
+                @using (Html.BeginForm(
+                    "SendEvaluationToStudent",
+                    "Supervisors",
+                    FormMethod.Post,
+                    new { @class = "release-form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.Hidden(
+                        "evaluationId",
+                        Model.EvaluationID)
+
+                    <button type="submit"
+                            class="send-evaluation-button"
+                            onclick="return confirm(
+                                'Are you sure you want to send this evaluation to the student?');">
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Send to Student
+
+                    </button>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+<style>
+
+    .evaluation-details-page {
+        padding: 30px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .evaluation-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    .evaluation-page-label {
+        color: #FDB913;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 8px;
+    }
+
+    .evaluation-page-header h1 {
+        margin: 0;
+        color: #001B44;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .evaluation-page-header p {
+        margin: 8px 0 0;
+        color: #687386;
+        font-size: 14px;
+    }
+
+    .evaluation-header-status {
+        flex-shrink: 0;
+    }
+
+    .evaluation-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .evaluation-status.pending {
+        background: #fff6df;
+        color: #8a6500;
+    }
+
+    .evaluation-status.sent {
+        background: #eaf7ef;
+        color: #26734d;
+    }
+
+    .evaluation-card {
+        background: #ffffff;
+        border: 1px solid #e7ebf0;
+        border-radius: 16px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 3px 12px rgba(0, 27, 68, 0.04);
+    }
+
+    .evaluation-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f4;
+    }
+
+    .evaluation-card-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #001B44;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .evaluation-card-title i {
+        color: #FDB913;
+    }
+
+    .criterion-count {
+        color: #687386;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .proposal-information {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 22px;
+    }
+
+    .information-item {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .information-item.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .information-label {
+        color: #8993a3;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .6px;
+    }
+
+    .information-value {
+        color: #243047;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .information-value.research-title {
+        color: #001B44;
+        font-size: 17px;
+        font-weight: 800;
+    }
+
+    .evaluation-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-bottom: 20px;
+    }
+
+    .summary-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: #ffffff;
+        border: 1px solid #e7ebf0;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 3px 12px rgba(0, 27, 68, 0.04);
+    }
+
+    .summary-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff5d6;
+        color: #001B44;
+        border-radius: 12px;
+        font-size: 17px;
+    }
+
+    .summary-card div:last-child {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .summary-label {
+        color: #8993a3;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    .summary-card strong {
+        color: #001B44;
+        font-size: 21px;
+        font-weight: 800;
+    }
+
+    .criteria-list {
+        padding: 20px;
+    }
+
+    .criterion-card {
+        border: 1px solid #e8ecf1;
+        border-radius: 14px;
+        margin-bottom: 14px;
+        overflow: hidden;
+    }
+
+    .criterion-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .criterion-top {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 18px;
+    }
+
+    .criterion-number {
+        width: 34px;
+        height: 34px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #001B44;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .criterion-information {
+        flex: 1;
+    }
+
+    .criterion-information h3 {
+        margin: 0;
+        color: #001B44;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .criterion-information p {
+        margin: 5px 0 0;
+        color: #7a8494;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .criterion-rating {
+        min-width: 80px;
+        text-align: right;
+    }
+
+    .rating-label {
+        display: block;
+        color: #8993a3;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
+    .criterion-rating strong {
+        color: #001B44;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .criterion-feedback {
+        margin: 0 18px 18px;
+        padding: 14px 16px;
+        background: #f7f9fb;
+        border-left: 3px solid #FDB913;
+        border-radius: 0 10px 10px 0;
+    }
+
+    .feedback-label {
+        color: #001B44;
+        font-size: 11px;
+        font-weight: 800;
+        margin-bottom: 7px;
+    }
+
+    .feedback-label i {
+        color: #FDB913;
+        margin-right: 5px;
+    }
+
+    .feedback-text {
+        color: #4d586a;
+        font-size: 13px;
+        line-height: 1.6;
+        white-space: pre-line;
+    }
+
+    .criterion-no-feedback {
+        margin: 0 18px 18px;
+        color: #9aa3b1;
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    .recommendation-box {
+        padding: 22px;
+    }
+
+    .recommendation-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .recommendation-badge.approved {
+        background: #eaf7ef;
+        color: #26734d;
+    }
+
+    .recommendation-badge.changes {
+        background: #fff5d6;
+        color: #806000;
+    }
+
+    .recommendation-badge.revision {
+        background: #fff0dc;
+        color: #a05c00;
+    }
+
+    .recommendation-badge.rejected {
+        background: #fdecec;
+        color: #a13c3c;
+    }
+
+    .recommendation-description p {
+        margin: 12px 0 0;
+        color: #596577;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .overall-comments {
+        padding: 22px;
+        color: #414d60;
+        font-size: 14px;
+        line-height: 1.7;
+        white-space: pre-line;
+    }
+
+    .no-comments {
+        color: #9aa3b1;
+        font-style: italic;
+    }
+
+    .evaluation-release-card {
+        background: #ffffff;
+        border: 1px solid #e7ebf0;
+        border-radius: 16px;
+        padding: 22px;
+        margin-bottom: 30px;
+        box-shadow: 0 3px 12px rgba(0, 27, 68, 0.04);
+    }
+
+    .release-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+    }
+
+    .release-information {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .release-icon,
+    .release-status-icon {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: #fff5d6;
+        color: #001B44;
+        font-size: 18px;
+    }
+
+    .release-status {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .release-status-icon {
+        background: #eaf7ef;
+        color: #26734d;
+    }
+
+    .release-information h3,
+    .release-status h3 {
+        margin: 0;
+        color: #001B44;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+    .release-information p,
+    .release-status p {
+        margin: 5px 0 0;
+        color: #707b8c;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .release-status p span {
+        display: block;
+        margin-top: 3px;
+        font-weight: 700;
+    }
+
+    .send-evaluation-button {
+        border: none;
+        border-radius: 10px;
+        background: #001B44;
+        color: #ffffff;
+        padding: 12px 18px;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: .2s ease;
+        white-space: nowrap;
+    }
+
+    .send-evaluation-button:hover {
+        background: #FDB913;
+        color: #001B44;
+        transform: translateY(-1px);
+    }
+
+    @@media (max-width: 900px) {
+
+        .evaluation-summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .release-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .send-evaluation-button {
+            width: 100%;
+        }
+
+    }
+
+    @@media (max-width: 700px) {
+
+        .evaluation-details-page {
+            padding: 18px;
+        }
+
+        .evaluation-page-header {
+            flex-direction: column;
+        }
+
+        .proposal-information {
+            grid-template-columns: 1fr;
+        }
+
+        .information-item.full-width {
+            grid-column: auto;
+        }
+
+        .criterion-top {
+            flex-wrap: wrap;
+        }
+
+        .criterion-rating {
+            width: 100%;
+            text-align: left;
+            margin-left: 49px;
+        }
+
+    }
+
+</style>

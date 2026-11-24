@@ -1,0 +1,85 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Supervisor>
+
+@{
+    ViewBag.Title = "Supervisors";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="dashboard-header">
+    <h2>Supervisors</h2>
+
+    <p>
+        View all registered postgraduate supervisors.
+    </p>
+
+</div>
+
+<hr />
+
+<h3>Registered Supervisors</h3>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>First Name</th>
+
+            <th>Last Name</th>
+
+            <th>Email</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var supervisor in Model)
+            {
+                <tr>
+
+                    <td>
+                        @supervisor.User.FirstName
+                    </td>
+
+                    <td>
+                        @supervisor.User.LastName
+                    </td>
+
+                    <td>
+                        @supervisor.User.Email
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+
+                <td colspan="3" class="text-center">
+
+                    No supervisors have been registered yet.
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>
+

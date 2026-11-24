@@ -1,0 +1,293 @@
+﻿@model PostGraduateRecord.Models.EthicsApplication
+
+@{
+    ViewBag.Title = "Review Ethics Application";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<div class="dashboard-header">
+
+    <h2>
+        <i class="fa-solid fa-scale-balanced"></i>
+        Review Ethics Application
+    </h2>
+
+    <p>
+        Review the student's research ethics application.
+    </p>
+
+</div>
+
+<hr />
+
+<!-- ========================================================= -->
+<!-- ETHICS APPLICATION DETAILS                                -->
+<!-- ========================================================= -->
+
+<div class="proposal-card">
+
+    <div class="proposal-header">
+
+        <h3>
+            @Model.ResearchTitle
+        </h3>
+
+        <span class="status pending">
+            @Model.Status
+        </span>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- STUDENT / SUBMISSION DETAILS                         -->
+    <!-- ===================================================== -->
+
+    <div class="proposal-details">
+
+        <div>
+
+            <label>
+                Student
+            </label>
+
+            <strong>
+                @Model.Student.User.FirstName
+                @Model.Student.User.LastName
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <label>
+                Submission Date
+            </label>
+
+            <strong>
+                @(Model.SubmissionDate.HasValue
+                    ? Model.SubmissionDate.Value.ToString("dd MMM yyyy")
+                    : "N/A")
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <hr />
+
+
+    <!-- ===================================================== -->
+    <!-- PROJECT TITLE                                         -->
+    <!-- ===================================================== -->
+
+    <div class="detail-row">
+
+        <strong>
+            Project Title
+        </strong>
+
+        <p>
+            @Model.ProjectTitle
+        </p>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- RESEARCH TITLE                                        -->
+    <!-- ===================================================== -->
+
+    <div class="detail-row">
+
+        <strong>
+            Research Title
+        </strong>
+
+        <p>
+            @Model.ResearchTitle
+        </p>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- RISK LEVEL                                            -->
+    <!-- ===================================================== -->
+
+    <div class="detail-row">
+
+        <strong>
+            Risk Level
+        </strong>
+
+        <p>
+            @Model.RiskLevel
+        </p>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- DATA COLLECTION METHODS                               -->
+    <!-- ===================================================== -->
+
+    <div class="detail-row">
+
+        <strong>
+            Data Collection Methods
+        </strong>
+
+        <p>
+            @Model.DataCollectionMethods
+        </p>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- CONSENT PROCESS                                       -->
+    <!-- ===================================================== -->
+
+    <div class="detail-row">
+
+        <strong>
+            Consent Process
+        </strong>
+
+        <p>
+            @Model.ConsentProcess
+        </p>
+
+    </div>
+
+
+    <!-- ===================================================== -->
+    <!-- PRIVACY AND DATA PROTECTION                           -->
+    <!-- ===================================================== -->
+
+    <div class="detail-row">
+
+        <strong>
+            Privacy and Data Protection Measures
+        </strong>
+
+        <p>
+            @Model.PrivacyDataProtectionMeasures
+        </p>
+
+    </div>
+
+</div>
+
+
+<br />
+
+
+<!-- ========================================================= -->
+<!-- SUPERVISOR DECISION                                      -->
+<!-- ========================================================= -->
+
+@using (Html.BeginForm(
+    "ReviewEthics",
+    "Supervisors",
+    FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.EthicsID)
+
+
+    <div class="proposal-card">
+
+        <h3>
+            Supervisor Decision
+        </h3>
+
+
+        <!-- ================================================= -->
+        <!-- COMMENTS                                          -->
+        <!-- ================================================= -->
+
+        <div class="form-group">
+
+            <label>
+                Comments
+            </label>
+
+            <textarea name="Comments"
+                      class="form-control"
+                      rows="5"
+                      placeholder="Enter comments for the student..."></textarea>
+
+        </div>
+
+
+        <br />
+
+
+        <!-- ================================================= -->
+        <!-- APPROVE                                           -->
+        <!-- ================================================= -->
+
+        <button type="submit"
+                name="Decision"
+                value="Approved"
+                class="btn btn-success">
+
+            <i class="fa-solid fa-check"></i>
+
+            Approve
+
+        </button>
+
+
+        <!-- ================================================= -->
+        <!-- RESUBMISSION REQUIRED                             -->
+        <!-- ================================================= -->
+
+        <button type="submit"
+                name="Decision"
+                value="Resubmission Required"
+                class="btn btn-warning">
+
+            <i class="fa-solid fa-rotate-left"></i>
+
+            Resubmission Required
+
+        </button>
+
+
+        <!-- ================================================= -->
+        <!-- CANCEL                                            -->
+        <!-- ================================================= -->
+
+        <a href="@Url.Action("Ethics", "Supervisors")"
+           class="btn btn-secondary">
+
+            Cancel
+
+        </a>
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- BACK TO ETHICS                                            -->
+    <!-- ========================================================= -->
+
+    <div class="back-button-container">
+
+        <a href="@Url.Action("Ethics", "Supervisors")"
+           class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Ethics
+
+        </a>
+
+    </div>
+}

@@ -14,6 +14,12 @@ namespace PostGraduateRecord.Models
     
     public partial class Evaluation
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Evaluation()
+        {
+            this.EvaluationCriterionRatings = new HashSet<EvaluationCriterionRating>();
+        }
+    
         public int EvaluationID { get; set; }
         public int ProposalID { get; set; }
         public int EvaluatorID { get; set; }
@@ -21,8 +27,13 @@ namespace PostGraduateRecord.Models
         public string Recommendation { get; set; }
         public string Comments { get; set; }
         public Nullable<System.DateTime> EvaluationDate { get; set; }
+        public Nullable<System.DateTime> Deadline { get; set; }
+        public bool EvaluationSentToStudent { get; set; }
+        public Nullable<System.DateTime> EvaluationSentDate { get; set; }
     
         public virtual Evaluator Evaluator { get; set; }
         public virtual Proposal Proposal { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EvaluationCriterionRating> EvaluationCriterionRatings { get; set; }
     }
 }

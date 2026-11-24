@@ -1,0 +1,707 @@
+﻿@model IEnumerable<PostGraduateRecord.ViewModels.SupervisorTimelineViewModel>
+
+@{
+    ViewBag.Title = "Timeline";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!-- ========================================= -->
+<!-- PAGE HEADER -->
+<!-- ========================================= -->
+
+<div class="page-header timeline-page-header">
+
+    <div>
+
+        <h2>
+            Postgraduate Timeline
+        </h2>
+
+        <p>
+            Monitor postgraduate research progress and milestone completion.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================= -->
+<!-- TIMELINE SUMMARY -->
+<!-- ========================================= -->
+
+<div class="timeline-summary">
+
+
+    <!-- TOTAL STUDENTS -->
+
+    <div class="timeline-summary-item">
+
+        <span>
+            Total Students
+        </span>
+
+        <strong>
+            @ViewBag.StudentsWithProgress
+        </strong>
+
+    </div>
+
+
+    <!-- COMPLETED -->
+
+    <div class="timeline-summary-item">
+
+        <span>
+            Completed Stages
+        </span>
+
+        <strong class="completed-number">
+            @ViewBag.CompletedMilestones
+        </strong>
+
+    </div>
+
+
+    <!-- IN PROGRESS -->
+
+    <div class="timeline-summary-item">
+
+        <span>
+            In Progress
+        </span>
+
+        <strong class="progress-number">
+            @ViewBag.InProgressMilestones
+        </strong>
+
+    </div>
+
+
+    <!-- PENDING -->
+
+    <div class="timeline-summary-item">
+
+        <span>
+            Pending
+        </span>
+
+        <strong class="pending-number">
+            @ViewBag.PendingMilestones
+        </strong>
+
+    </div>
+
+
+    <!-- TOTAL STAGES -->
+
+    <div class="timeline-summary-item">
+
+        <span>
+            Total Stages
+        </span>
+
+        <strong>
+            @ViewBag.TotalMilestones
+        </strong>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================= -->
+<!-- RESEARCH PROGRESS TIMELINE -->
+<!-- ========================================= -->
+
+<div class="dashboard-panel timeline-panel">
+
+
+    <!-- PANEL HEADER -->
+
+    <div class="panel-header">
+
+        <div>
+
+            <h3>
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                Research Progress Timeline
+
+            </h3>
+
+            <p>
+                Monitor the research journey of each postgraduate student.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- FILTER BUTTONS -->
+    <!-- ========================================= -->
+
+    <div class="timeline-filters">
+
+        <button type="button"
+                class="timeline-filter active"
+                data-filter="all">
+
+            <i class="fa-solid fa-list"></i>
+
+            All
+
+        </button>
+
+
+        <button type="button"
+                class="timeline-filter"
+                data-filter="Completed">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Completed
+
+        </button>
+
+
+        <button type="button"
+                class="timeline-filter"
+                data-filter="In Progress">
+
+            <i class="fa-solid fa-spinner"></i>
+
+            In Progress
+
+        </button>
+
+
+        <button type="button"
+                class="timeline-filter"
+                data-filter="Pending">
+
+            <i class="fa-solid fa-clock"></i>
+
+            Pending
+
+        </button>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- STUDENT TIMELINES -->
+    <!-- ========================================= -->
+
+    @if (Model != null && Model.Any())
+    {
+
+        <div class="student-timeline-list">
+
+
+            @foreach (var student in Model)
+            {
+
+                <div class="student-timeline-card"
+                     data-student-status="@(
+                         student.Stages.Any(s => s.Status == "In Progress")
+                             ? "In Progress"
+                             : student.Stages.All(s => s.Status == "Completed")
+                                 ? "Completed"
+                                 : "Pending"
+                     )">
+
+
+                    <!-- ========================================= -->
+                    <!-- STUDENT HEADER -->
+                    <!-- ========================================= -->
+
+                    <div class="student-timeline-header">
+
+
+                        <div class="student-info">
+
+
+                            <div class="student-avatar">
+
+                                <i class="fa-solid fa-user-graduate"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <h3>
+                                    @student.StudentName
+                                </h3>
+
+                                <p>
+                                    @student.ResearchTitle
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PROGRESS -->
+
+                        <div class="student-progress">
+
+
+                            <div class="progress-label">
+
+                                <span>
+                                    Overall Progress
+                                </span>
+
+                                <strong>
+                                    @student.ProgressPercentage%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="progress-bar">
+
+                                <div class="progress-fill"
+                                     style="width: @student.ProgressPercentage%;">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ========================================= -->
+                    <!-- TIMELINE STAGES -->
+                    <!-- ========================================= -->
+
+                    <div class="student-timeline">
+
+
+                        @foreach (var stage in student.Stages)
+                        {
+
+                            <div class="timeline-stage"
+                                 data-stage-status="@stage.Status">
+
+
+                                <!-- TIMELINE LINE -->
+
+                                <div class="timeline-marker">
+
+
+                                    @if (stage.Status == "Completed")
+                                    {
+                                        <span class="timeline-dot completed">
+
+                                            <i class="fa-solid fa-check"></i>
+
+                                        </span>
+                                    }
+                                    else if (stage.Status == "In Progress")
+                                    {
+                                        <span class="timeline-dot in-progress">
+
+                                            <i class="fa-solid fa-spinner"></i>
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="timeline-dot pending">
+
+                                            <i class="fa-solid fa-clock"></i>
+
+                                        </span>
+                                    }
+
+
+                                </div>
+
+
+                                <!-- STAGE CONTENT -->
+
+                                <div class="timeline-stage-content">
+
+
+                                    <div class="timeline-stage-top">
+
+
+                                        <div>
+
+                                            <h4>
+                                                @stage.StageName
+                                            </h4>
+
+                                            <p>
+                                                @stage.Description
+                                            </p>
+
+                                        </div>
+
+
+                                        <!-- STATUS -->
+
+                                        @if (stage.Status == "Completed")
+                                        {
+                                            <span class="timeline-status completed">
+
+                                                <i class="fa-solid fa-circle-check"></i>
+
+                                                Completed
+
+                                            </span>
+                                        }
+                                        else if (stage.Status == "In Progress")
+                                        {
+                                            <span class="timeline-status in-progress">
+
+                                                <i class="fa-solid fa-spinner"></i>
+
+                                                In Progress
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="timeline-status pending">
+
+                                                <i class="fa-solid fa-clock"></i>
+
+                                                Pending
+
+                                            </span>
+                                        }
+
+
+                                    </div>
+
+
+                                    <!-- DATE -->
+
+                                    @if (stage.Date.HasValue)
+                                    {
+                                        <div class="timeline-stage-date">
+
+                                            <i class="fa-regular fa-calendar"></i>
+
+                                            @stage.Date.Value.ToString("dd MMM yyyy")
+
+                                        </div>
+                                    }
+
+
+                                    <!-- COMMENTS -->
+
+                                    @if (!string.IsNullOrWhiteSpace(stage.Comments))
+                                    {
+                                        <div class="timeline-stage-comments">
+
+                                            <strong>
+                                                Comments:
+                                            </strong>
+
+                                            @stage.Comments
+
+                                        </div>
+                                    }
+
+
+                                </div>
+
+                            </div>
+
+                        }
+
+
+                    </div>
+
+
+                    <!-- ========================================= -->
+                    <!-- STUDENT FOOTER -->
+                    <!-- ========================================= -->
+
+                    <div class="student-timeline-footer">
+
+
+                        <div class="stage-summary">
+
+                            <span>
+                                <strong>
+                                    @student.CompletedStages
+                                </strong>
+                                of
+                                <strong>
+                                    @student.TotalStages
+                                </strong>
+                                stages completed
+                            </span>
+
+                        </div>
+
+                        <button type="button"
+                                class="timeline-view-button"
+                                data-student="@student.StudentName"
+                                data-title="@student.ResearchTitle"
+                                data-progress="@student.ProgressPercentage">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                            View Timeline
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+            }
+
+        </div>
+
+    }
+    else
+    {
+
+        <!-- ========================================= -->
+        <!-- EMPTY STATE -->
+        <!-- ========================================= -->
+
+        <div class="empty-state">
+
+            <i class="fa-solid fa-clock-rotate-left"></i>
+
+            <h3>
+                No Timeline Data
+            </h3>
+
+            <p>
+                There are currently no postgraduate students with timeline data.
+            </p>
+
+        </div>
+
+    }
+
+</div>
+
+
+<!-- ========================================= -->
+<!-- TIMELINE DETAILS MODAL -->
+<!-- ========================================= -->
+
+<div id="timelineModal"
+     class="timeline-modal">
+
+
+    <div class="timeline-modal-content">
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="timeline-modal-header">
+
+            <div>
+
+                <h3>
+
+                    <i class="fa-solid fa-user-graduate"></i>
+
+                    Research Timeline
+
+                </h3>
+
+                <p id="modalSubtitle">
+                    Postgraduate research progress
+                </p>
+
+            </div>
+
+
+            <button type="button"
+                    class="timeline-modal-close"
+                    onclick="closeTimelineDetails()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- MODAL BODY -->
+
+        <div class="timeline-modal-body">
+
+
+            <!-- STUDENT -->
+
+            <div class="modal-student-header">
+
+
+                <div class="student-avatar">
+
+                    <i class="fa-solid fa-user-graduate"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3 id="modalStudent">
+                        —
+                    </h3>
+
+                    <p id="modalTitle">
+                        —
+                    </p>
+
+                </div>
+
+
+                <div class="modal-progress">
+
+                    <strong id="modalProgress">
+                        0%
+                    </strong>
+
+                    <span>
+                        Complete
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMATION -->
+
+            <div class="timeline-detail-grid">
+
+
+                <div class="timeline-detail-item">
+
+                    <span>
+                        Student
+                    </span>
+
+                    <strong id="modalStudentName">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="timeline-detail-item">
+
+                    <span>
+                        Research Title
+                    </span>
+
+                    <strong id="modalResearchTitle">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="timeline-detail-item">
+
+                    <span>
+                        Completed Stages
+                    </span>
+
+                    <strong id="modalCompletedStages">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="timeline-detail-item">
+
+                    <span>
+                        Total Stages
+                    </span>
+
+                    <strong id="modalTotalStages">
+                        —
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- MODAL TIMELINE -->
+
+            <div class="modal-timeline-container">
+
+                <h4>
+
+                    <i class="fa-solid fa-route"></i>
+
+                    Research Journey
+
+                </h4>
+
+
+                <div id="modalTimelineStages">
+
+                    <!-- JavaScript inserts stages here -->
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- MODAL FOOTER -->
+
+        <div class="timeline-modal-footer">
+
+            <button type="button"
+                    class="back-button"
+                    onclick="closeTimelineDetails()">
+
+                <i class="fa-solid fa-xmark"></i>
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<br/>
+
+<!-- ========================================= -->
+<!-- BACK TO DASHBOARD -->
+<!-- ========================================= -->
+
+<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button timeline-back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>
+<script src="~/Scripts/Timeline.js"></script>

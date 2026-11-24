@@ -1,7 +1,6 @@
-﻿
-@{
-    ViewBag.Title = "Login";
+﻿@{
     Layout = null;
+    ViewBag.Title = "Login";
 }
 
 <!DOCTYPE html>
@@ -11,97 +10,269 @@
 
     <meta charset="utf-8" />
 
-    <title>SPGS Record Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <title>Nelson Mandela University - Login</title>
     <link href="~/Content/Login.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+    <style>
+    .login-page {
+        background-image:
+            linear-gradient(
+                rgba(0, 27, 68, 0.68),
+                rgba(0, 27, 68, 0.68)
+            ),
+            url('@Url.Content("~/Content/Images/graduation.jpg")');
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    </style>
+  
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
 
 </head>
 
 <body>
 
-    <div class="login-container">
+    <div class="login-page">
 
-        <div class="login-card">
+        <!-- LEFT SIDE -->
 
-            <h2>Nelson Mandela University</h2>
+        <div class="login-image">
 
-            <h4>SPGS Record Management System</h4>
+            <div class="image-overlay">
 
-            <form method="post" action="@Url.Action("Login","Account")">
+                <div class="quote">
 
-                <div class="form-group">
+                    <h1>
+                        Your Research.<br />
+                        Your Future.
+                    </h1>
 
-                    <label>Student Number</label>
+                    <div class="quote-line"></div>
 
-                    <input type="text"
-                           name="username"
-                           class="form-control"
-                           placeholder="NMU Username" />
+                    <p>
+                        "The beautiful thing about learning is that
+                        nobody can take it away from you."
+                    </p>
+
+                    <span>
+                        — B.B. King
+                    </span>
 
                 </div>
 
-                <div class="form-group">
+                <div class="image-footer">
 
-                    <label>Password</label>
+                    <strong>Nelson Mandela University</strong>
 
-                    <div class="password-box">
+                    <span>
+                        Postgraduate Record Management System
+                    </span>
 
-                        <input type="password"
-                               id="password"
-                               name="password"
-                               class="form-control"
-                               placeholder="Enter your NMU password" />
+                </div>
 
-                        <span onclick="togglePassword()">
-                            <i id="eyeIcon" class="fa-solid fa-eye"></i>
-                        </span>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+
+        <div class="login-side">
+
+            <div class="login-card">
+
+                <div class="logo-section">
+
+                    <h1>Nelson Mandela University</h1>
+
+                    <p>
+                        Postgraduate Record Management System
+                    </p>
+
+                </div>
+
+                <form method="post"
+                      action="@Url.Action("Login", "Account")">
+
+
+                    <!-- USERNAME -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Username
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <input type="text"
+                                   name="username"
+                                   placeholder="Enter username"
+                                   required />
+
+                        </div>
+
+                    </div>
+                    <!-- PASSWORD -->
+
+                    <div class="input-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock password-lock"></i>
+
+                            <input type="password"
+                                   name="password"
+                                   id="password"
+                                   placeholder="Enter password"
+                                   required />
+
+                            <button type="button"
+                                    class="password-toggle"
+                                    id="passwordToggle">
+
+                                <i class="fa-solid fa-eye" id="passwordEye"></i>
+
+                            </button>
+
+                        </div>
 
                     </div>
 
+                    <!-- REMEMBER ME -->
+
+                    <div class="remember-me">
+
+                        <label>
+
+                            <input type="checkbox"
+                                   name="rememberMe"
+                                   value="true" />
+
+                            Remember Me
+
+                        </label>
+
+                    </div>
+
+                    <!-- ROLE SELECTION -->
+
+                    <div class="role-section">
+
+                        <label class="role-title">
+                            Select Role
+                        </label>
+
+                        <div class="role-selection">
+
+
+                            <label class="role-option">
+
+                                <input type="radio"
+                                       name="role"
+                                       value="Student"
+                                       required />
+
+                                <span>
+
+                                    <i class="fa-solid fa-user-graduate"></i>
+
+                                    Student
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="role-option">
+
+                                <input type="radio"
+                                       name="role"
+                                       value="Supervisor" />
+
+                                <span>
+
+                                    <i class="fa-solid fa-user-tie"></i>
+
+                                    Supervisor
+
+                                </span>
+
+                            </label>
+
+
+                            <label class="role-option">
+
+                                <input type="radio"
+                                       name="role"
+                                       value="Admin" />
+
+                                <span>
+
+                                    <i class="fa-solid fa-user-shield"></i>
+
+                                    Admin
+
+                                </span>
+
+                            </label>
+
+
+                        </div>
+                        <br />
+
+                        <!-- LOGIN BUTTON -->
+
+                        <button type="submit">
+
+                            Login
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- ERROR MESSAGE -->
+
+                    @if (ViewBag.Message != null)
+                    {
+
+                        <div class="error-message">
+
+                            @Html.Raw(ViewBag.Message)
+
+                        </div>
+
+                    }
+
+                </form>
+
+
+                <div class="footer">
+
+                    <small>
+                        © @DateTime.Now.Year Nelson Mandela University Record System
+                    </small>
+
                 </div>
 
-                <button type="submit" class="btn-login">
-                    Login
-                </button>
-                <p style="color:red">
-                    @ViewBag.Message
-                </p>
-
-                <p class="error">
-                    @ViewBag.Error
-                </p>
-
-            </form>
+            </div>
 
         </div>
 
     </div>
-
-    <script>
-
-        function togglePassword() {
-
-            var password = document.getElementById("password");
-            var icon = document.getElementById("eyeIcon");
-
-            if (password.type === "password") {
-
-                password.type = "text";
-                icon.className = "fa-solid fa-eye-slash";
-
-            } else {
-
-                password.type = "password";
-                icon.className = "fa-solid fa-eye";
-
-            }
-
-        }
-
-    </script>
-
+    <script src="~/Scripts/Login.js"></script>
 </body>
-
 </html>

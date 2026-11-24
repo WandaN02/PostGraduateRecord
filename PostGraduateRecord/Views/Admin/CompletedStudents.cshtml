@@ -1,0 +1,170 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Student>
+
+@{
+    ViewBag.Title = "Completed Students";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="reports-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+                <i class="fas fa-user-graduate"></i>
+                Completed Students
+            </h2>
+
+            <p>
+                Students who have completed all postgraduate research stages.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- COMPLETED STUDENTS -->
+
+    <div class="report-section">
+
+        <div class="report-section-header">
+
+            <div>
+
+                <h3>
+                    <i class="fas fa-check-circle"></i>
+                    Completed Postgraduate Students
+                </h3>
+
+                <p>
+                    Students who have completed all 8 stages of the postgraduate research process.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        @if (Model != null && Model.Any())
+        {
+
+            <div class="table-wrapper">
+
+                <table class="report-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Student Number</th>
+
+                            <th>Student Name</th>
+
+                            <th>Qualification</th>
+
+                            <th>Study Type</th>
+
+                            <th>Registration Year</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @foreach (var student in Model)
+                        {
+
+                            <tr>
+
+                                <td>
+                                    @student.User.StudentNumber
+                                </td>
+
+                                <td>
+
+                                    <strong>
+                                        @student.User.FirstName
+                                        @student.User.LastName
+                                    </strong>
+
+                                </td>
+
+                                <td>
+                                    @student.Qualification
+                                </td>
+
+                                <td>
+                                    @student.StudyType
+                                </td>
+
+                                <td>
+                                    @student.RegistrationYear
+                                </td>
+
+                                <td>
+
+                                    <span class="status-badge completed">
+
+                                        <i class="fas fa-check-circle"></i>
+
+                                        Completed
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        }
+        else
+        {
+
+            <div class="empty-state">
+
+                <i class="fas fa-user-graduate"></i>
+
+                <h3>
+                    No Completed Students
+                </h3>
+
+                <p>
+                    No postgraduate students have completed all research stages yet.
+                </p>
+
+            </div>
+
+        }
+
+    </div>
+
+
+    <!-- BACK TO REPORTS -->
+
+    <br />
+
+    <a href="@Url.Action("Reports", "Admin")"
+       class="back-button">
+
+
+        <i class="fas fa-arrow-left"></i>
+        Back to Reports
+
+    </a>
+
+</div>

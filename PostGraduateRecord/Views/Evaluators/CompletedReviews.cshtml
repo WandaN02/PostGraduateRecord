@@ -1,0 +1,615 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Evaluation>
+
+@{
+    ViewBag.Title = "Completed Reviews";
+    Layout = "~/Views/Shared/_EvaluatorLayout.cshtml";
+}
+
+
+<div class="completed-reviews-page">
+
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-label">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                EVALUATOR WORKSPACE
+
+            </div>
+
+
+            <h2>
+
+                Completed Reviews
+
+            </h2>
+
+
+            <p>
+
+                View evaluations you have already completed.
+
+            </p>
+
+        </div>
+
+
+        <div class="header-icon">
+
+            <i class="fa-solid fa-clipboard-check"></i>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         COMPLETED REVIEWS
+         ===================================================== -->
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="evaluation-list">
+
+            @foreach (var evaluation in Model)
+            {
+                <div class="evaluation-item">
+
+
+                    <!-- =================================================
+                         ICON
+                         ================================================= -->
+
+                    <div class="evaluation-icon completed">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         INFORMATION
+                         ================================================= -->
+
+                    <div class="evaluation-info">
+
+                        <div class="evaluation-type">
+
+                            COMPLETED EVALUATION
+
+                        </div>
+
+
+                        <h4>
+
+                            @if (evaluation.Proposal != null)
+                            {
+                                @evaluation.Proposal.Title
+                            }
+                            else
+                            {
+                                <span>Research Proposal</span>
+                            }
+
+                        </h4>
+
+
+                        <!-- STUDENT -->
+
+                        @if (evaluation.Proposal != null &&
+                             evaluation.Proposal.Student != null &&
+                             evaluation.Proposal.Student.User != null)
+                        {
+                            <p class="student-info">
+
+                                <i class="fa-solid fa-user-graduate"></i>
+
+                                <strong>Student:</strong>
+
+                                @evaluation.Proposal.Student.User.FirstName
+                                @evaluation.Proposal.Student.User.LastName
+
+                            </p>
+                        }
+
+
+                        <!-- RECOMMENDATION -->
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            evaluation.Recommendation))
+                        {
+                            <span class="recommendation">
+
+                                <i class="fa-solid fa-check"></i>
+
+                                @evaluation.Recommendation
+
+                            </span>
+                        }
+
+
+                        <!-- COMPLETED DATE -->
+
+                        @if (evaluation.EvaluationDate.HasValue)
+                        {
+                            <p class="completed-date">
+
+                                <i class="fa-solid fa-calendar-check"></i>
+
+                                Completed:
+
+                                <strong>
+                                    @evaluation.EvaluationDate.Value.ToString(
+                                        "dd MMM yyyy HH:mm")
+                                </strong>
+
+                            </p>
+                        }
+
+                    </div>
+
+
+                    <!-- =================================================
+                         VIEW ACTION
+                         ================================================= -->
+
+                    <div class="evaluation-action">
+
+                        <a href="@Url.Action(
+                                    "Review",
+                                    "Evaluators",
+                                    new
+                                    {
+                                        id = evaluation.EvaluationID
+                                    })"
+                           class="view-button">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                            View
+
+                            <i class="fa-solid fa-arrow-right arrow"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <!-- =====================================================
+             EMPTY STATE
+             ===================================================== -->
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+
+                <i class="fa-solid fa-folder-open"></i>
+
+            </div>
+
+
+            <h3>
+
+                No Completed Reviews
+
+            </h3>
+
+
+            <p>
+
+                You have not completed any evaluations yet.
+
+            </p>
+
+        </div>
+    }
+
+
+    <!-- =====================================================
+         BACK TO DASHBOARD
+         ===================================================== -->
+
+    <div class="back-button-container">
+
+        <a href="@Url.Action("Dashboard", "Evaluators")"
+           class="back-dashboard-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+
+<style>
+
+
+    /* =====================================================
+       PAGE
+       ===================================================== */
+
+    .completed-reviews-page {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 25px 10px 50px;
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .page-header {
+        background: #002b5c;
+        color: white;
+        border-radius: 14px;
+        padding: 24px 28px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+
+    .page-label {
+        color: #FDB913;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+    }
+
+
+    .page-header h2 {
+        margin: 0;
+        color: white;
+        font-size: 27px;
+        font-weight: 700;
+    }
+
+
+    .page-header p {
+        margin: 5px 0 0;
+        color: #d8e3ee;
+        font-size: 13px;
+    }
+
+
+    .header-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 11px;
+        background: #FDB913;
+        color: #002b5c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+
+    /* =====================================================
+       EVALUATION LIST
+       ===================================================== */
+
+    .evaluation-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+
+    /* =====================================================
+       EVALUATION ITEM
+       ===================================================== */
+
+    .evaluation-item {
+        background: white;
+        border: 1px solid #e0e5ea;
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        transition: .2s ease;
+    }
+
+
+        .evaluation-item:hover {
+            border-color: #b9c7d5;
+            box-shadow: 0 5px 16px rgba(0,0,0,.06);
+            transform: translateY(-1px);
+        }
+
+
+    /* =====================================================
+       ICON
+       ===================================================== */
+
+    .evaluation-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+
+        .evaluation-icon.completed {
+            background: #e8f6ed;
+            color: #278653;
+        }
+
+
+    /* =====================================================
+       INFORMATION
+       ===================================================== */
+
+    .evaluation-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+
+    .evaluation-type {
+        font-size: 9px;
+        font-weight: 700;
+        color: #7b8997;
+        letter-spacing: .8px;
+        margin-bottom: 3px;
+    }
+
+
+    .evaluation-info h4 {
+        margin: 0 0 8px;
+        color: #172b4d;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.35;
+    }
+
+
+    /* =====================================================
+       STUDENT
+       ===================================================== */
+
+    .student-info {
+        color: #657586;
+        font-size: 12px;
+        margin: 0 0 10px;
+    }
+
+
+        .student-info i {
+            color: #002b5c;
+            margin-right: 5px;
+        }
+
+
+    /* =====================================================
+       RECOMMENDATION
+       ===================================================== */
+
+    .recommendation {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #e8f6ed;
+        color: #278653;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+
+    /* =====================================================
+       COMPLETED DATE
+       ===================================================== */
+
+    .completed-date {
+        margin: 10px 0 0;
+        color: #7c8996;
+        font-size: 11px;
+    }
+
+
+        .completed-date i {
+            color: #002b5c;
+            margin-right: 4px;
+        }
+
+
+    /* =====================================================
+       VIEW BUTTON
+       ===================================================== */
+
+    .evaluation-action {
+        flex-shrink: 0;
+    }
+
+
+    .view-button {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        background: #002b5c;
+        color: white;
+        padding: 10px 14px;
+        border-radius: 7px;
+        text-decoration: none !important;
+        font-size: 11px;
+        font-weight: 600;
+        transition: .2s ease;
+    }
+
+
+        .view-button:hover {
+            background: #001f43;
+            color: white;
+            text-decoration: none !important;
+        }
+
+
+        .view-button .arrow {
+            color: #FDB913;
+            margin-left: 3px;
+            transition: transform .2s ease;
+        }
+
+
+        .view-button:hover .arrow {
+            transform: translateX(4px);
+        }
+
+
+    /* =====================================================
+       EMPTY STATE
+       ===================================================== */
+
+    .empty-state {
+        background: white;
+        border: 1px solid #e0e5ea;
+        border-radius: 12px;
+        text-align: center;
+        padding: 55px 20px;
+    }
+
+
+    .empty-icon {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        background: #eef4f9;
+        color: #002b5c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+
+    .empty-state h3 {
+        color: #172b4d;
+        font-size: 19px;
+        margin-bottom: 6px;
+    }
+
+
+    .empty-state p {
+        color: #7c8996;
+        font-size: 13px;
+        margin: 0;
+    }
+
+
+    /* =====================================================
+       BACK BUTTON
+       ===================================================== */
+
+    .back-button-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        margin-top: 30px;
+    }
+
+
+    .back-dashboard-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: #002147;
+        color: white;
+        border: 1px solid #002147;
+        border-radius: 6px;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all .2s ease;
+    }
+
+
+        .back-dashboard-button:hover {
+            background: #FDB913;
+            color: #002147;
+            border-color: #FDB913;
+            text-decoration: none !important;
+        }
+
+
+        .back-dashboard-button i {
+            font-size: 12px;
+            transition: transform .2s ease;
+        }
+
+
+        .back-dashboard-button:hover i {
+            transform: translateX(-3px);
+        }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 800px) {
+
+        .evaluation-item {
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+
+        .evaluation-info {
+            width: calc(100% - 70px);
+        }
+
+
+        .evaluation-action {
+            width: 100%;
+            margin-left: 66px;
+        }
+
+
+        .view-button {
+            justify-content: center;
+        }
+
+
+        .back-button-container {
+            justify-content: stretch;
+        }
+
+
+        .back-dashboard-button {
+            width: 100%;
+        }
+    }
+</style>

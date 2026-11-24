@@ -1,0 +1,122 @@
+﻿@model PostGraduateRecord.ViewModels.ProposalReviewViewModel
+
+@{
+    ViewBag.Title = "View Proposal";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<div class="dashboard-header">
+    <h2>@Model.Proposal.Title</h2>
+    <h4>Proposal Details</h4>
+</div>
+
+<hr />
+
+<div class="proposal-details-card">
+
+    <div class="detail-row">
+        <strong>Student</strong>
+        <span>
+            @Model.Proposal.Student.User.FirstName
+            @Model.Proposal.Student.User.LastName
+        </span>
+    </div>
+
+
+    <div class="detail-row">
+        <strong>Student Number</strong>
+        <span>
+            @Model.Proposal.Student.User.StudentNumber
+        </span>
+    </div>
+
+
+    <div class="detail-row">
+        <strong>Research Field</strong>
+        <span>
+            @Model.Proposal.ResearchField
+        </span>
+    </div>
+
+
+    <div class="detail-row">
+        <strong>Status</strong>
+        <span class="status-badge">
+            @Model.Proposal.Status
+        </span>
+    </div>
+
+
+    <div class="detail-row">
+        <strong>Submission Date</strong>
+        <span>
+            @(Model.Proposal.SubmissionDate.HasValue
+                ? Model.Proposal.SubmissionDate.Value.ToString("dd MMM yyyy")
+                : "N/A")
+        </span>
+    </div>
+
+
+    <div class="detail-row">
+        <strong>Abstract</strong>
+        <p>
+            @Model.Proposal.Abstract
+        </p>
+    </div>
+
+</div>
+
+
+<hr />
+
+
+<h4>Supervisor Decision</h4>
+
+
+@using (Html.BeginForm("Review", "Supervisors", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(m => m.Proposal.ProposalID)
+
+
+    <div class="mt-4">
+
+
+        <button type="submit"
+                name="Decision"
+                value="Approved"
+                class="btn btn-success">
+
+            <i class="fa-solid fa-check"></i>
+            Approve
+
+        </button>
+
+
+
+        <button type="submit"
+                name="Decision"
+                value="Revision Required"
+                class="btn btn-warning">
+
+            <i class="fa-solid fa-pen"></i>
+            Request Revisions
+
+        </button>
+
+
+
+        <button type="submit"
+                name="Decision"
+                value="Rejected"
+                class="btn btn-danger">
+
+            <i class="fa-solid fa-times"></i>
+            Reject
+
+        </button>
+
+
+    </div>
+}

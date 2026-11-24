@@ -1,93 +1,1136 @@
-﻿@{
+﻿@model PostGraduateRecord.Models.Student
+
+@{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
+
+    var application = ViewBag.Application;
+    var assignment = ViewBag.Assignment;
+    var proposal = ViewBag.Proposal;
+    var releasedEvaluation = ViewBag.ReleasedEvaluation;
+    var ethics = ViewBag.Ethics;
+    var thesis = ViewBag.Thesis;
+
+    string nextMilestone = ViewBag.NextMilestone as string;
+    string currentStage = ViewBag.CurrentStage as string;
 }
 
-<div class="dashboard-header">
 
-    
-        <h2>
-            Welcome, @Session["StudentName"]
-        </h2>
-  
-    <p>
-        Student Dashboard - SPGS Record Management System
-    </p>
+<!-- ========================================================= -->
+<!-- AI RESEARCH ASSISTANT CSS -->
+<!-- ========================================================= -->
 
-</div>
+<style>
 
-<div class="dashboard-grid">
+    /* =========================
+       AI RESEARCH ASSISTANT
+       ========================= */
 
-    <!-- Research Proposal -->
-    <div class="dashboard-box">
+    .ai-research-card {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+
+        width: 100%;
+        box-sizing: border-box;
+
+        margin: 30px 0;
+        padding: 25px 30px;
+
+        background: #ffffff;
+
+        border: 1px solid #e5e7eb;
+        border-left: 5px solid #FDB913;
+
+        border-radius: 12px;
+
+        box-shadow: 0 4px 12px rgba(0, 27, 68, 0.08);
+
+        transition: transform 0.2s ease,
+                    box-shadow 0.2s ease;
+    }
+
+
+    .ai-research-card:hover {
+        transform: translateY(-2px);
+
+        box-shadow: 0 6px 18px rgba(0, 27, 68, 0.12);
+    }
+
+
+    /* =========================
+       AI ICON
+       ========================= */
+
+    .ai-icon {
+        width: 60px;
+        height: 60px;
+
+        min-width: 60px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #001B44;
+
+        color: #FDB913;
+
+        border-radius: 50%;
+
+        font-size: 26px;
+    }
+
+
+    /* =========================
+       AI CONTENT
+       ========================= */
+
+    .ai-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+
+    .ai-content h2 {
+        margin: 0 0 6px 0;
+
+        color: #001B44;
+
+        font-size: 22px;
+
+        font-weight: 700;
+    }
+
+
+    .ai-content p {
+        margin: 0 0 15px 0;
+
+        color: #666666;
+
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       AI OPTIONS
+       ========================= */
+
+    .ai-options {
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+    }
+
+
+    .ai-options span {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 7px;
+
+        padding: 7px 12px;
+
+        background: #f5f7fa;
+
+        color: #001B44;
+
+        border-radius: 6px;
+
+        font-size: 13px;
+
+        font-weight: 600;
+    }
+
+
+    .ai-options i {
+        color: #FDB913;
+    }
+
+
+    /* =========================
+       ASK AI BUTTON
+       ========================= */
+
+    .ai-action {
+        flex-shrink: 0;
+    }
+
+
+    .ai-action a {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 8px;
+
+        padding: 11px 20px;
+
+        background: #001B44;
+
+        color: #ffffff;
+
+        text-decoration: none;
+
+        border-radius: 6px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: background 0.2s ease;
+    }
+
+
+    .ai-action a:hover {
+        background: #00316f;
+
+        color: #ffffff;
+
+        text-decoration: none;
+    }
+
+
+    /* =========================
+       MOBILE
+       ========================= */
+    @@media (max-width: 768px){
+
+        .ai-research-card {
+            flex-direction: column;
+
+            align-items: flex-start;
+
+            padding: 20px;
+        }
+
+
+        .ai-content {
+            width: 100%;
+        }
+
+
+        .ai-options {
+            width: 100%;
+        }
+
+
+        .ai-action {
+            width: 100%;
+        }
+
+
+        .ai-action a {
+            width: 100%;
+        }
+
+    }
+
+    /* =========================================================
+   RELEASED EVALUATOR EVALUATION
+   ========================================================= */
+
+    .dashboard-evaluation-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        margin-top: 10px;
+        padding: 9px 14px;
+        background: #FDB913;
+        color: #001B44 !important;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: all 0.2s ease;
+    }
+
+        .dashboard-evaluation-link:hover {
+            background: #001B44;
+            color: #FFFFFF !important;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+</style>
+
+
+<div class="student-dashboard">
+
+    <!-- ========================================================= -->
+    <!-- WELCOME -->
+    <!-- ========================================================= -->
+
+    <div class="dashboard-welcome">
+
+        <h1>
+            Welcome back, @ViewBag.StudentName
+            <span class="welcome-hand">👋</span>
+        </h1>
+
+        <p>
+            Here's an overview of your postgraduate research progress.
+        </p>
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- SUMMARY CARDS -->
+    <!-- ========================================================= -->
+
+    <div class="dashboard-cards">
+
+
+        <!-- ===================================================== -->
+        <!-- RESEARCH PROPOSAL -->
+        <!-- ===================================================== -->
+
+        <div class="dashboard-card proposal-card">
+
+            <div class="card-icon">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+
+            <div class="card-content">
+
+                <h2>
+                    Research Proposal
+                </h2>
+
+                <p>
+                    View your proposal details and current status.
+                </p>
+
+                @if (proposal != null)
+                {
+                    <span class="status-badge status-submitted">
+                        @proposal.Status
+                    </span>
+                }
+                else
+                {
+                    <span class="status-badge status-pending">
+                        Not Submitted
+                    </span>
+                }
+
+            </div>
+            <div class="card-link">
+
+                <a href="@Url.Action("Proposal", "Student")">
+
+                    View Proposal
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- ETHICS APPLICATION -->
+        <!-- ===================================================== -->
+
+        <div class="dashboard-card ethics-card">
+
+            <div class="card-icon">
+
+                <i class="fa-solid fa-scale-balanced"></i>
+
+            </div>
+
+            <div class="card-content">
+
+                <h2>
+                    Ethics Application
+                </h2>
+
+                <p>
+                    View your ethics application and approval status.
+                </p>
+
+                @if (ethics != null)
+                {
+                    <span class="status-badge status-approved">
+                        @ethics.Status
+                    </span>
+                }
+                else
+                {
+                    <span class="status-badge status-pending">
+                        Not Submitted
+                    </span>
+                }
+
+            </div>
+
+            <div class="card-link">
+
+                <a href="@Url.Action("Ethics", "Student")">
+
+                    View Ethics
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- NEXT MILESTONE -->
+        <!-- ===================================================== -->
+
+        <div class="dashboard-card milestone-card">
+
+            <div class="card-icon">
+
+                <i class="fa-solid fa-bullseye"></i>
+
+            </div>
+
+            <div class="card-content">
+
+                <h2>
+                    Next Milestone
+                </h2>
+
+                <p>
+                    Your next step in your postgraduate research journey.
+                </p>
+
+                <span class="status-badge status-next">
+                    @nextMilestone
+                </span>
+
+            </div>
+
+            <div class="card-link">
+
+                <a href="@Url.Action("Submissions", "Student")">
+
+                    View Progress
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- RESEARCH JOURNEY -->
+    <!-- ========================================================= -->
+
+    <div class="research-journey">
+
+
+        <!-- ===================================================== -->
+        <!-- JOURNEY HEADER -->
+        <!-- ===================================================== -->
+
+        <div class="journey-header">
+
+            <div>
+
+                <h2>
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    Research Journey / Progress
+
+                </h2>
+
+                <p>
+
+                    Track your progress through your postgraduate research journey.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- JOURNEY TIMELINE -->
+        <!-- ===================================================== -->
+
+        <div class="journey-timeline">
+
+
+            <!-- ================================================= -->
+            <!-- APPLICATION -->
+            <!-- ================================================= -->
+
+            <div class="journey-step
+               @(application != null && application.Status == "Approved"
+                   ? "completed"
+                   : currentStage == "Application" ||
+                     currentStage == "Submit Application"
+                       ? "current"
+                       : "")">
+
+                <div class="step-circle">
+
+                    @if (application != null &&
+                         application.Status == "Approved")
+                    {
+                        <i class="fa-solid fa-check"></i>
+                    }
+                    else
+                    {
+                        <span>1</span>
+                    }
+
+                </div>
+
+                <h3>
+                    Application
+                </h3>
+
+                <span class="step-status">
+
+                    @if (application == null)
+                    {
+                        @:Pending
+                    }
+                    else
+                    {
+                        @application.Status
+                    }
+
+                </span>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SUPERVISOR -->
+            <!-- ================================================= -->
+
+            <div class="journey-step
+               @(assignment != null
+                   ? "completed"
+                   : currentStage == "Supervisor Assignment"
+                       ? "current"
+                       : "")">
+
+                <div class="step-circle">
+
+                    @if (assignment != null)
+                    {
+                        <i class="fa-solid fa-check"></i>
+                    }
+                    else
+                    {
+                        <span>2</span>
+                    }
+
+                </div>
+
+                <h3>
+                    Supervisor Assigned
+                </h3>
+
+                <span class="step-status">
+
+                    @if (assignment != null)
+                    {
+                        @:Assigned
+                    }
+                    else
+                    {
+                        @:Pending
+                    }
+
+                </span>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- RESEARCH PROPOSAL -->
+            <!-- ================================================= -->
+
+            <div class="journey-step
+               @(proposal != null
+                   ? "completed"
+                   : currentStage == "Research Proposal"
+                       ? "current"
+                       : "")">
+
+                <div class="step-circle">
+
+                    @if (proposal != null)
+                    {
+                        <i class="fa-solid fa-check"></i>
+                    }
+                    else
+                    {
+                        <span>3</span>
+                    }
+
+                </div>
+
+                <h3>
+                    Research Proposal
+                </h3>
+
+                <span class="step-status">
+
+                    @if (proposal != null)
+                    {
+                        @proposal.Status
+                    }
+                    else
+                    {
+                        @:Pending
+                    }
+
+                </span>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- ETHICS -->
+            <!-- ================================================= -->
+
+            <div class="journey-step
+               @(ethics != null
+                   ? "completed"
+                   : currentStage == "Ethics Application"
+                       ? "current"
+                       : "")">
+
+                <div class="step-circle">
+
+                    @if (ethics != null)
+                    {
+                        <i class="fa-solid fa-check"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-solid fa-pen"></i>
+                    }
+
+                </div>
+
+                <h3>
+                    Ethics Application
+                </h3>
+
+                <span class="step-status">
+
+                    @if (ethics != null)
+                    {
+                        @ethics.Status
+                    }
+                    else
+                    {
+                        @:Pending
+                    }
+
+                </span>
+
+            </div>
+
+
+
+            <!-- ================================================= -->
+            <!-- FINAL DISSERTATION -->
+            <!-- ================================================= -->
+
+            <div class="journey-step
+               @(thesis != null
+                   ? "completed"
+                   : currentStage == "Final Dissertation"
+                       ? "current"
+                       : "")">
+
+                <div class="step-circle">
+
+                    @if (thesis != null)
+                    {
+                        <i class="fa-solid fa-check"></i>
+                    }
+                    else
+                    {
+                        <span>5</span>
+                    }
+
+                </div>
+
+                <h3>
+                    Final Dissertation
+                </h3>
+
+                <span class="step-status">
+
+                    @if (thesis != null)
+                    {
+                        @thesis.Status
+                    }
+                    else
+                    {
+                        @:Pending
+                    }
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ===================================================== -->
+        <!-- PROGRESS MESSAGE -->
+        <!-- ===================================================== -->
+
+        <div class="progress-message">
+
+            @if (nextMilestone == "Research Completed")
+            {
+                <i class="fa-solid fa-circle-check"></i>
+
+                <strong>
+                    Congratulations!
+                </strong>
+
+                <span>
+                    You have completed all stages of your postgraduate research journey.
+                </span>
+            }
+            else if (nextMilestone == "Application Rejected")
+            {
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <strong>
+                    Application Rejected
+                </strong>
+
+                <span>
+                    Please review your application status and any available feedback.
+                </span>
+            }
+            else
+            {
+                <i class="fa-solid fa-circle-info"></i>
+
+                <strong>
+                    Keep going!
+                </strong>
+
+                <span>
+                    Continue completing each stage of your postgraduate research journey.
+                </span>
+            }
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- AI RESEARCH ASSISTANT -->
+    <!-- ========================================================= -->
+
+    <div class="ai-research-card">
+
+
+        <!-- AI ICON -->
+
+        <div class="ai-icon">
+
+            <i class="fa-solid fa-robot"></i>
+
+        </div>
+
+
+        <!-- AI CONTENT -->
+
+        <div class="ai-content">
+
+            <h2>
+                AI Research Assistant
+            </h2>
+
+            <p>
+                Get helpful guidance throughout your postgraduate research journey.
+            </p>
+
+
+            <!-- AI OPTIONS -->
+
+            <div class="ai-options">
+
+                <span>
+
+                    <i class="fa-solid fa-lightbulb"></i>
+
+                    Research Topics
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-pen-to-square"></i>
+
+                    Research Questions
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-book"></i>
+
+                    Methodology
+
+                </span>
+
+
+                <span>
+
+                    <i class="fa-solid fa-file-lines"></i>
+
+                    Academic Writing
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ASK AI BUTTON -->
+
+        <div class="ai-action">
+
+            <a href="@Url.Action("AI", "Student")">
+
+                Ask AI
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================================= -->
+    <!-- RESEARCH JOURNEY -->
+    <!-- ========================================================= -->
+    <!--<div class="research-journey">-->
+    <!-- ===================================================== -->
+    <!-- JOURNEY HEADER -->
+    <!-- ===================================================== -->
+    <!--<div class="journey-header">
+
+        <div>
+
+            <h2>
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Research Journey / Progress
+
+            </h2>
+
+            <p>
+
+                Track your progress through your postgraduate research journey.
+
+            </p>
+
+        </div>
+
+    </div>-->
+    <!-- ===================================================== -->
+    <!-- JOURNEY TIMELINE -->
+    <!-- ===================================================== -->
+    <!--<div class="journey-timeline">-->
+    <!-- ================================================= -->
+    <!-- APPLICATION -->
+    <!-- ================================================= -->
+    <!--<div class="journey-step
+        @(application != null && application.Status == "Approved"
+            ? "completed"
+            : currentStage == "Application" ||
+              currentStage == "Submit Application"
+                ? "current"
+                : "")">
+
+        <div class="step-circle">
+
+            @if (application != null &&
+                 application.Status == "Approved")
+            {
+                <i class="fa-solid fa-check"></i>
+            }
+            else
+            {
+                <span>1</span>
+            }
+
+        </div>
 
         <h3>
-            <i class="fa-solid fa-file-lines"></i>
+            Application
+        </h3>
+
+        <span class="step-status">
+
+            @if (application == null)
+            {
+                @:Pending
+            }
+            else
+            {
+                @application.Status
+            }
+
+        </span>
+
+    </div>-->
+    <!-- ================================================= -->
+    <!-- SUPERVISOR -->
+    <!-- ================================================= -->
+    <!--<div class="journey-step
+        @(assignment != null
+            ? "completed"
+            : currentStage == "Supervisor Assignment"
+                ? "current"
+                : "")">
+
+        <div class="step-circle">
+
+            @if (assignment != null)
+            {
+                <i class="fa-solid fa-check"></i>
+            }
+            else
+            {
+                <span>2</span>
+            }
+
+        </div>
+
+        <h3>
+            Supervisor Assigned
+        </h3>
+
+        <span class="step-status">
+
+            @if (assignment != null)
+            {
+                @:Assigned
+            }
+            else
+            {
+                @:Pending
+            }
+
+        </span>
+
+    </div>-->
+    <!-- ================================================= -->
+    <!-- RESEARCH PROPOSAL -->
+    <!-- ================================================= -->
+    <!--<div class="journey-step
+        @(proposal != null
+            ? "completed"
+            : currentStage == "Research Proposal"
+                ? "current"
+                : "")">
+
+        <div class="step-circle">
+
+            @if (proposal != null)
+            {
+                <i class="fa-solid fa-check"></i>
+            }
+            else
+            {
+                <span>3</span>
+            }
+
+        </div>
+
+        <h3>
             Research Proposal
         </h3>
 
-        <p>
-            View your proposal details and current status.
-        </p>
+        <span class="step-status">
 
-        <a href="@Url.Action("Proposal","Student")">
-            View Proposal →
-        </a>
+            @if (proposal != null)
+            {
+                @proposal.Status
+            }
+            else
+            {
+                @:Pending
+            }
 
-    </div>
+        </span>
 
-    <!-- Ethics -->
-    <div class="dashboard-box">
+    </div>-->
+    <!-- ================================================= -->
+    <!-- ETHICS -->
+    <!-- ================================================= -->
+    <!--<div class="journey-step
+        @(ethics != null
+            ? "completed"
+            : currentStage == "Ethics Application"
+                ? "current"
+                : "")">
+
+        <div class="step-circle">
+
+            @if (ethics != null)
+            {
+                <i class="fa-solid fa-check"></i>
+            }
+            else
+            {
+                <i class="fa-solid fa-pen"></i>
+            }
+
+        </div>
 
         <h3>
-            <i class="fa-solid fa-scale-balanced"></i>
             Ethics Application
         </h3>
 
-        <p>
-            View your ethics application and approval status.
-        </p>
+        <span class="step-status">
 
-        <a href="@Url.Action("Ethics","Student")">
-            View Ethics →
-        </a>
+            @if (ethics != null)
+            {
+                @ethics.Status
+            }
+            else
+            {
+                @:Pending
+            }
 
-    </div>
+        </span>
 
-    <!-- Submission -->
-    <div class="dashboard-box">
+    </div>-->
+    <!-- ================================================= -->
+    <!-- FINAL DISSERTATION -->
+    <!-- ================================================= -->
+    <!--<div class="journey-step
+            @(thesis != null
+                ? "completed"
+                : currentStage == "Final Dissertation"
+                    ? "current"
+                    : "")">
 
-        <h3>
-            <i class="fa-solid fa-cloud-arrow-up"></i>
-            Latest Submission
-        </h3>
+            <div class="step-circle">
 
-        <p>
-            View your latest research submission.
-        </p>
+                @if (thesis != null)
+                {
+                    <i class="fa-solid fa-check"></i>
+                }
+                else
+                {
+                    <span>5</span>
+                }
 
-        <a href="@Url.Action("Submissions","Student")">
-            View Submission →
-        </a>
+            </div>
 
-    </div>
+            <h3>
+                Final Dissertation
+            </h3>
 
-    <!-- Notifications -->
-    <div class="dashboard-box">
+            <span class="step-status">
 
-        <h3>
-            <i class="fa-solid fa-bell"></i>
-            Notifications
-        </h3>
+                @if (thesis != null)
+                {
+                    @thesis.Status
+                }
+                else
+                {
+                    @:Pending
+                }
 
-        <p>
-            View your latest notifications from the system.
-        </p>
+            </span>
 
-        <a href="#">
-            View Notifications →
-        </a>
+        </div>
 
-    </div>
+
+    </div>-->
+    <!-- ===================================================== -->
+    <!-- PROGRESS MESSAGE -->
+    <!-- ===================================================== -->
+    <!--<div class="progress-message">
+
+            @if (nextMilestone == "Research Completed")
+            {
+                <i class="fa-solid fa-circle-check"></i>
+
+                <strong>
+                    Congratulations!
+                </strong>
+
+                <span>
+                    You have completed all stages of your postgraduate research journey.
+                </span>
+            }
+            else if (nextMilestone == "Application Rejected")
+            {
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                <strong>
+                    Application Rejected
+                </strong>
+
+                <span>
+                    Please review your application status and any available feedback.
+                </span>
+            }
+            else
+            {
+                <i class="fa-solid fa-circle-info"></i>
+
+                <strong>
+                    Keep going!
+                </strong>
+
+                <span>
+                    Continue completing each stage of your postgraduate research journey.
+                </span>
+            }
+
+        </div>
+
+
+    </div>-->
 
 </div>

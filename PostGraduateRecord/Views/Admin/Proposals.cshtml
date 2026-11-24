@@ -1,0 +1,92 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Proposal>
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h2>Submitted Proposals</h2>
+
+
+<table class="table table-bordered">
+
+    <tr>
+
+        <th>
+            Student
+        </th>
+
+        <th>
+            Title
+        </th>
+
+        <th>
+            Research Field
+        </th>
+
+        <th>
+            Status
+        </th>
+
+        <th>
+            Action
+        </th>
+
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+
+            <td>
+                @item.Student.User.FirstName
+                @item.Student.User.LastName
+            </td>
+
+
+            <td>
+                @item.Title
+            </td>
+
+
+            <td>
+                @item.ResearchField
+            </td>
+
+
+            <td>
+                @item.Status
+            </td>
+
+
+            <td>
+
+                @if (item.Status == "Assigned")
+                {
+                    <span class="badge bg-success">
+                        Supervisor Assigned
+                    </span>
+                }
+                else
+                {
+                    <a href="@Url.Action("AssignProposal",
+            "Admin",
+            new { id = item.ProposalID })"
+                       class="btn btn-primary">
+
+                        Assign Supervisor
+
+                    </a>
+                }
+
+            </td>
+
+
+        </tr>
+
+    }
+
+</table>
+

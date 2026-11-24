@@ -1,0 +1,83 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Notification>
+
+@{
+    ViewBag.Title = "Notifications";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h2>Notifications</h2>
+
+<p>
+    View your latest system notifications and activities.
+</p>
+
+<!-- BACK TO DASHBOARD -->
+<!--<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>-->
+
+<div class="notifications-container">
+
+    @if (Model.Any())
+    {
+        foreach (var notification in Model)
+        {
+            <div class="notification-item @(notification.IsRead == true ? "read" : "unread")">
+
+                <div class="notification-icon">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                </div>
+
+
+                <div class="notification-content">
+
+                    <p>
+                        @notification.Message
+                    </p>
+
+
+                    <small>
+
+                        @(notification.SentDate.HasValue
+                            ? notification.SentDate.Value.ToString("dd MMM yyyy HH:mm")
+                            : "Date not available")
+
+                    </small>
+
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-notifications">
+
+            <i class="fa-solid fa-bell-slash"></i>
+
+            <p>
+                You have no notifications.
+            </p>
+
+        </div>
+    }
+
+    <!-- BACK TO DASHBOARD -->
+    <a href="@Url.Action("Dashboard", "Admin")"
+       class="back-button">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Dashboard
+
+    </a>
+
+</div>

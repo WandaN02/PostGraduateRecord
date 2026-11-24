@@ -1,0 +1,412 @@
+﻿@model PostGraduateRecord.Models.ProgressReport
+
+@{
+    ViewBag.Title = "Progress Report";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<style>
+
+    .progress-report-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .page-label {
+        color: #FDB913;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+
+    .page-title {
+        color: #001B44;
+        font-size: 30px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .page-description {
+        color: #6c757d;
+        margin-top: 8px;
+        font-size: 15px;
+    }
+
+    .report-card {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 28px;
+        margin-bottom: 22px;
+        box-shadow: 0 4px 18px rgba(0, 27, 68, 0.08);
+        border: 1px solid #e8edf3;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #001B44;
+        font-size: 19px;
+        font-weight: 700;
+        margin: 0 0 22px 0;
+        padding-bottom: 14px;
+        border-bottom: 2px solid #FDB913;
+    }
+
+        .section-title i {
+            color: #FDB913;
+        }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .info-item {
+        background: #f5f7fa;
+        border-radius: 9px;
+        padding: 15px;
+    }
+
+    .info-label {
+        display: block;
+        color: #6c757d;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 6px;
+    }
+
+    .info-value {
+        color: #001B44;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .research-title {
+        background: #f5f7fa;
+        border-left: 4px solid #FDB913;
+        border-radius: 8px;
+        padding: 18px;
+        color: #001B44;
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+    .text-section {
+        margin-bottom: 22px;
+    }
+
+        .text-section:last-child {
+            margin-bottom: 0;
+        }
+
+    .text-label {
+        color: #001B44;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .text-content {
+        background: #f8f9fb;
+        border-radius: 9px;
+        padding: 17px;
+        color: #444444;
+        font-size: 14px;
+        line-height: 1.7;
+        white-space: pre-line;
+    }
+
+    .status-badge {
+        display: inline-block;
+        background: #FDB913;
+        color: #001B44;
+        padding: 8px 16px;
+        border-radius: 7px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 20px;
+        background: #001B44;
+        color: #ffffff;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .back-button:hover {
+            background: #002b68;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+    @@media (max-width: 768px) {
+
+        .progress-report-page {
+            padding: 20px 15px;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+<div class="progress-report-page">
+
+    <!-- ==========================================
+         PAGE HEADER
+         ========================================== -->
+
+    <div class="page-header">
+
+        <div class="page-label">
+            <i class="fa-solid fa-file-circle-check"></i>
+            STUDENT PORTAL
+        </div>
+
+        <h1 class="page-title">
+            Progress Report
+        </h1>
+
+        <div class="page-description">
+            Research progress report issued by your supervisor.
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         REPORT INFORMATION
+         ========================================== -->
+
+    <div class="report-card">
+
+        <h2 class="section-title">
+            <i class="fa-solid fa-file-lines"></i>
+            Report Information
+        </h2>
+
+        <div class="info-grid">
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Report Number
+                </span>
+
+                <span class="info-value">
+                    @(Model.ReportNumber.HasValue
+                        ? "Progress Report " + Model.ReportNumber.Value
+                        : "Progress Report")
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Report Date
+                </span>
+
+                <span class="info-value">
+                    @(Model.ReportDate.HasValue
+                        ? Model.ReportDate.Value.ToString("dd MMMM yyyy")
+                        : "N/A")
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Reporting Period
+                </span>
+
+                <span class="info-value">
+                    @Model.ReportingPeriod
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Status
+                </span>
+
+                <span class="status-badge">
+                    @Model.Status
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         RESEARCH INFORMATION
+         ========================================== -->
+
+    <div class="report-card">
+
+        <h2 class="section-title">
+            <i class="fa-solid fa-book-open"></i>
+            Research Information
+        </h2>
+
+        <div class="research-title">
+
+            @(Model.Proposal != null
+                ? Model.Proposal.Title
+                : "Research Proposal")
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         RESEARCH PROGRESS
+         ========================================== -->
+
+    <div class="report-card">
+
+        <h2 class="section-title">
+            <i class="fa-solid fa-chart-line"></i>
+            Research Progress
+        </h2>
+
+
+        <div class="text-section">
+
+            <div class="text-label">
+                Progress Summary
+            </div>
+
+            <div class="text-content">
+                @Model.Summary
+            </div>
+
+        </div>
+
+
+        <div class="text-section">
+
+            <div class="text-label">
+                Current Progress
+            </div>
+
+            <div class="text-content">
+                @Model.CurrentProgress
+            </div>
+
+        </div>
+
+
+        <div class="text-section">
+
+            <div class="text-label">
+                Challenges
+            </div>
+
+            <div class="text-content">
+
+                @(string.IsNullOrWhiteSpace(Model.Challenges)
+                    ? "No challenges were recorded for this reporting period."
+                    : Model.Challenges)
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         SUPERVISOR FEEDBACK
+         ========================================== -->
+
+    <div class="report-card">
+
+        <h2 class="section-title">
+            <i class="fa-solid fa-comment-dots"></i>
+            Supervisor Feedback
+        </h2>
+
+
+        <div class="text-section">
+
+            <div class="text-label">
+                Supervisor Comments
+            </div>
+
+            <div class="text-content">
+
+                @(string.IsNullOrWhiteSpace(Model.SupervisorComments)
+                    ? "No additional comments were provided."
+                    : Model.SupervisorComments)
+
+            </div>
+
+        </div>
+
+
+        <div class="text-section">
+
+            <div class="text-label">
+                Next Steps
+            </div>
+
+            <div class="text-content">
+
+                @(string.IsNullOrWhiteSpace(Model.NextSteps)
+                    ? "No next steps were specified."
+                    : Model.NextSteps)
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         BACK
+         ========================================== -->
+
+    <div>
+
+        <a href="@Url.Action("Dashboard", "Student")"
+           class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>

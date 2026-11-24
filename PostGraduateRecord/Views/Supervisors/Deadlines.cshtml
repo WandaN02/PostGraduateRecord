@@ -1,0 +1,972 @@
+﻿@model IEnumerable<PostGraduateRecord.ViewModels.SupervisorDeadlineViewModel>
+
+@{
+    ViewBag.Title = "Deadlines";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+
+    var deadlines = Model != null
+        ? Model.OrderBy(x => x.Date).ToList()
+        : new List<PostGraduateRecord.ViewModels.SupervisorDeadlineViewModel>();
+
+    var today = DateTime.Today;
+}
+
+<div class="deadline-page">
+
+    <!-- ==========================================
+         PAGE HEADER
+         ========================================== -->
+
+    <div class="agenda-header">
+
+        <div>
+
+            <div class="agenda-kicker">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                SUPERVISOR AGENDA
+
+            </div>
+
+            <h2>
+                Deadlines
+            </h2>
+
+            <p>
+                Keep track of upcoming postgraduate reviews and evaluations.
+            </p>
+
+        </div>
+
+
+        <!-- TODAY -->
+
+        <div class="agenda-today">
+
+            <span>
+                Today
+            </span>
+
+            <strong>
+                @DateTime.Now.ToString("dd")
+            </strong>
+
+            <small>
+                @DateTime.Now.ToString("MMM yyyy")
+            </small>
+
+        </div>
+
+    </div>
+
+
+    @if (deadlines.Any())
+    {
+        <!-- ==========================================
+             AGENDA
+             ========================================== -->
+
+        <div class="agenda-container">
+
+            <!-- AGENDA TITLE -->
+
+            <div class="agenda-title">
+
+                <div>
+
+                    <h3>
+                        Upcoming Schedule
+                    </h3>
+
+                    <span>
+                        @deadlines.Count deadline@(deadlines.Count == 1 ? "" : "s")
+                    </span>
+
+                </div>
+
+                <div class="agenda-line"></div>
+
+            </div>
+
+
+            <!-- ======================================
+                 TIMELINE
+                 ====================================== -->
+
+            <div class="timeline">
+
+                @foreach (var deadline in deadlines)
+                {
+                    bool completed =
+                        deadline.Status == "Completed";
+
+                    bool overdue =
+                        !completed &&
+                        deadline.Date.Date < today;
+
+                    bool todayDeadline =
+                        !completed &&
+                        deadline.Date.Date == today;
+
+
+                    string itemClass = "";
+
+
+                    if (completed)
+                    {
+                        itemClass = "is-completed";
+                    }
+                    else if (overdue)
+                    {
+                        itemClass = "is-overdue";
+                    }
+                    else if (todayDeadline)
+                    {
+                        itemClass = "is-today";
+                    }
+
+
+                    string icon = "fa-file-lines";
+
+
+                    if (deadline.Type == "Ethics Review")
+                    {
+                        icon = "fa-shield-halved";
+                    }
+                    else if (deadline.Type == "Evaluation Deadline")
+                    {
+                        icon = "fa-user-check";
+                    }
+
+
+                    <!-- ==================================
+                         DEADLINE ITEM
+                         ================================== -->
+
+                    <a href="@Url.Action(
+                                deadline.Action,
+                                deadline.Controller,
+                                new { id = deadline.Id })"
+                       class="timeline-item-link">
+
+                        <div class="timeline-item @itemClass">
+
+
+                            <!-- DATE -->
+
+                            <div class="timeline-date">
+
+                                <strong>
+                                    @deadline.Date.ToString("dd")
+                                </strong>
+
+                                <span>
+                                    @deadline.Date.ToString("MMM")
+                                </span>
+
+                                <small>
+                                    @deadline.Date.ToString("yyyy")
+                                </small>
+
+                            </div>
+
+
+                            <!-- MARKER -->
+
+                            <div class="timeline-marker">
+
+                                <div class="timeline-dot">
+
+                                    <i class="fa-solid @icon"></i>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CONTENT -->
+
+                            <div class="timeline-content">
+
+
+                                <!-- TOP -->
+
+                                <div class="timeline-top">
+
+                                    <span class="deadline-type">
+
+                                        @if (deadline.Type == "Proposal Review")
+                                        {
+                                            <i class="fa-solid fa-file-lines"></i>
+                                        }
+                                        else if (deadline.Type == "Ethics Review")
+                                        {
+                                            <i class="fa-solid fa-shield-halved"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa-solid fa-user-check"></i>
+                                        }
+
+                                        @deadline.Type
+
+                                    </span>
+
+
+                                    <!-- STATUS -->
+
+                                    @if (completed)
+                                    {
+                                        <span class="agenda-status completed">
+
+                                            <i class="fa-solid fa-check"></i>
+
+                                            Completed
+
+                                        </span>
+                                    }
+                                    else if (overdue)
+                                    {
+                                        <span class="agenda-status overdue">
+
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                                            Overdue
+
+                                        </span>
+                                    }
+                                    else if (todayDeadline)
+                                    {
+                                        <span class="agenda-status today">
+
+                                            <i class="fa-solid fa-clock"></i>
+
+                                            Due Today
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="agenda-status pending">
+                                            Pending
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <!-- TITLE -->
+
+                                <h4>
+                                    @deadline.Title
+                                </h4>
+
+
+                                <!-- DETAILS -->
+
+                                <div class="timeline-details">
+
+                                    <span>
+
+                                        <i class="fa-solid fa-user-graduate"></i>
+
+                                        @deadline.StudentName
+
+                                    </span>
+
+
+                                    <span>
+
+                                        <i class="fa-solid fa-clock"></i>
+
+                                        @deadline.Date.ToString("HH:mm")
+
+                                    </span>
+
+                                </div>
+
+
+                                <!-- ACTION -->
+
+                                <div class="timeline-action">
+
+                                    @if (completed)
+                                    {
+                                        <span>
+                                            View completed review
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            @deadline.ActionText deadline
+                                        </span>
+                                    }
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </a>
+                }
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- ==========================================
+             EMPTY STATE
+             ========================================== -->
+
+        <div class="empty-agenda">
+
+            <div class="empty-calendar">
+
+                <div class="empty-calendar-top"></div>
+
+                <div class="empty-calendar-body">
+
+                    <i class="fa-regular fa-calendar-check"></i>
+
+                </div>
+
+            </div>
+
+
+            <h3>
+                No Upcoming Deadlines
+            </h3>
+
+
+            <p>
+                You currently have no postgraduate reviews or evaluations
+                requiring your attention.
+            </p>
+
+        </div>
+    }
+
+
+    <!-- =========================================================
+         BACK BUTTON
+         ========================================================= -->
+
+    <div class="deadline-back-container">
+
+        <a href="@Url.Action("Dashboard", "Supervisors")"
+           class="deadline-back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<style>
+
+    /* ==================================================
+       PAGE
+       ================================================== */
+
+    .deadline-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 30px 25px 50px;
+    }
+
+
+    /* ==================================================
+       HEADER
+       ================================================== */
+
+    .agenda-header {
+        background: #002147;
+        color: white;
+        border-radius: 16px;
+        padding: 25px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+
+    .agenda-kicker {
+        color: #FDB913;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.4px;
+        margin-bottom: 5px;
+    }
+
+
+        .agenda-kicker i {
+            margin-right: 5px;
+        }
+
+
+    .agenda-header h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+
+    .agenda-header p {
+        margin: 6px 0 0;
+        color: #d9e2ec;
+        font-size: 14px;
+    }
+
+
+    /* ==================================================
+       TODAY BOX
+       ================================================== */
+
+    .agenda-today {
+        width: 75px;
+        height: 82px;
+        background: white;
+        border-radius: 10px;
+        color: #002147;
+        text-align: center;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+
+
+        .agenda-today span {
+            display: block;
+            background: #FDB913;
+            color: #002147;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px;
+        }
+
+
+        .agenda-today strong {
+            display: block;
+            font-size: 25px;
+            line-height: 27px;
+            margin-top: 5px;
+        }
+
+
+        .agenda-today small {
+            font-size: 10px;
+            color: #777;
+        }
+
+
+    /* ==================================================
+       BACK BUTTON
+       ================================================== */
+
+    .deadline-back-container {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-top: 30px;
+    }
+
+
+    .deadline-back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        background: #002147;
+        color: #ffffff;
+        border: 1px solid #002147;
+        border-radius: 6px;
+        text-decoration: none !important;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+
+        .deadline-back-button:hover {
+            background: #FDB913;
+            color: #002147;
+            border-color: #FDB913;
+            text-decoration: none !important;
+        }
+
+
+    /* ==================================================
+       AGENDA TITLE
+       ================================================== */
+
+    .agenda-title {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+
+        .agenda-title h3 {
+            margin: 0;
+            color: #002147;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+        .agenda-title span {
+            color: #888;
+            font-size: 12px;
+        }
+
+
+    .agenda-line {
+        height: 1px;
+        background: #e2e6ea;
+        flex: 1;
+        margin-left: 20px;
+    }
+
+
+    /* ==================================================
+       TIMELINE
+       ================================================== */
+
+    .timeline {
+        position: relative;
+    }
+
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 92px;
+            top: 15px;
+            bottom: 15px;
+            width: 2px;
+            background: #dfe5eb;
+        }
+
+
+    /* ==================================================
+       ITEM
+       ================================================== */
+
+    .timeline-item-link {
+        display: block;
+        text-decoration: none !important;
+        color: inherit;
+        margin-bottom: 18px;
+    }
+
+
+    .timeline-item {
+        display: grid;
+        grid-template-columns: 65px 55px 1fr;
+        min-height: 130px;
+        position: relative;
+    }
+
+
+    /* ==================================================
+       DATE
+       ================================================== */
+
+    .timeline-date {
+        text-align: right;
+        padding-top: 18px;
+        padding-right: 12px;
+    }
+
+
+        .timeline-date strong {
+            display: block;
+            color: #002147;
+            font-size: 27px;
+            line-height: 27px;
+        }
+
+
+        .timeline-date span {
+            display: block;
+            color: #002147;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+
+        .timeline-date small {
+            display: block;
+            color: #999;
+            font-size: 10px;
+        }
+
+
+    /* ==================================================
+       MARKER
+       ================================================== */
+
+    .timeline-marker {
+        display: flex;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .timeline-dot {
+        width: 40px;
+        height: 40px;
+        margin-top: 15px;
+        border-radius: 50%;
+        background: white;
+        border: 3px solid #002147;
+        color: #002147;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        transition: 0.2s ease;
+    }
+
+
+    /* ==================================================
+       CONTENT
+       ================================================== */
+
+    .timeline-content {
+        background: white;
+        border: 1px solid #e4e8ed;
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin-left: 5px;
+        transition: 0.2s ease;
+        box-shadow: 0 2px 7px rgba(0,0,0,0.04);
+    }
+
+
+    .timeline-item-link:hover .timeline-content {
+        transform: translateX(4px);
+        border-color: #FDB913;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+
+    .timeline-item-link:hover .timeline-dot {
+        background: #FDB913;
+        border-color: #FDB913;
+        color: #002147;
+    }
+
+
+    /* ==================================================
+       CONTENT TOP
+       ================================================== */
+
+    .timeline-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 7px;
+    }
+
+
+    .deadline-type {
+        color: #002147;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .3px;
+    }
+
+
+        .deadline-type i {
+            color: #FDB913;
+            margin-right: 5px;
+        }
+
+
+    /* ==================================================
+       STATUS
+       ================================================== */
+
+    .agenda-status {
+        border-radius: 20px;
+        padding: 4px 9px;
+        font-size: 10px;
+        font-weight: 700;
+    }
+
+
+        .agenda-status.pending {
+            background: #fff4d6;
+            color: #8c6800;
+        }
+
+
+        .agenda-status.today {
+            background: #FDB913;
+            color: #002147;
+        }
+
+
+        .agenda-status.completed {
+            background: #e6f4ea;
+            color: #24763a;
+        }
+
+
+        .agenda-status.overdue {
+            background: #fbe8e8;
+            color: #a83232;
+        }
+
+
+    /* ==================================================
+       TITLE
+       ================================================== */
+
+    .timeline-content h4 {
+        margin: 0 0 10px;
+        color: #222;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+
+    /* ==================================================
+       DETAILS
+       ================================================== */
+
+    .timeline-details {
+        display: flex;
+        gap: 22px;
+        color: #777;
+        font-size: 12px;
+    }
+
+
+        .timeline-details i {
+            color: #002147;
+            margin-right: 4px;
+        }
+
+
+    /* ==================================================
+       ACTION
+       ================================================== */
+
+    .timeline-action {
+        margin-top: 13px;
+        padding-top: 10px;
+        border-top: 1px solid #f0f1f3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #002147;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+
+        .timeline-action i {
+            color: #FDB913;
+            transition: transform .2s ease;
+        }
+
+
+    .timeline-item-link:hover .timeline-action i {
+        transform: translateX(5px);
+    }
+
+
+    /* ==================================================
+       SPECIAL STATES
+       ================================================== */
+
+    .timeline-item.is-today .timeline-dot {
+        background: #FDB913;
+        border-color: #FDB913;
+    }
+
+
+    .timeline-item.is-overdue .timeline-dot {
+        border-color: #a83232;
+        color: #a83232;
+    }
+
+
+    .timeline-item.is-completed {
+        opacity: .75;
+    }
+
+
+        .timeline-item.is-completed .timeline-dot {
+            border-color: #24763a;
+            color: #24763a;
+        }
+
+
+    /* ==================================================
+       EMPTY STATE
+       ================================================== */
+
+    .empty-agenda {
+        background: white;
+        border: 1px solid #e4e8ed;
+        border-radius: 15px;
+        padding: 55px 30px;
+        text-align: center;
+    }
+
+
+    .empty-calendar {
+        width: 65px;
+        height: 65px;
+        margin: 0 auto 18px;
+        border: 2px solid #002147;
+        border-radius: 9px;
+        overflow: hidden;
+    }
+
+
+    .empty-calendar-top {
+        height: 13px;
+        background: #FDB913;
+    }
+
+
+    .empty-calendar-body {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #002147;
+        font-size: 25px;
+    }
+
+
+    .empty-agenda h3 {
+        color: #002147;
+        margin-bottom: 6px;
+    }
+
+
+    .empty-agenda p {
+        color: #777;
+        margin: 0;
+        font-size: 14px;
+    }
+
+
+    /* ==================================================
+       MOBILE
+       ================================================== */
+
+    @@media (max-width: 700px) {
+
+        .deadline-page {
+            padding: 20px 15px;
+        }
+
+
+        .agenda-header {
+            padding: 20px;
+        }
+
+
+            .agenda-header h2 {
+                font-size: 24px;
+            }
+
+
+        .agenda-today {
+            width: 65px;
+            height: 72px;
+        }
+
+
+        .deadline-back-container {
+            justify-content: flex-end;
+        }
+
+
+        .timeline::before {
+            left: 47px;
+        }
+
+
+        .timeline-item {
+            grid-template-columns: 35px 35px 1fr;
+        }
+
+
+        .timeline-date {
+            text-align: center;
+            padding-right: 5px;
+        }
+
+
+            .timeline-date strong {
+                font-size: 20px;
+            }
+
+
+            .timeline-date span {
+                font-size: 9px;
+            }
+
+
+            .timeline-date small {
+                display: none;
+            }
+
+
+        .timeline-dot {
+            width: 32px;
+            height: 32px;
+            font-size: 11px;
+        }
+
+
+        .timeline-content {
+            padding: 13px;
+        }
+
+
+        .timeline-top {
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+
+        .timeline-details {
+            flex-direction: column;
+            gap: 5px;
+        }
+    }
+
+
+    /* ==================================================
+       CONTENT POSITION
+       ================================================== */
+
+    .container-fluid {
+        padding-left: 60px !important;
+        padding-right: 30px !important;
+    }
+</style>

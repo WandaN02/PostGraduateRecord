@@ -1,0 +1,730 @@
+﻿@model IEnumerable<PostGraduateRecord.ViewModels.ApprovedStudentViewModel>
+
+@{
+    ViewBag.Title = "Approved Students";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="approved-students-page">
+
+    <!-- PAGE HEADER -->
+    <div class="approved-header">
+
+        <div class="page-title-section">
+
+            <div class="page-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div>
+
+                <h2>Approved Students</h2>
+
+                <p>
+                <p>
+                    These students have been approved and their supervisor
+                    assignment status can be monitored here.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- SEND TO SUPERVISORS -->
+        @if (Model != null && Model.Any())
+        {
+            using (Html.BeginForm(
+                "SendApprovedStudentsToSupervisors",
+                "Admin",
+                FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="send-supervisors-btn"
+                        onclick="return confirm('Are you sure you want to send the approved students list to all supervisors?');">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Send to Supervisors
+
+                </button>
+            }
+        }
+
+    </div>
+
+
+    @if (Model != null && Model.Any())
+    {
+        <!-- STUDENTS CARD -->
+        <div class="approved-table-card">
+
+            <!-- CARD HEADER -->
+            <div class="approved-table-header">
+
+                <div>
+
+                    <div class="card-title">
+
+                        <i class="fa-solid fa-user-graduate"></i>
+
+                        <h3>Approved Students</h3>
+
+                    </div>
+                    <p>
+                        View approved students and monitor their supervisor
+                        assignment status.
+                    </p>
+
+                </div>
+
+
+                <span class="student-count">
+                    @Model.Count() Students
+                </span>
+
+            </div>
+
+
+            <!-- TABLE -->
+            <div class="approved-table-wrapper">
+
+                <table class="approved-students-table">
+
+                    <thead>
+
+
+
+                        <tr>
+
+                            <th>Student</th>
+
+                            <th>Research Title</th>
+
+                            <th>Degree</th>
+
+                            <th>Research Field</th>
+
+                            <th>Submitted Date</th>
+
+                            <th>Supervisor</th>
+
+                            <th>Assigned Date</th>
+
+                            <th>Status</th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+
+                    <tbody>
+
+                        @foreach (var student in Model)
+                        {
+                            <tr>
+
+                                <!-- STUDENT -->
+                                <td>
+
+                                    <div class="student-name">
+
+                                        <div class="student-avatar">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                @student.StudentName
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- RESEARCH TITLE -->
+                                <td>
+
+                                    <span class="research-title">
+                                        @student.ResearchTitle
+                                    </span>
+
+                                </td>
+
+
+                                <!-- DEGREE -->
+                                <td>
+                                    @student.DegreeType
+                                </td>
+
+
+                                <!-- RESEARCH FIELD -->
+                                <td>
+                                    @student.ResearchField
+                                </td>
+
+
+                                <!-- SUBMITTED DATE -->
+                                <td>
+                                    @student.SubmittedDate.ToString("dd MMM yyyy")
+                                </td>
+
+
+                                <!-- SUPERVISOR -->
+                                <td>
+
+                                    @if (student.SupervisorName == "Not Assigned")
+                                    {
+                                        <span class="not-assigned-text">
+                                            —
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <strong class="supervisor-name">
+                                            @student.SupervisorName
+                                        </strong>
+                                    }
+
+                                </td>
+
+
+                                <!-- ASSIGNED DATE -->
+                                <td>
+
+                                    @if (student.AssignedDate.HasValue)
+                                    {
+                                        @student.AssignedDate.Value.ToString("dd MMM yyyy")
+                                    }
+                                    else
+                                    {
+                                        <span class="not-assigned-text">
+                                            —
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- STATUS -->
+                                <td>
+
+                                    @if (student.AssignmentStatus == "Assigned")
+                                    {
+                                        <span class="assignment-status assigned">
+
+                                            <i class="fa-solid fa-user-check"></i>
+
+                                            Assigned
+
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="assignment-status pending">
+
+                                            <i class="fa-solid fa-clock"></i>
+
+                                            Pending Assignment
+
+                                        </span>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- EMPTY STATE -->
+        <div class="approved-empty">
+
+            <div class="approved-empty-icon">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+
+            <h3>No Approved Students</h3>
+
+            <p>
+                There are currently no approved students
+                available for supervisor selection.
+            </p>
+
+        </div>
+    }
+
+</div>
+<!-- BACK TO DASHBOARD -->
+
+<div class="approved-back">
+
+    <a href="@Url.Action("Dashboard", "Admin")"
+       class="back-dashboard-btn">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Dashboard
+
+    </a>
+
+</div>
+
+<style>
+
+     /* ==============================
+        MAIN PAGE
+        ============================== */
+
+     .approved-students-page {
+         width: 100%;
+         max-width: 1400px;
+         margin: 0 auto;
+         padding: 5px 0 40px;
+         color: #222;
+     }
+
+
+     /* ==============================
+        HEADER
+        ============================== */
+
+     .approved-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         gap: 25px;
+         margin-bottom: 25px;
+     }
+
+
+     .page-title-section {
+         display: flex;
+         align-items: center;
+         gap: 16px;
+     }
+
+
+     .page-icon {
+         width: 52px;
+         height: 52px;
+         background: #001B44;
+         color: #FDB913;
+         border-radius: 12px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 22px;
+         flex-shrink: 0;
+     }
+
+
+     .approved-header h2 {
+         margin: 0 0 6px;
+         color: #001B44;
+         font-size: 32px;
+         font-weight: 700;
+     }
+
+
+     .approved-header p {
+         margin: 0;
+         color: #667085;
+         font-size: 15px;
+     }
+
+
+     /* ==============================
+        SEND BUTTON
+        ============================== */
+
+     .send-supervisors-btn {
+         display: inline-flex;
+         align-items: center;
+         justify-content: center;
+         gap: 8px;
+         border: none;
+         background: #001B44;
+         color: #ffffff;
+         padding: 12px 20px;
+         border-radius: 7px;
+         font-size: 14px;
+         font-weight: 600;
+         cursor: pointer;
+         white-space: nowrap;
+         transition: all 0.2s ease;
+     }
+
+
+         .send-supervisors-btn:hover {
+             background: #FDB913;
+             color: #001B44;
+             transform: translateY(-1px);
+         }
+
+
+     /* ==============================
+        ALERTS
+        ============================== */
+
+     .approved-alert {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         padding: 14px 18px;
+         border-radius: 8px;
+         margin-bottom: 20px;
+         font-size: 14px;
+     }
+
+
+         .approved-alert.success {
+             background: #e8f7ee;
+             border: 1px solid #b8dfc7;
+             color: #176b39;
+         }
+
+
+         .approved-alert.error {
+             background: #fdecec;
+             border: 1px solid #efb5b5;
+             color: #9b2222;
+         }
+
+
+     /* ==============================
+        TABLE CARD
+        ============================== */
+
+     .approved-table-card {
+         background: #ffffff;
+         border: 1px solid #e5e7eb;
+         border-radius: 12px;
+         box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+         overflow: hidden;
+     }
+
+
+     /* ==============================
+        CARD HEADER
+        ============================== */
+
+     .approved-table-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         gap: 20px;
+         padding: 22px 25px;
+         border-bottom: 1px solid #e5e7eb;
+     }
+
+
+     .card-title {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+     }
+
+
+         .card-title i {
+             color: #001B44;
+             font-size: 18px;
+         }
+
+
+         .card-title h3 {
+             margin: 0;
+             color: #001B44;
+             font-size: 20px;
+             font-weight: 700;
+         }
+
+
+     .approved-table-header p {
+         margin: 6px 0 0 28px;
+         color: #777;
+         font-size: 13px;
+     }
+
+
+     .student-count {
+         background: #FDB913;
+         color: #001B44;
+         padding: 7px 13px;
+         border-radius: 20px;
+         font-size: 12px;
+         font-weight: 700;
+         white-space: nowrap;
+     }
+
+
+     /* ==============================
+        TABLE
+        ============================== */
+
+     .approved-table-wrapper {
+         width: 100%;
+         overflow-x: auto;
+     }
+
+
+     .approved-students-table {
+         width: 100%;
+         min-width: 1250px;
+         border-collapse: collapse;
+         background: #ffffff;
+     }
+
+
+         .approved-students-table th {
+             background: #f1f4f8;
+             color: #334e68;
+             padding: 14px 16px;
+             text-align: left;
+             font-size: 12px;
+             font-weight: 700;
+             text-transform: uppercase;
+             letter-spacing: 0.3px;
+             white-space: nowrap;
+             border-bottom: 1px solid #dfe4ea;
+         }
+
+
+         .approved-students-table td {
+             padding: 16px;
+             border-bottom: 1px solid #eeeeee;
+             color: #444;
+             font-size: 14px;
+             background: #ffffff;
+             vertical-align: middle;
+         }
+
+
+         .approved-students-table tbody tr:hover td {
+             background: #f8fafc;
+         }
+
+
+         .approved-students-table tbody tr:last-child td {
+             border-bottom: none;
+         }
+
+
+     /* ==============================
+        STUDENT
+        ============================== */
+
+     .student-name {
+         display: flex;
+         align-items: center;
+         gap: 10px;
+         min-width: 170px;
+     }
+
+
+     .student-avatar {
+         width: 36px;
+         height: 36px;
+         background: #eaf0f8;
+         color: #001B44;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-shrink: 0;
+     }
+
+
+     .student-name strong {
+         color: #1f2937;
+         font-weight: 600;
+         white-space: nowrap;
+     }
+
+
+     /* ==============================
+        RESEARCH TITLE
+        ============================== */
+
+     .research-title {
+         display: inline-block;
+         max-width: 270px;
+         color: #374151;
+         line-height: 1.4;
+     }
+
+
+     /* ==============================
+        STATUS
+        ============================== */
+
+     .approved-status {
+         display: inline-flex;
+         align-items: center;
+         gap: 6px;
+         padding: 6px 12px;
+         background: #e8f7ee;
+         color: #176b39;
+         border-radius: 20px;
+         font-size: 12px;
+         font-weight: 700;
+         white-space: nowrap;
+     }
+
+
+     /* ==============================
+        EMPTY STATE
+        ============================== */
+
+     .approved-empty {
+         background: #ffffff;
+         border: 1px solid #e5e7eb;
+         border-radius: 12px;
+         padding: 60px 30px;
+         text-align: center;
+         box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+     }
+
+
+     .approved-empty-icon {
+         width: 70px;
+         height: 70px;
+         margin: 0 auto 18px;
+         background: #eef2f7;
+         color: #001B44;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         font-size: 27px;
+     }
+
+
+     .approved-empty h3 {
+         margin: 0 0 10px;
+         color: #001B44;
+         font-size: 22px;
+     }
+
+
+     .approved-empty p {
+         margin: 0;
+         color: #777;
+         font-size: 14px;
+     }
+     /* ==============================
+    SUPERVISOR ASSIGNMENT
+    ============================== */
+
+     .supervisor-name {
+         color: #001B44;
+         font-weight: 600;
+         white-space: nowrap;
+     }
+
+     .not-assigned-text {
+         color: #98a2b3;
+         font-weight: 600;
+     }
+
+     .assignment-status {
+         display: inline-flex;
+         align-items: center;
+         gap: 6px;
+         padding: 6px 12px;
+         border-radius: 20px;
+         font-size: 12px;
+         font-weight: 700;
+         white-space: nowrap;
+     }
+
+         .assignment-status.assigned {
+             background: #e8f7ee;
+             color: #176b39;
+         }
+
+         .assignment-status.pending {
+             background: #fff4d6;
+             color: #8a6500;
+         }
+
+     /* ==============================
+        RESPONSIVE
+        ============================== */
+
+     @@media (max-width: 768px) {
+
+         .approved-students-page {
+             padding: 5px 10px 30px;
+         }
+
+
+         .approved-header {
+             align-items: flex-start;
+             flex-direction: column;
+         }
+
+
+             .approved-header h2 {
+                 font-size: 26px;
+             }
+
+
+         .approved-table-header {
+             align-items: flex-start;
+             flex-direction: column;
+         }
+     }
+
+    /* ==============================
+   BACK TO DASHBOARD
+   ============================== */
+
+    .approved-back {
+        margin-bottom: 20px;
+    }
+
+    .back-dashboard-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+        background: #001B44;
+        color: #ffffff;
+        border: 1px solid #001B44;
+        padding: 11px 18px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .back-dashboard-btn:hover {
+            background: #FDB913;
+            color: #001B44;
+            border-color: #FDB913;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        .back-dashboard-btn i {
+            font-size: 13px;
+        }
+</style>

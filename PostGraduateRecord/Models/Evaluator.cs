@@ -18,6 +18,7 @@ namespace PostGraduateRecord.Models
         public Evaluator()
         {
             this.Evaluations = new HashSet<Evaluation>();
+            this.EvaluatorAssignments = new HashSet<EvaluatorAssignment>();
         }
     
         public int EvaluatorID { get; set; }
@@ -29,5 +30,7 @@ namespace PostGraduateRecord.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Evaluation> Evaluations { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EvaluatorAssignment> EvaluatorAssignments { get; set; }
     }
 }

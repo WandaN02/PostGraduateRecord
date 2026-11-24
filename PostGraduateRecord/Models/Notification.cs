@@ -19,6 +19,7 @@ namespace PostGraduateRecord.Models
         public string Message { get; set; }
         public Nullable<bool> IsRead { get; set; }
         public Nullable<System.DateTime> SentDate { get; set; }
+        public string Link { get; set; }
     
         public virtual User User { get; set; }
     }

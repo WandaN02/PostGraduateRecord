@@ -5,74 +5,247 @@
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
+<div class="page-header">
 
-<div class="container">
+    <h2>
+        <i class="fa-solid fa-user"></i>
+        Student Profile
+    </h2>
 
-    <div class="card shadow p-4">
+    <p>
+        View your personal and academic information.
+    </p>
 
-        <h2>
+</div>
+
+
+<div class="profile-card">
+
+    <!-- ========================= -->
+    <!-- PROFILE HEADER -->
+    <!-- ========================= -->
+
+    <div class="profile-header">
+
+        <div class="profile-avatar">
             <i class="fa-solid fa-user"></i>
-            Student Profile
-        </h2>
+        </div>
 
-        <hr />
+        <div class="profile-title">
 
+            <h3>
+                @Model.User.FirstName @Model.User.LastName
+            </h3>
 
-        <p>
-            <strong>Name:</strong>
-            @Model.User.FirstName @Model.User.LastName
-        </p>
+            <p>
+                <i class="fa-solid fa-id-card"></i>
+                @Model.User.StudentNumber
+            </p>
 
+        </div>
 
-        <p>
-            <strong>Student Number:</strong>
-            @Model.User.StudentNumber
-        </p>
-
-
-        <p>
-            <strong>Email:</strong>
-            @Model.User.Email
-        </p>
+    </div>
 
 
-        <p>
-            <strong>Faculty:</strong>
-            @Model.Department.Faculty.FacultyName
-        </p>
+    <!-- ========================= -->
+    <!-- PERSONAL INFORMATION -->
+    <!-- ========================= -->
+
+    <div class="profile-section">
+
+        <h4>
+            <i class="fa-solid fa-user"></i>
+            Personal Information
+        </h4>
+
+        <div class="profile-grid">
+
+            <div class="profile-item">
+
+                <div class="profile-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Full Name
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.User.FirstName @Model.User.LastName
+                    </span>
+                </div>
+
+            </div>
 
 
-        <p>
-            <strong>Department:</strong>
-            @Model.Department.DepartmentName
-        </p>
+            <div class="profile-item">
+
+                <div class="profile-icon">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Student Number
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.User.StudentNumber
+                    </span>
+                </div>
+
+            </div>
 
 
-        <p>
-            <strong>Qualification:</strong>
-            @Model.Qualification
-        </p>
+            <div class="profile-item">
+
+                <div class="profile-icon">
+                    <i class="fa-solid fa-envelope"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Email Address
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.User.Email
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
-        <p>
-            <strong>Study Type:</strong>
-            @Model.StudyType
-        </p>
+    <!-- ========================= -->
+    <!-- ACADEMIC INFORMATION -->
+    <!-- ========================= -->
+
+    <div class="profile-section">
+
+        <h4>
+            <i class="fa-solid fa-graduation-cap"></i>
+            Academic Information
+        </h4>
+
+        <div class="profile-grid">
+
+            <div class="profile-item">
+
+                <div class="profile-icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Faculty
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.Department.Faculty.FacultyName
+                    </span>
+                </div>
+
+            </div>
 
 
-        <p>
-            <strong>Registration Year:</strong>
-            @Model.RegistrationYear
-        </p>
+            <div class="profile-item">
+
+                <div class="profile-icon">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Department
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.Department.DepartmentName
+                    </span>
+                </div>
+
+            </div>
 
 
-        <a href="@Url.Action("Dashboard","Student")"
-           class="btn btn-primary">
+            <div class="profile-item">
 
+                <div class="profile-icon">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Qualification
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.Qualification
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <div class="profile-icon">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Study Type
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.StudyType
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="profile-item">
+
+                <div class="profile-icon">
+                    <i class="fa-solid fa-calendar"></i>
+                </div>
+
+                <div>
+                    <span class="profile-label">
+                        Registration Year
+                    </span>
+
+                    <span class="profile-value">
+                        @Model.RegistrationYear
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- BACK BUTTON -->
+    <!-- ========================= -->
+
+    <div class="profile-actions">
+
+        <a href="@Url.Action("Dashboard", "Student")"
+           class="back-button">
+
+            <i class="fa-solid fa-arrow-left"></i>
             Back to Dashboard
 
         </a>
-
 
     </div>
 

@@ -1,0 +1,514 @@
+﻿
+@model PostGraduateRecord.Models.Thesis
+
+@{
+    ViewBag.Title = "Final Dissertation";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+<style>
+
+    /* =========================================
+       PAGE HEADER
+    ========================================= */
+
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .page-header h2 {
+        color: #001B44;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .page-header h2 i {
+        color: #FDB913;
+        margin-right: 8px;
+    }
+
+    .page-header p {
+        color: #666;
+        margin-bottom: 0;
+    }
+
+
+    /* =========================================
+       ALERTS
+    ========================================= */
+
+    .alert {
+        margin-top: 20px;
+        border-radius: 6px;
+    }
+
+
+    /* =========================================
+       SUBMISSION FORM
+    ========================================= */
+
+    .card-section {
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 10px;
+        border: 1px solid #e1e5ea;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        margin-top: 25px;
+    }
+
+    .card-section label {
+        color: #001B44;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .card-section .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+    }
+
+    .card-section .form-control:focus {
+        border-color: #001B44;
+        box-shadow: 0 0 0 0.15rem rgba(0, 27, 68, 0.12);
+    }
+
+
+    /* =========================================
+       SUBMIT BUTTON
+    ========================================= */
+
+    #submitButton {
+        background: #FDB913;
+        border: 1px solid #FDB913;
+        color: #001B44;
+        font-weight: 600;
+        padding: 10px 18px;
+        border-radius: 5px;
+        transition: 0.2s ease;
+    }
+
+    #submitButton:hover {
+        background: #001B44;
+        border-color: #001B44;
+        color: #ffffff;
+    }
+
+
+    /* =========================================
+       SUBMITTED DISSERTATION TABLE
+    ========================================= */
+
+    .dissertation-card {
+        background: #ffffff;
+        border-radius: 10px;
+        margin-top: 25px;
+        border: 1px solid #e1e5ea;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .dissertation-card-body {
+        padding: 0;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .dissertation-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+    }
+
+    .dissertation-table th {
+        background: #001B44;
+        color: #ffffff;
+        padding: 15px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 3px solid #FDB913;
+    }
+
+    .dissertation-table td {
+        padding: 17px 15px;
+        border-bottom: 1px solid #e5e5e5;
+        vertical-align: middle;
+        color: #333;
+    }
+
+    .dissertation-table tbody tr:hover {
+        background: #fff9e6;
+    }
+
+
+    /* =========================================
+       DISSERTATION NAME
+    ========================================= */
+
+    .dissertation-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dissertation-name i {
+        color: #001B44;
+        font-size: 18px;
+    }
+
+
+    /* =========================================
+       SUBMITTED STATUS
+    ========================================= */
+
+    .status-submitted {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #e8f7ee;
+        color: #198754;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+
+    /* =========================================
+       VIEW BUTTON
+    ========================================= */
+
+    .btn-view-dissertation {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: #001B44;
+        color: #ffffff !important;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none !important;
+        font-weight: 600;
+        transition: 0.2s ease;
+        white-space: nowrap;
+    }
+
+    .btn-view-dissertation:hover {
+        background: #FDB913;
+        color: #001B44 !important;
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @@media (max-width: 768px) {
+
+        .dissertation-table {
+            min-width: 700px;
+        }
+
+        .card-section {
+            padding: 18px;
+        }
+    }
+
+</style>
+
+
+<!-- =========================================
+     PAGE HEADER
+========================================== -->
+
+<div class="page-header">
+
+    <h2>
+        <i class="fa-solid fa-file-arrow-up"></i>
+        Final Dissertation
+    </h2>
+
+    <p>
+        Submit your final dissertation to the postgraduate record system.
+    </p>
+
+</div>
+
+
+
+<!-- =========================================
+     ERROR MESSAGE
+========================================== -->
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+
+        <i class="fa-solid fa-circle-exclamation"></i>
+
+        @TempData["Error"]
+
+    </div>
+}
+
+
+<!-- =========================================
+     IF DISSERTATION ALREADY EXISTS
+========================================== -->
+
+@if (Model != null)
+{
+    <!-- =========================================
+         SHOW ONE SIMPLE TABLE
+    ========================================== -->
+
+    <div class="dissertation-card">
+
+        <div class="dissertation-card-body">
+
+            <div class="table-responsive">
+
+                <table class="dissertation-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Final Dissertation
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Submitted
+                            </th>
+
+                            <th>
+                                View
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <!-- NAME -->
+
+                            <td>
+
+                                <div class="dissertation-name">
+
+                                    <i class="fa-solid fa-file-lines"></i>
+
+                                    <strong>
+                                        Final Dissertation
+                                    </strong>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- DATE -->
+
+                            <td>
+
+                                @Model.SubmittedDate.ToString("dd MMM yyyy")
+
+                            </td>
+
+
+                            <!-- STATUS -->
+
+                            <td>
+
+                                <span class="status-submitted">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                    Submitted
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- VIEW -->
+
+                            <td>
+
+                                <a href="@Model.DocumentPath"
+                                   target="_blank"
+                                   class="btn-view-dissertation">
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <!-- =========================================
+         SHOW SUBMISSION FORM
+    ========================================== -->
+
+    <div class="card-section">
+
+        @using (Html.BeginForm(
+            "FinalDissertation",
+            "Student",
+            FormMethod.Post,
+            new
+            {
+                enctype = "multipart/form-data",
+                id = "finalDissertationForm"
+            }))
+        {
+            @Html.AntiForgeryToken()
+
+
+            <!-- SUBMISSION TYPE -->
+
+            <div class="form-group">
+
+                <label for="submissionType">
+
+                    <strong>
+                        Submission Type
+                    </strong>
+
+                </label>
+
+                <select id="submissionType"
+                        name="submissionType"
+                        class="form-control"
+                        required>
+
+                    <option value="">
+                        Select Type
+                    </option>
+
+                    <option value="Final Dissertation">
+                        Final Dissertation
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <br />
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="form-group">
+
+                <label for="description">
+
+                    <strong>
+                        Description
+                    </strong>
+
+                </label>
+
+                <textarea id="description"
+                          name="description"
+                          class="form-control"
+                          rows="5"
+                          placeholder="Enter a description of your final dissertation..."
+                          required></textarea>
+
+            </div>
+
+
+            <br />
+
+
+            <!-- DOCUMENT -->
+
+            <div class="form-group">
+
+                <label for="document">
+
+                    <strong>
+                        Upload Final Dissertation
+                    </strong>
+
+                </label>
+
+                <input type="file"
+                       id="document"
+                       name="document"
+                       class="form-control"
+                       accept=".pdf,.doc,.docx"
+                       required />
+
+                <small class="text-muted">
+
+                    Accepted formats: PDF, DOC, DOCX
+
+                </small>
+
+                <div id="fileError"
+                     class="text-danger"
+                     style="display:none; margin-top:8px;">
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    Unsupported file type.
+                    Please upload a PDF, DOC, or DOCX file.
+
+                </div>
+
+            </div>
+
+
+            <br />
+
+
+            <!-- SUBMIT -->
+
+            <button type="submit"
+                    id="submitButton">
+
+                <i class="fa-solid fa-upload"></i>
+
+                Submit Final Dissertation
+
+            </button>
+
+        }
+
+    </div>
+}
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script src="~/Content/FinalDissertation.js"></script>

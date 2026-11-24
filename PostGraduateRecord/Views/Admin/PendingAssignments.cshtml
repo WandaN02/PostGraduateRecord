@@ -1,0 +1,108 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Application>
+
+@{
+    ViewBag.Title = "Pending Assignments";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="dashboard-header">
+
+    <h2>Pending Supervisor Assignments</h2>
+
+    <p>
+        View approved applications that still require a supervisor.
+    </p>
+
+</div>
+
+<hr />
+
+<h3>Students Awaiting Supervisor Assignment</h3>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Student Number</th>
+
+            <th>Student Name</th>
+
+            <th>Submission Date</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var application in Model)
+            {
+                <tr>
+
+                    <td>
+                        @application.Student.User.StudentNumber
+                    </td>
+
+                    <td>
+                        @application.Student.User.FirstName
+                        @application.Student.User.LastName
+                    </td>
+
+                    <td>
+                        @application.SubmittedDate.ToString("dd MMM yyyy")
+                    </td>
+
+                    <td>
+                        @application.Status
+                    </td>
+
+                    <td>
+
+                        <a href="@Url.Action("AssignSupervisor", "Admin",
+                        new { applicationId = application.ApplicationID })"
+                           class="btn btn-sm btn-primary">
+
+                            <i class="fa-solid fa-user-plus"></i>
+                            Assign Supervisor
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+
+                <td colspan="5" class="text-center">
+
+                    There are no pending supervisor assignments.
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>
+

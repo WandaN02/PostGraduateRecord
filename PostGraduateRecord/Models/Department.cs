@@ -27,6 +27,7 @@ namespace PostGraduateRecord.Models
         public int FacultyID { get; set; }
         public string DepartmentName { get; set; }
         public bool IsActive { get; set; }
+        public string ADDepartmentName { get; set; }
     
         public virtual Faculty Faculty { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

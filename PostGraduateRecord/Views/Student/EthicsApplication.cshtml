@@ -1,79 +1,109 @@
-﻿@{
-    ViewBag.Title = "Ethics Application";
+﻿
+@model PostGraduateRecord.ViewModels.EthicsApplicationViewModel
+
+@{
+    ViewBag.Title = "Ethics";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-
-
 <div class="page-header">
-
     <h2>
         <i class="fa-solid fa-file-circle-check"></i>
-        New Ethics Application
+        Ethics
     </h2>
-
 </div>
-
-
 
 <div class="card-section">
 
 
-    <form>
+    @using (Html.BeginForm("EthicsApplication", "Student", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
 
+        <!-- ==============================
+             ETHICS QUESTION
+        =============================== -->
 
-        <label>
-            Research Title
-        </label>
+        <div class="form-group">
 
-        <input type="text"
-               class="form-control" />
+            <label>
+                Did you submit an ethics application?
+            </label>
 
+            <div style="margin-top: 10px;">
+
+                <label style="margin-right: 25px;">
+                    @Html.RadioButtonFor(
+                        m => m.EthicsSubmitted,
+                        true,
+                        new { id = "ethicsYes" }
+                    )
+                    Yes
+                </label>
+
+                <label>
+                    @Html.RadioButtonFor(
+                        m => m.EthicsSubmitted,
+                        false,
+                        new { id = "ethicsNo" }
+                    )
+                    No
+                </label>
+
+            </div>
+
+            @Html.ValidationMessageFor(
+                m => m.EthicsSubmitted,
+                "",
+                new { @class = "text-danger" }
+            )
+
+        </div>
 
         <br />
 
+        <!-- ==============================
+             ETHICS NUMBER
+        =============================== -->
 
-        <label>
-            Research Methodology
-        </label>
+        <div id="ethicsNumberSection"
+             class="form-group"
+             style="display:none;">
 
-        <textarea class="form-control"
-                  rows="4"></textarea>
+            <label>
+                Ethics Number
+            </label>
 
+            @Html.TextBoxFor(
+                m => m.EthicsNumber,
+                new
+                {
+                    @class = "form-control",
+                    placeholder = "Enter your Ethics Number",
+                    autocomplete = "off"
+                }
+            )
+
+            <small class="text-muted">
+                Enter the Ethics Number provided for your ethics approval.
+            </small>
+
+            @Html.ValidationMessageFor(
+                m => m.EthicsNumber,
+                "",
+                new { @class = "text-danger" }
+            )
+
+        </div>
 
         <br />
 
-
-        <label>
-            Participant Information
-        </label>
-
-        <textarea class="form-control"
-                  rows="4"></textarea>
-
-
-        <br />
-
-
-        <label>
-            Upload Ethics Document
-        </label>
-
-        <input type="file"
-               class="form-control" />
-
-
-        <br />
-
-
-        <button class="btn btn-warning">
-
-            Submit Ethics Application
-
+        <button type="submit" class="btn btn-warning">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Save Ethics Information
         </button>
-
-
-    </form>
-
+    }
 
 </div>
+<script src="~/Content/Ethics.js"></script>
+

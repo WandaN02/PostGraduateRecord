@@ -1,0 +1,1254 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>
+        @ViewBag.Title - SPGS Record System
+    </title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/Content/Supervisor.css" rel="stylesheet" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          rel="stylesheet" />
+
+    <!-- =========================================================
+         THEME CSS
+         Light + Eye Comfort + System
+         ========================================================= -->
+
+    <style>
+
+        /* =========================================================
+           BASE
+           ========================================================= */
+
+        body {
+            transition: background-color 0.25s ease, color 0.25s ease;
+        }
+
+
+            /* =========================================================
+           EYE COMFORT MODE
+           ========================================================= */
+
+            body.eye-comfort-theme {
+                background-color: #F7F1E3 !important;
+                color: #332B20 !important;
+            }
+
+
+                /* =========================================================
+           MAIN CONTENT
+           ========================================================= */
+
+                body.eye-comfort-theme .main {
+                    background-color: #F7F1E3 !important;
+                }
+
+                body.eye-comfort-theme .content {
+                    background-color: #F7F1E3 !important;
+                    color: #332B20 !important;
+                }
+
+
+                /* =========================================================
+           HEADINGS
+           ========================================================= */
+
+                body.eye-comfort-theme h1,
+                body.eye-comfort-theme h2,
+                body.eye-comfort-theme h3,
+                body.eye-comfort-theme h4,
+                body.eye-comfort-theme h5,
+                body.eye-comfort-theme h6 {
+                    color: #332B20 !important;
+                }
+
+
+                /* =========================================================
+           GENERAL TEXT
+           ========================================================= */
+
+                body.eye-comfort-theme p,
+                body.eye-comfort-theme label,
+                body.eye-comfort-theme span,
+                body.eye-comfort-theme small {
+                    color: #4A4033;
+                }
+
+
+                /* =========================================================
+           CARDS / PANELS
+           ========================================================= */
+
+                body.eye-comfort-theme .card,
+                body.eye-comfort-theme .dashboard-card,
+                body.eye-comfort-theme .settings-card,
+                body.eye-comfort-theme .panel,
+                body.eye-comfort-theme .stat-card,
+                body.eye-comfort-theme .info-card {
+                    background-color: #FFF9EC !important;
+                    border: 1px solid #D8CDB8 !important;
+                    color: #332B20 !important;
+                    box-shadow: 0 2px 8px rgba(70, 55, 30, 0.08);
+                }
+
+
+                /* =========================================================
+           TABLES
+           ========================================================= */
+
+                body.eye-comfort-theme table {
+                    background-color: #FFF9EC !important;
+                    color: #332B20 !important;
+                    border-color: #D8CDB8 !important;
+                }
+
+                body.eye-comfort-theme thead,
+                body.eye-comfort-theme th {
+                    background-color: #001B44 !important;
+                    color: #FFFFFF !important;
+                    border-color: #001B44 !important;
+                }
+
+                body.eye-comfort-theme td {
+                    background-color: #FFF9EC !important;
+                    color: #332B20 !important;
+                    border-color: #D8CDB8 !important;
+                }
+
+                body.eye-comfort-theme tbody tr:hover td {
+                    background-color: #FFF1C9 !important;
+                    color: #332B20 !important;
+                }
+
+
+                /* =========================================================
+           FORMS
+           ========================================================= */
+
+                body.eye-comfort-theme input,
+                body.eye-comfort-theme select,
+                body.eye-comfort-theme textarea,
+                body.eye-comfort-theme .form-control,
+                body.eye-comfort-theme .form-select {
+                    background-color: #FFFDF6 !important;
+                    color: #332B20 !important;
+                    border: 1px solid #BBAE98 !important;
+                }
+
+                    body.eye-comfort-theme input:focus,
+                    body.eye-comfort-theme select:focus,
+                    body.eye-comfort-theme textarea:focus,
+                    body.eye-comfort-theme .form-control:focus,
+                    body.eye-comfort-theme .form-select:focus {
+                        background-color: #FFFFFF !important;
+                        color: #332B20 !important;
+                        border-color: #FDB913 !important;
+                        box-shadow: 0 0 0 3px rgba(253, 185, 19, 0.25) !important;
+                        outline: none !important;
+                    }
+
+
+                    /* =========================================================
+           PLACEHOLDER TEXT
+           ========================================================= */
+
+                    body.eye-comfort-theme input::placeholder,
+                    body.eye-comfort-theme textarea::placeholder {
+                        color: #756B5D !important;
+                        opacity: 1 !important;
+                    }
+
+
+                /* =========================================================
+           LINKS
+           ========================================================= */
+
+                body.eye-comfort-theme a {
+                    color: #001B44;
+                }
+
+                    body.eye-comfort-theme a:hover {
+                        color: #8A6200;
+                    }
+
+
+                /* =========================================================
+           BUTTONS
+           ========================================================= */
+
+                body.eye-comfort-theme .btn-primary {
+                    background-color: #001B44 !important;
+                    border-color: #001B44 !important;
+                    color: #FFFFFF !important;
+                }
+
+                    body.eye-comfort-theme .btn-primary:hover,
+                    body.eye-comfort-theme .btn-primary:focus {
+                        background-color: #00336F !important;
+                        border-color: #00336F !important;
+                        color: #FFFFFF !important;
+                    }
+
+
+                /* =========================================================
+           WARNING BUTTON
+           ========================================================= */
+
+                body.eye-comfort-theme .btn-warning {
+                    background-color: #FDB913 !important;
+                    border-color: #FDB913 !important;
+                    color: #001B44 !important;
+                    font-weight: 600;
+                }
+
+                    body.eye-comfort-theme .btn-warning:hover,
+                    body.eye-comfort-theme .btn-warning:focus {
+                        background-color: #E5A900 !important;
+                        border-color: #E5A900 !important;
+                        color: #001B44 !important;
+                    }
+
+
+                /* =========================================================
+           SECONDARY BUTTONS
+           ========================================================= */
+
+                body.eye-comfort-theme .btn-secondary {
+                    background-color: #665C4D !important;
+                    border-color: #665C4D !important;
+                    color: #FFFFFF !important;
+                }
+
+                    body.eye-comfort-theme .btn-secondary:hover {
+                        background-color: #4A4033 !important;
+                        border-color: #4A4033 !important;
+                        color: #FFFFFF !important;
+                    }
+
+
+                /* =========================================================
+           DROPDOWN MENUS
+           ========================================================= */
+
+                body.eye-comfort-theme .dropdown-menu {
+                    background-color: #FFF9EC !important;
+                    border: 1px solid #D8CDB8 !important;
+                    box-shadow: 0 5px 15px rgba(60, 45, 20, 0.15);
+                }
+
+                    body.eye-comfort-theme .dropdown-menu a,
+                    body.eye-comfort-theme .dropdown-item {
+                        color: #332B20 !important;
+                    }
+
+                        body.eye-comfort-theme .dropdown-menu a:hover,
+                        body.eye-comfort-theme .dropdown-item:hover {
+                            background-color: #FFF1C9 !important;
+                            color: #001B44 !important;
+                        }
+
+
+                /* =========================================================
+           NOTIFICATIONS
+           ========================================================= */
+
+                body.eye-comfort-theme .notification-menu {
+                    background-color: #FFF9EC !important;
+                    border: 1px solid #D8CDB8 !important;
+                    box-shadow: 0 5px 15px rgba(60, 45, 20, 0.15);
+                }
+
+                body.eye-comfort-theme .notification-item {
+                    background-color: #FFF9EC !important;
+                    color: #332B20 !important;
+                    border-bottom: 1px solid #D8CDB8 !important;
+                }
+
+                    body.eye-comfort-theme .notification-item:hover {
+                        background-color: #FFF1C9 !important;
+                    }
+
+                    body.eye-comfort-theme .notification-item.unread {
+                        background-color: #FFF3CD !important;
+                        color: #332B20 !important;
+                        border-left: 4px solid #FDB913 !important;
+                    }
+
+
+                /* =========================================================
+           MODALS
+           ========================================================= */
+
+                body.eye-comfort-theme .modal-content {
+                    background-color: #FFF9EC !important;
+                    color: #332B20 !important;
+                    border: 1px solid #D8CDB8 !important;
+                }
+
+                body.eye-comfort-theme .modal-header,
+                body.eye-comfort-theme .modal-footer {
+                    border-color: #D8CDB8 !important;
+                }
+
+
+                /* =========================================================
+           ALERTS
+           ========================================================= */
+
+                body.eye-comfort-theme .alert {
+                    border-width: 1px;
+                }
+
+                body.eye-comfort-theme .alert-success {
+                    background-color: #EDF6E8 !important;
+                    color: #23451F !important;
+                    border-color: #A8C99A !important;
+                }
+
+                body.eye-comfort-theme .alert-danger {
+                    background-color: #FCE8E6 !important;
+                    color: #6B1E18 !important;
+                    border-color: #D99A93 !important;
+                }
+
+                body.eye-comfort-theme .alert-warning {
+                    background-color: #FFF3CD !important;
+                    color: #5C4300 !important;
+                    border-color: #E6C65C !important;
+                }
+
+                body.eye-comfort-theme .alert-info {
+                    background-color: #E8F1F8 !important;
+                    color: #173A56 !important;
+                    border-color: #9DBBD2 !important;
+                }
+
+
+                /* =========================================================
+           BADGES
+           ========================================================= */
+
+                body.eye-comfort-theme .badge {
+                    font-weight: 600;
+                }
+
+                    body.eye-comfort-theme .badge.bg-primary {
+                        background-color: #001B44 !important;
+                        color: #FFFFFF !important;
+                    }
+
+                    body.eye-comfort-theme .badge.bg-warning {
+                        background-color: #FDB913 !important;
+                        color: #001B44 !important;
+                    }
+
+
+                /* =========================================================
+           TOP NAVIGATION
+           ========================================================= */
+
+                body.eye-comfort-theme .top-navbar {
+                    background-color: #FFF9EC !important;
+                    color: #001B44 !important;
+                    border-bottom: 1px solid #D8CDB8 !important;
+                }
+
+                    body.eye-comfort-theme .top-navbar h2 {
+                        color: #001B44 !important;
+                    }
+
+                body.eye-comfort-theme .current-date {
+                    color: #4A4033 !important;
+                }
+
+
+                /* =========================================================
+           NOTIFICATION BUTTON
+           ========================================================= */
+
+                body.eye-comfort-theme .notification-btn {
+                    color: #001B44 !important;
+                }
+
+                    body.eye-comfort-theme .notification-btn:hover {
+                        color: #8A6200 !important;
+                    }
+
+
+                /* =========================================================
+           PROFILE ICON
+           ========================================================= */
+
+                body.eye-comfort-theme .profile-icon {
+                    color: #001B44 !important;
+                }
+
+                    body.eye-comfort-theme .profile-icon:hover {
+                        color: #8A6200 !important;
+                    }
+
+
+                /* =========================================================
+           PROFILE INFORMATION
+           ========================================================= */
+
+                body.eye-comfort-theme .profile-name {
+                    color: #332B20 !important;
+                    font-weight: 600;
+                }
+
+                body.eye-comfort-theme .profile small {
+                    color: #665C4D !important;
+                }
+
+
+                /* =========================================================
+           SIDEBAR
+           ========================================================= */
+
+                body.eye-comfort-theme .sidebar {
+                    background-color: #001B44 !important;
+                }
+
+                    body.eye-comfort-theme .sidebar h2 {
+                        color: #FFFFFF !important;
+                    }
+
+                    body.eye-comfort-theme .sidebar a {
+                        color: #FFFFFF !important;
+                    }
+
+                        body.eye-comfort-theme .sidebar a:hover {
+                            background-color: rgba(253, 185, 19, 0.18) !important;
+                            color: #FDB913 !important;
+                        }
+
+                        body.eye-comfort-theme .sidebar a.active {
+                            background-color: #FDB913 !important;
+                            color: #001B44 !important;
+                            font-weight: 700;
+                        }
+
+
+                /* =========================================================
+           ROLE SWITCH
+           ========================================================= */
+
+                body.eye-comfort-theme .role-switch a {
+                    transition: all 0.2s ease;
+                }
+
+
+                /* =========================================================
+           SEARCH / FILTER CONTROLS
+           ========================================================= */
+
+                body.eye-comfort-theme .search-box,
+                body.eye-comfort-theme .filter-box {
+                    background-color: #FFF9EC !important;
+                    border-color: #D8CDB8 !important;
+                    color: #332B20 !important;
+                }
+
+
+                /* =========================================================
+           FOCUS ACCESSIBILITY
+           ========================================================= */
+
+                body.eye-comfort-theme button:focus,
+                body.eye-comfort-theme a:focus,
+                body.eye-comfort-theme input:focus,
+                body.eye-comfort-theme select:focus,
+                body.eye-comfort-theme textarea:focus {
+                    outline: 3px solid #FDB913 !important;
+                    outline-offset: 2px;
+                }
+
+
+            /* =========================================================
+           SYSTEM MODE
+           ========================================================= */
+
+            /*
+           System mode intentionally remains a clean light theme.
+           This prevents the previous dark-mode readability problem.
+        */
+
+            body.system-theme {
+                background-color: #F5F7FA;
+                color: #212529;
+            }
+
+
+        /* =========================================================
+           ACCESSIBILITY / RESPONSIVE
+           ========================================================= */
+
+        .main .content {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .sidebar a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .notification-menu {
+            z-index: 9999;
+        }
+
+        @@media (max-width: 768px) {
+
+            .main .content {
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+        }
+
+        /* =========================================================
+   SUPERVISOR / EVALUATOR POPUP
+   ========================================================= */
+
+        #supervisorPopup {
+            position: fixed !important;
+            top: 25px !important;
+            right: 25px !important;
+            min-width: 320px !important;
+            max-width: 450px !important;
+            padding: 16px 20px !important;
+            border-radius: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+            z-index: 99999 !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25) !important;
+            animation: supervisorPopupSlideIn 0.3s ease;
+        }
+
+            #supervisorPopup.success {
+                background: #001B44 !important;
+                color: #ffffff !important;
+            }
+
+                #supervisorPopup.success i {
+                    color: #FDB913 !important;
+                    font-size: 21px !important;
+                }
+
+            #supervisorPopup.error {
+                background: #8B0000 !important;
+                color: #ffffff !important;
+            }
+
+                #supervisorPopup.error i {
+                    color: #FDB913 !important;
+                    font-size: 21px !important;
+                }
+
+            #supervisorPopup.hide {
+                animation: supervisorPopupSlideOut 0.3s ease forwards;
+            }
+
+        @@keyframes supervisorPopupSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @@keyframes supervisorPopupSlideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+        }
+    </style>
+
+</head>
+
+
+@{
+    /*
+     * =========================================================
+     * DETERMINE USER THEME
+     * =========================================================
+     */
+
+    var userTheme = Session["UserTheme"] != null
+        ? Session["UserTheme"].ToString()
+        : "Light";
+
+    var themeClass = "";
+
+    if (userTheme == "EyeComfort")
+    {
+        themeClass = "eye-comfort-theme";
+    }
+    else if (userTheme == "System")
+    {
+        themeClass = "system-theme";
+    }
+    else
+    {
+        themeClass = "";
+    }
+
+
+    /*
+     * =========================================================
+     * DETERMINE ACTIVE ROLE
+     * =========================================================
+     */
+
+    var activeRole = Session["ActiveRole"] != null
+        ? Session["ActiveRole"].ToString()
+        : "Supervisor";
+
+
+    /*
+     * =========================================================
+     * PROFILE LINK
+     * =========================================================
+     */
+
+    var profileController =
+        activeRole == "Evaluator"
+            ? "Evaluators"
+            : "Supervisors";
+
+    var profileAction =
+        activeRole == "Evaluator"
+            ? "EvaluatorProfile"
+            : "SupervisorProfile";
+}
+
+
+<body class="@themeClass">
+
+    <div class="wrapper">
+
+
+        <!-- =====================================================
+             SIDEBAR
+             ===================================================== -->
+
+        <div class="sidebar">
+
+            <h2>SPGS</h2>
+
+            <ul>
+
+                <!-- =================================================
+                EVALUATOR SIDEBAR
+                ================================================= -->
+
+                @if (activeRole == "Evaluator")
+                {
+                    <li>
+                        <a href="@Url.Action("Dashboard", "Evaluators")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Evaluators" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Dashboard"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-house"></i>
+
+                            Dashboard
+
+                        </a>
+                    </li>
+
+
+
+                    <li>
+                        <a href="@Url.Action("Proposals", "Evaluators")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Evaluators" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Proposals"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-file-lines"></i>
+
+                            Proposals
+
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="@Url.Action("Deadlines", "Evaluators")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Evaluators" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Deadlines"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-calendar-check"></i>
+
+                            Deadlines
+
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="@Url.Action("Index", "Settings")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Settings"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-gear"></i>
+
+                            Settings
+
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="@Url.Action("Login", "Account")">
+
+                            <i class="fa-solid fa-right-from-bracket"></i>
+
+                            Logout
+
+                        </a>
+                    </li>
+                }
+
+                else
+                {
+                    <!-- =================================================
+                    SUPERVISOR SIDEBAR
+                    ================================================= -->
+
+                    <li>
+                        <a href="@Url.Action("Dashboard", "Supervisors")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Supervisors" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Dashboard"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-house"></i>
+
+                            Dashboard
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("AvailableStudents", "Supervisors")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Supervisors" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "AvailableStudents"
+                                    ? "active"
+                            : "")">
+
+                            <i class="fa-solid fa-user-graduate"></i>
+
+                            Available Students
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Proposals", "Supervisors")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Supervisors" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Proposals"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-file-lines"></i>
+
+                            Proposals
+
+                        </a>
+                    </li>
+
+
+                    @*<li>
+                        <a href="@Url.Action("Ethics", "Supervisors")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Supervisors" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Ethics"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-scale-balanced"></i>
+
+                            Ethics
+
+                        </a>
+                    </li>*@
+
+
+                    <li>
+                        <a href="@Url.Action("Timeline", "Supervisors")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Supervisors" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Timeline"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-calendar-days"></i>
+
+                            Timelines
+
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="@Url.Action("Submissions", "Supervisors")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Supervisors" &&
+                                    ViewContext.RouteData.Values["action"].ToString() == "Submissions"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-file-arrow-up"></i>
+
+                            Submissions
+
+                        </a>
+                    </li>
+
+
+                    <!-- =================================================
+                    SETTINGS
+                    ================================================= -->
+
+                    <li>
+                        <a href="@Url.Action("Index", "Settings")"
+                           class="@(ViewContext.RouteData.Values["controller"].ToString() == "Settings"
+                                    ? "active"
+                                    : "")">
+
+                            <i class="fa-solid fa-gear"></i>
+
+                            Settings
+
+                        </a>
+                    </li>
+
+
+                    <!-- =================================================
+                    LOGOUT
+                    ================================================= -->
+
+                    <li>
+                        <a href="@Url.Action("Login", "Account")">
+
+                            <i class="fa-solid fa-right-from-bracket"></i>
+
+                            Logout
+
+                        </a>
+                    </li>
+
+                }
+
+            </ul>
+
+        </div>
+
+
+        <!-- =====================================================
+             MAIN
+             ===================================================== -->
+
+        <div class="main">
+
+
+            <!-- =================================================
+            TOP NAVIGATION
+            ================================================= -->
+
+            <header class="top-navbar">
+
+
+                <div class="nav-left">
+
+                    @*<button class="menu-btn"
+                                type="button"
+                                aria-label="Open navigation menu">
+
+                            <i class="fa-solid fa-bars"></i>
+
+                        </button>*@
+
+
+                    @if (activeRole == "Evaluator")
+                    {
+                        <h2>
+                            Evaluator Portal
+                        </h2>
+                    }
+                    else
+                    {
+                        <h2>
+                            Supervisor Portal
+                        </h2>
+                    }
+
+                </div>
+
+
+                <div class="nav-right">
+
+
+                    <!-- =================================================
+                    CURRENT DATE
+                    ================================================= -->
+
+                    <div class="current-date">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                        @DateTime.Now.ToString("dddd, dd MMM yyyy")
+
+                    </div>
+
+
+                    <!-- =================================================
+                    NOTIFICATIONS
+                    ================================================= -->
+
+                    <div class="notification-wrapper">
+
+                        <button id="notificationBtn"
+                                type="button"
+                                class="notification-btn"
+                                aria-label="Notifications">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                            <span class="badge">
+                                @ViewBag.NotificationCount
+                            </span>
+
+                        </button>
+
+
+                        <div id="notificationMenu"
+                             class="notification-menu">
+
+
+                            @if (ViewBag.Notifications != null &&
+                                ((List<PostGraduateRecord.ViewModels.NotificationViewModel>)
+                                ViewBag.Notifications).Any())
+                            {
+                                foreach (var item in
+                                    (List<PostGraduateRecord.ViewModels.NotificationViewModel>)
+                                    ViewBag.Notifications)
+                                {
+                                    <a href="@item.Link"
+                                        class="notification-item @(item.IsRead ? "" : "unread")">
+
+                                        <div class="notification-message">
+
+                                            @item.Message
+
+                                        </div>
+
+                                        <small>
+
+                                            @(item.SentDate.HasValue
+                                                ? item.SentDate.Value.ToString("dd MMM yyyy HH:mm")
+                                                : "")
+
+                                        </small>
+
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                <div class="notification-item">
+
+                                    No new notifications.
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                    PROFILE ICON
+                    ================================================= -->
+
+                    <a href="@Url.Action(profileAction, profileController)"
+                       class="profile-icon"
+                       aria-label="Open profile">
+
+                        <i class="fa-solid fa-circle-user"></i>
+
+                    </a>
+
+
+                    <!-- =================================================
+                    PROFILE INFORMATION
+                    ================================================= -->
+
+                    <div class="profile">
+
+                        <div class="profile-info">
+
+
+                            <span class="profile-name">
+
+                                @Session["FullName"]
+
+                            </span>
+
+
+                            @if (activeRole == "Evaluator")
+                            {
+                                <small>
+
+                                    Current Mode: Evaluator
+
+                                </small>
+                            }
+                            else
+                            {
+                                <small>
+
+                                    Current Mode: Supervisor
+
+                                </small>
+                            }
+
+
+                            <!-- =============================================
+                            ROLE SWITCH
+                            ============================================= -->
+
+                            <div class="role-switch">
+
+
+                                @if (Session["IsSupervisor"] != null &&
+                                    (bool)Session["IsSupervisor"])
+                                {
+                                    <a href="@Url.Action("SwitchToSupervisor", "Evaluators")"
+                                       style="
+                                       display:inline-flex;
+                                       align-items:center;
+                                       gap:5px;
+                                       padding:5px 10px;
+                                       margin-right:8px;
+                                       background:#001B44;
+                                       color:white;
+                                       border-radius:5px;
+                                       font-size:12px;
+                                       font-weight:600;
+                                       text-decoration:none;
+                                       ">
+
+                                        <i class="fa-solid fa-user-tie"></i>
+
+                                        Supervisor
+
+                                    </a>
+                                }
+
+
+                                @if (Session["IsEvaluator"] != null &&
+                                    (bool)Session["IsEvaluator"])
+                                {
+                                    <a href="@Url.Action("SwitchToEvaluator", "Supervisors")"
+                                       style="
+                                       display:inline-flex;
+                                       align-items:center;
+                                       gap:5px;
+                                       padding:5px 10px;
+                                       background:#FDB913;
+                                       color:#001B44;
+                                       border-radius:5px;
+                                       font-size:12px;
+                                       font-weight:600;
+                                       text-decoration:none;
+                                       ">
+
+                                        <i class="fa-solid fa-clipboard-check"></i>
+
+                                        Evaluator
+
+                                    </a>
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =====================================================
+            CONTENT
+            ===================================================== -->
+            <div class="content">
+
+                @if (TempData["Success"] != null)
+                {
+                    <div id="supervisorPopup"
+                         class="success">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <span>
+                            @TempData["Success"]
+                        </span>
+
+                    </div>
+                }
+
+                @if (TempData["Error"] != null)
+                {
+                    <div id="supervisorPopup"
+                         class="error">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                        <span>
+                            @TempData["Error"]
+                        </span>
+
+                    </div>
+                }
+
+                @RenderBody()
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         NOTIFICATION SCRIPT
+         ========================================================= -->
+
+    <script>
+
+                const notificationBtn =
+                    document.getElementById("notificationBtn");
+
+                const notificationMenu =
+                    document.getElementById("notificationMenu");
+
+
+                if (notificationBtn && notificationMenu) {
+
+                    notificationBtn.addEventListener("click", function (e) {
+
+                        e.stopPropagation();
+
+                        notificationMenu.classList.toggle("show");
+
+                    });
+
+
+                    notificationMenu.addEventListener("click", function (e) {
+
+                        e.stopPropagation();
+
+                    });
+
+
+                    document.addEventListener("click", function () {
+
+                        notificationMenu.classList.remove("show");
+
+                    });
+
+                }
+
+    </script>
+
+
+    <!-- =========================================================
+         THEME SCRIPT
+         ========================================================= -->
+
+    <script>
+
+        (function () {
+
+            var theme = '@userTheme';
+
+            var body = document.body;
+
+
+            /* =============================================
+               REMOVE PREVIOUS THEME CLASSES
+               ============================================= */
+
+            body.classList.remove("dark-theme");
+
+            body.classList.remove("eye-comfort-theme");
+
+            body.classList.remove("system-theme");
+
+
+            /* =============================================
+               EYE COMFORT
+               ============================================= */
+
+            if (theme === "EyeComfort") {
+
+                body.classList.add("eye-comfort-theme");
+
+            }
+
+
+            /* =============================================
+               SYSTEM
+               ============================================= */
+
+            else if (theme === "System") {
+
+                body.classList.add("system-theme");
+
+            }
+
+
+            /* =============================================
+               LIGHT
+               ============================================= */
+
+            else {
+
+                // Light mode uses the normal Supervisor.css styling.
+
+            }
+
+        })();
+
+    </script>
+
+    <script src="~/Scripts/SupervisorNotificationPopup.js"></script>
+</body>
+</html>

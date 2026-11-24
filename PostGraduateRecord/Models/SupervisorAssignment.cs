@@ -15,11 +15,12 @@ namespace PostGraduateRecord.Models
     public partial class SupervisorAssignment
     {
         public int AssignmentID { get; set; }
-        public int ProposalID { get; set; }
         public int SupervisorID { get; set; }
         public Nullable<System.DateTime> AssignedDate { get; set; }
+        public Nullable<int> ApplicationID { get; set; }
+        public string Status { get; set; }
     
-        public virtual Proposal Proposal { get; set; }
         public virtual Supervisor Supervisor { get; set; }
+        public virtual Application Application { get; set; }
     }
 }

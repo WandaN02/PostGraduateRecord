@@ -1,0 +1,565 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Student>
+
+@{
+    ViewBag.Title = "Assigned Students";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+}
+
+<div class="assigned-students-page">
+
+    <!-- PAGE HEADER -->
+    <div class="modern-page-header">
+
+        <div class="header-left">
+
+            <div class="header-icon">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+
+            <div>
+                <span class="header-label">
+                    SUPERVISOR WORKSPACE
+                </span>
+
+                <h1>
+                    Assigned Students
+                </h1>
+
+                <p>
+                    Students currently assigned to your supervision.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="student-count">
+            <strong>@Model.Count()</strong>
+            <span>Student@(Model.Count() == 1 ? "" : "s")</span>
+        </div>
+
+    </div>
+
+
+    <!-- STUDENTS -->
+    <div class="students-grid">
+
+        @foreach (var student in Model)
+        {
+            <div class="student-card">
+
+                <!-- CARD HEADER -->
+
+                <div class="student-header">
+
+                    <div class="student-avatar">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div class="student-name-area">
+
+                        <span class="student-label">
+                            POSTGRADUATE STUDENT
+                        </span>
+
+                        <h3>
+                            @student.User.FirstName @student.User.LastName
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DIVIDER -->
+
+                <div class="card-divider"></div>
+
+
+                <!-- STUDENT INFORMATION -->
+
+                <div class="student-info">
+
+                    <div class="info-row">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+
+                        <div class="info-content">
+
+                            <span>
+                                Qualification
+                            </span>
+
+                            <strong>
+                                @student.Qualification
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-row">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+
+                        <div class="info-content">
+
+                            <span>
+                                Email
+                            </span>
+
+                            <strong>
+                                @student.User.Email
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CARD FOOTER -->
+
+                <div class="card-footer">
+
+                    <a href="@Url.Action("Timeline","Supervisors")"
+                       class="timeline-btn">
+
+                        <span>
+                            <i class="fa-solid fa-calendar-days"></i>
+                            View Timeline
+                        </span>
+
+                        <i class="fa-solid fa-arrow-right arrow"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+<style>
+
+    /* =====================================================
+       PAGE
+    ====================================================== */
+
+    .assigned-students-page {
+        max-width: 1450px;
+        margin: 0 auto;
+        padding: 10px 5px 50px;
+        color: #26364a;
+    }
+
+
+    /* =====================================================
+       HEADER
+    ====================================================== */
+
+    .modern-page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 28px;
+        padding: 28px 32px;
+        background: linear-gradient(135deg, #001B44 0%, #07366d 100%);
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0, 27, 68, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+
+        .modern-page-header::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            right: -70px;
+            top: -115px;
+            border-radius: 50%;
+            background: rgba(253, 185, 19, 0.12);
+        }
+
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .header-icon {
+        width: 58px;
+        height: 58px;
+        flex-shrink: 0;
+        border-radius: 15px;
+        background: rgba(253, 185, 19, 0.15);
+        border: 1px solid rgba(253, 185, 19, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #FDB913;
+        font-size: 23px;
+    }
+
+
+    .header-label {
+        display: block;
+        margin-bottom: 5px;
+        color: #FDB913;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+
+
+    .modern-page-header h1 {
+        margin: 0 0 5px;
+        color: #ffffff;
+        font-size: 29px;
+        font-weight: 750;
+        letter-spacing: -0.4px;
+    }
+
+
+    .modern-page-header p {
+        margin: 0;
+        color: rgba(255,255,255,0.75);
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       STUDENT COUNT
+    ====================================================== */
+
+    .student-count {
+        min-width: 100px;
+        padding: 13px 17px;
+        border-radius: 12px;
+        background: rgba(255,255,255,0.09);
+        border: 1px solid rgba(255,255,255,0.13);
+        text-align: center;
+        position: relative;
+        z-index: 2;
+    }
+
+
+        .student-count strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #FDB913;
+            font-size: 25px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+
+        .student-count span {
+            color: rgba(255,255,255,0.7);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+
+    /* =====================================================
+       GRID
+    ====================================================== */
+
+    .students-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+
+    /* =====================================================
+       STUDENT CARD
+    ====================================================== */
+
+    .student-card {
+        background: #ffffff;
+        border: 1px solid #e4e8ee;
+        border-radius: 16px;
+        padding: 22px;
+        box-shadow: 0 4px 14px rgba(16, 37, 63, 0.055);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+
+        .student-card:hover {
+            transform: translateY(-3px);
+            border-color: #d4dce6;
+            box-shadow: 0 12px 28px rgba(16, 37, 63, 0.10);
+        }
+
+
+    /* =====================================================
+       STUDENT HEADER
+    ====================================================== */
+
+    .student-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+
+    .student-avatar {
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+        border-radius: 14px;
+        background: #001B44;
+        color: #FDB913;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 19px;
+        box-shadow: 0 4px 10px rgba(0,27,68,0.13);
+    }
+
+
+    .student-name-area {
+        min-width: 0;
+    }
+
+
+    .student-label {
+        display: block;
+        margin-bottom: 4px;
+        color: #98a2af;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+
+    .student-name-area h3 {
+        margin: 0;
+        color: #1c2b3d;
+        font-size: 17px;
+        font-weight: 750;
+        line-height: 1.35;
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       DIVIDER
+    ====================================================== */
+
+    .card-divider {
+        height: 1px;
+        margin: 20px 0;
+        background: #edf0f4;
+    }
+
+
+    /* =====================================================
+       INFORMATION
+    ====================================================== */
+
+    .student-info {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        min-height: 91px;
+    }
+
+
+    .info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+    }
+
+
+    .info-icon {
+        width: 32px;
+        height: 32px;
+        flex-shrink: 0;
+        border-radius: 9px;
+        background: #f3f5f8;
+        color: #617086;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+
+
+    .info-content {
+        min-width: 0;
+        padding-top: 1px;
+    }
+
+
+        .info-content span {
+            display: block;
+            margin-bottom: 3px;
+            color: #98a2af;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+
+        .info-content strong {
+            display: block;
+            color: #35465a;
+            font-size: 12px;
+            font-weight: 650;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+
+    /* =====================================================
+       FOOTER
+    ====================================================== */
+
+    .card-footer {
+        margin-top: 20px;
+        padding-top: 17px;
+        border-top: 1px solid #edf0f4;
+    }
+
+
+    /* =====================================================
+       TIMELINE BUTTON
+    ====================================================== */
+
+    .timeline-btn {
+        width: 100%;
+        min-height: 40px;
+        padding: 9px 13px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 9px;
+        background: #001B44;
+        border: 1px solid #001B44;
+        color: #ffffff !important;
+        text-decoration: none !important;
+        font-size: 12px;
+        font-weight: 700;
+        transition: all 0.2s ease;
+    }
+
+
+        .timeline-btn span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+
+        .timeline-btn .arrow {
+            font-size: 10px;
+            transition: transform 0.2s ease;
+        }
+
+
+        .timeline-btn:hover {
+            background: #FDB913;
+            border-color: #FDB913;
+            color: #001B44 !important;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 12px rgba(253,185,19,0.22);
+        }
+
+
+            .timeline-btn:hover .arrow {
+                transform: translateX(3px);
+            }
+
+
+    /* =====================================================
+       TABLET
+    ====================================================== */
+
+    @@media (max-width: 1150px) {
+
+        .students-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ====================================================== */
+
+    @@media (max-width: 700px) {
+
+        .assigned-students-page {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+
+        .modern-page-header {
+            padding: 21px;
+            border-radius: 14px;
+        }
+
+
+        .header-left {
+            align-items: flex-start;
+        }
+
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 19px;
+        }
+
+
+        .modern-page-header h1 {
+            font-size: 24px;
+        }
+
+
+        .modern-page-header p {
+            font-size: 12px;
+        }
+
+
+        .student-count {
+            display: none;
+        }
+
+
+        .students-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+
+        .student-card {
+            padding: 19px;
+            border-radius: 14px;
+        }
+    }
+</style>

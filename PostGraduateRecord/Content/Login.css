@@ -1,82 +1,645 @@
-﻿body {
-    margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(135deg,#002147,#004b8d);
-    height: 100vh;
+﻿* {
+  box-sizing: border-box;
+  }
+
+html,
+body {
+margin: 0;
+padding: 0;
+width: 100%;
+height: 100%;
+}
+
+body {
+font-family: "Segoe UI", sans-serif;
+}
+
+/* =====================================
+FULL PAGE BACKGROUND
+===================================== */
+
+.login-page {
+    min-height: 100vh;
+    width: 100%;
+    background-image: linear-gradient( rgba(0, 27, 68, 0.68), rgba(0, 27, 68, 0.68) ), var(--login-background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 8%;
+}
+
+/* =====================================
+LEFT CONTENT
+===================================== */
+
+.login-image {
+width: 50%;
+color: white;
+position: relative;
+}
+
+.image-overlay {
+width: 100%;
+min-height: auto;
+padding: 0;
+display: block;
+}
+
+.quote {
+max-width: 600px;
+}
+
+.quote h1 {
+margin: 0;
+
+
+font-size: 58px;
+line-height: 1.1;
+
+font-weight: 800;
+
+color: white;
+
+
+}
+
+.quote-line {
+width: 70px;
+height: 5px;
+
+
+background: #FDB913;
+
+border-radius: 10px;
+
+margin: 25px 0;
+
+
+}
+
+.quote p {
+margin: 0 0 12px;
+
+
+max-width: 520px;
+
+font-size: 20px;
+line-height: 1.6;
+
+color: #f2f4f7;
+
+}
+
+.quote span {
+color: #FDB913;
+
+
+font-size: 15px;
+
+font-weight: 600;
+
+}
+
+/* =====================================
+PRMS BRANDING
+===================================== */
+
+.image-footer {
+margin-top: 50px;
+
+
+display: flex;
+flex-direction: column;
+
+gap: 5px;
+
+}
+
+.image-footer strong {
+font-size: 28px;
+
+
+color: #FDB913;
+
+letter-spacing: 2px;
+
+
+}
+
+.image-footer span {
+color: #e6eaf0;
+
+font-size: 14px;
+
+
+}
+
+/* =====================================
+LOGIN CARD
+===================================== */
+
+.login-side {
+    width: 390px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.login-container {
+.login-card {
     width: 100%;
-    display: flex;
+    max-width: 390px;
+    background: rgba(255, 255, 255, 0.97);
+    padding: 30px 32px;
+    border-radius: 16px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.30);
+    backdrop-filter: blur(8px);
+}
+
+/* =====================================
+PRMS TITLE
+===================================== */
+
+.logo-section {
+text-align: center;
+
+
+margin-bottom: 24px;
+
+
+}
+
+.logo-section h1 {
+margin: 0;
+
+
+font-size: 40px;
+
+color: #001B44;
+
+font-weight: 800;
+
+letter-spacing: 1px;
+
+
+}
+
+.logo-section p {
+margin-top: 8px;
+
+
+color: #777;
+
+font-size: 14px;
+
+
+}
+
+/* =====================================
+INPUT GROUP
+===================================== */
+
+.input-group {
+margin-bottom: 20px;
+}
+
+.input-group label {
+display: block;
+
+
+margin-bottom: 8px;
+
+color: #001B44;
+
+font-size: 14px;
+
+font-weight: 600;
+
+
+}
+
+/* =====================================
+INPUT WITH ICON
+===================================== */
+
+.input-wrapper {
+position: relative;
+}
+
+.input-wrapper i {
+position: absolute;
+
+
+left: 15px;
+top: 50%;
+
+transform: translateY(-50%);
+
+color: #8993a0;
+
+
+}
+
+.input-wrapper input {
+width: 100%;
+
+padding: 13px 14px 13px 43px;
+
+border: 1px solid #d2d7df;
+
+border-radius: 9px;
+
+background: #fafafa;
+
+font-size: 15px;
+
+transition: 0.2s ease;
+
+
+}
+
+.input-wrapper input:focus {
+outline: none;
+
+
+background: white;
+
+border-color: #001B44;
+
+box-shadow:
+    0 0 0 3px rgba(0, 27, 68, 0.08);
+
+
+}
+
+/* =====================================
+REMEMBER ME
+===================================== */
+
+.remember-me {
+margin: 5px 0 20px;
+}
+
+.remember-me label {
+display: flex;
+
+
+align-items: center;
+
+gap: 8px;
+
+color: #555;
+
+font-size: 14px;
+
+cursor: pointer;
+
+
+}
+
+.remember-me input {
+width: 16px;
+height: 16px;
+
+
+cursor: pointer;
+
+accent-color: #001B44;
+
+
+}
+
+/* =====================================
+LOGIN BUTTON
+===================================== */
+
+button[type="submit"] {
+width: 100%;
+
+
+padding: 14px;
+
+border: none;
+
+border-radius: 9px;
+
+background: #FDB913;
+
+color: #001B44;
+
+font-size: 17px;
+
+font-weight: 700;
+
+cursor: pointer;
+
+transition: 0.25s ease;
+
+
+}
+
+button[type="submit"]:hover {
+background: #001B44;
+
+
+color: white;
+
+transform: translateY(-1px);
+
+box-shadow:
+    0 8px 20px rgba(0, 27, 68, 0.25);
+
+
+}
+
+/* =====================================
+ROLE SELECTION
+===================================== */
+
+.role-section {
+margin-top: 27px;
+}
+
+.role-title {
+display: block;
+
+
+margin-bottom: 12px;
+
+color: #001B44;
+
+font-size: 14px;
+
+font-weight: 600;
+
+
+}
+
+.role-selection {
+display: flex;
+
+
+justify-content: center;
+
+gap: 10px;
+
+}
+
+.role-option {
+cursor: pointer;
+}
+
+.role-option input {
+display: none;
+}
+
+.role-option span {
+width: 105px;
+height: 78px;
+
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+border: 2px solid #e1e4e8;
+
+border-radius: 11px;
+
+color: #001B44;
+
+font-size: 12px;
+
+font-weight: 600;
+
+transition: 0.25s ease;
+
+
+}
+
+.role-option span i {
+font-size: 22px;
+
+
+margin-bottom: 7px;
+
+
+}
+
+.role-option span:hover {
+border-color: #001B44;
+
+
+background: #f7f9fc;
+
+
+}
+
+.role-option input:checked + span {
+background: #001B44;
+
+
+color: #FDB913;
+
+border-color: #FDB913;
+
+box-shadow:
+    0 5px 15px rgba(0, 27, 68, 0.18);
+
+
+}
+
+/* =====================================
+ERROR
+===================================== */
+
+.error-message {
+margin-top: 20px;
+
+
+padding: 12px 14px;
+
+background: #ffe5e5;
+
+color: #b30000;
+
+border: 1px solid #f2bcbc;
+
+border-radius: 8px;
+
+font-size: 13px;
+
+line-height: 1.5;
+
+
+}
+
+/* =====================================
+FOOTER
+===================================== */
+
+.footer {
+text-align: center;
+
+
+margin-top: 25px;
+
+color: #888;
+
+font-size: 12px;
+
+
+}
+
+/* =====================================
+RESPONSIVE
+===================================== */
+
+@media (max-width: 950px) {
+
+
+.login-page {
+    flex-direction: column;
+
     justify-content: center;
+
+    gap: 40px;
+
+    padding: 50px 25px;
+}
+
+.login-image {
+    width: 100%;
+
+    text-align: center;
+}
+
+.quote {
+    margin: auto;
+}
+
+.quote h1 {
+    font-size: 42px;
+}
+
+.image-footer {
+    margin-top: 25px;
+}
+
+.login-side {
+    width: 100%;
+
+    max-width: 440px;
+}
+
+
+}
+
+@media (max-width: 500px) {
+
+
+.login-page {
+    padding: 30px 15px;
+}
+
+.quote h1 {
+    font-size: 34px;
+}
+
+.quote p {
+    font-size: 16px;
 }
 
 .login-card {
-    width: 420px;
-    background: white;
-    border-radius: 15px;
-    padding: 40px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    padding: 30px 22px;
 }
 
-    .login-card h2 {
-        color: #002147;
-        text-align: center;
-        margin-bottom: 5px;
-    }
-
-    .login-card h4 {
-        color: #FDB913;
-        text-align: center;
-        margin-bottom: 35px;
-    }
-
-.form-group {
-    margin-bottom: 20px;
+.logo-section h1 {
+    font-size: 40px;
 }
 
-    .form-group label {
-        font-weight: 600;
-        color: #002147;
+.role-option span {
+    width: 90px;
+}
+
+
+}
+.login-card {
+    width: 100%;
+    max-width: 390px;
+    background: rgba(255, 255, 255, 0.97);
+    padding: 25px 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.30);
+    backdrop-filter: blur(8px);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #777;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+}
+
+    .password-toggle:hover {
+        color: #001B44;
     }
 
-.password-box {
+.input-wrapper {
     position: relative;
 }
 
-    .password-box input {
+    .input-wrapper input[type="password"],
+    .input-wrapper input[type="text"] {
         padding-right: 45px;
     }
 
-    .password-box span {
-        position: absolute;
-        right: 15px;
-        top: 10px;
-        cursor: pointer;
-        color: #666;
-    }
+/* PASSWORD EYE */
 
-.btn-login {
-    width: 100%;
-    background: #002147;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: .3s;
+.input-wrapper {
+    position: relative;
 }
 
-    .btn-login:hover {
-        background: #FDB913;
-        color: black;
+    .input-wrapper input {
+        width: 100%;
+        box-sizing: border-box;
+        padding-right: 45px;
     }
 
-.error {
-    color: red;
-    margin-top: 15px;
-    text-align: center;
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 35px;
+    height: 35px;
+    border: none !important;
+    background: transparent !important;
+    color: #777;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 0;
 }
+
+    .password-toggle i {
+        pointer-events: none;
+    }
+
+    .password-toggle:hover {
+        color: #001B44;
+    }

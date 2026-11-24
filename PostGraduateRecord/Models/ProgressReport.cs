@@ -18,10 +18,15 @@ namespace PostGraduateRecord.Models
         public int ProposalID { get; set; }
         public int StudentID { get; set; }
         public Nullable<int> ReportNumber { get; set; }
-        public Nullable<System.DateTime> SubmissionDate { get; set; }
+        public Nullable<System.DateTime> ReportDate { get; set; }
         public string Summary { get; set; }
         public string SupervisorComments { get; set; }
         public string Status { get; set; }
+        public string ReportingPeriod { get; set; }
+        public string CurrentProgress { get; set; }
+        public string Challenges { get; set; }
+        public string NextSteps { get; set; }
+        public string ProgressStatus { get; set; }
     
         public virtual Proposal Proposal { get; set; }
         public virtual Student Student { get; set; }

@@ -1,0 +1,824 @@
+﻿@model PostGraduateRecord.ViewModels.AdminReportViewModel
+
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="reports-page">
+
+    <!-- =========================================
+         PAGE HEADER
+    ========================================== -->
+
+    <div class="page-header">
+
+        <div>
+            <h2>Postgraduate Reports</h2>
+
+            <p>
+                View postgraduate research, student progress,
+                proposals, ethics and evaluation reports.
+            </p>
+        </div>
+
+        <a href="@Url.Action("DynamicReports", "Admin")"
+           class="generate-dynamic-report-btn">
+            <i class="fas fa-chart-line"></i>
+            <span>Generate Dynamic Report</span>
+        </a>
+
+    </div>
+
+
+    <!-- =========================================
+         SUMMARY CARDS
+    ========================================== -->
+
+    <div class="report-summary-grid">
+
+        <!-- TOTAL STUDENTS -->
+
+        <a href="@Url.Action("Students", "Admin")"
+           class="report-card report-card-link">
+
+            <div class="report-icon navy">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+
+            <div>
+                <span>Total Students</span>
+                <strong>@Model.TotalStudents</strong>
+                <small>View Students →</small>
+            </div>
+
+        </a>
+
+
+        <!-- ACTIVE STUDENTS -->
+        <!--<a href="@Url.Action("Students", "Admin")"
+           class="report-card report-card-link">
+
+            <div class="report-icon blue">
+                <i class="fas fa-user-check"></i>
+            </div>
+
+            <div>
+                <span>Active Students</span>
+                <strong>@Model.ActiveStudents</strong>
+                <small>View Students →</small>
+            </div>
+
+        </a>-->
+        <!-- COMPLETED STUDENTS -->
+
+        <a href="@Url.Action("CompletedStudents", "Admin")"
+           class="report-card report-card-link">
+
+            <div class="report-icon yellow">
+                <i class="fas fa-check-circle"></i>
+            </div>
+
+            <div>
+                <span>Completed Students</span>
+                <strong>@Model.CompletedStudents</strong>
+                <small>View Details →</small>
+            </div>
+
+        </a>
+
+        <!-- TOTAL PROPOSALS -->
+        @*<a href="@Url.Action("Applications", "Admin")"
+               class="report-card report-card-link">
+
+                <div class="report-icon green">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+
+                <div>
+                    <span>Total Proposals</span>
+                    <strong>@Model.TotalProposals</strong>
+                    <small>View Applications →</small>
+                </div>
+
+            </a>*@
+
+
+        <!-- ETHICS APPLICATIONS -->
+
+        <div class="report-card">
+
+            <div class="report-icon purple">
+                <i class="fas fa-balance-scale"></i>
+            </div>
+
+            <div>
+                <span>Ethics Applications</span>
+                <strong>@Model.TotalEthicsApplications</strong>
+            </div>
+
+        </div>
+
+
+        @*TOTAL EVALUATIONS*@
+
+        <div class="report-card">
+
+            <div class="report-icon orange">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+
+            <div>
+                <span>Total Evaluations</span>
+                <strong>@Model.TotalEvaluations</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         RESEARCH PROPOSAL STATUS
+    ========================================== -->
+    <!--<div class="report-section">
+
+        <div class="report-section-header">
+
+            <div>
+
+                <h3>
+                    <i class="fas fa-file-alt"></i>
+                    Research Proposal Status
+                </h3>
+
+                <p>
+                    Overview of postgraduate research proposal progress.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="status-grid">
+
+            <div class="status-box pending">
+
+                <span>Pending</span>
+
+                <strong>
+                    @Model.PendingProposals
+                </strong>
+
+            </div>
+
+
+            <div class="status-box approved">
+
+                <span>Approved</span>
+
+                <strong>
+                    @Model.ApprovedProposals
+                </strong>
+
+            </div>
+
+
+            <div class="status-box review">
+
+                <span>Under Evaluation</span>
+
+                <strong>
+                    @Model.UnderEvaluationProposals
+                </strong>
+
+            </div>
+
+
+            <div class="status-box rejected">
+
+                <span>Rejected</span>
+
+                <strong>
+                    @Model.RejectedProposals
+                </strong>
+
+            </div>
+
+
+            <div class="status-box revision">
+
+                <span>Revision Required</span>
+
+                <strong>
+                    @Model.RevisionRequiredProposals
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>-->
+    <!-- =========================================
+         ETHICS APPLICATION STATUS
+    ========================================== -->
+
+    <div class="report-section">
+
+        <div class="report-section-header">
+
+            <div>
+
+                <h3>
+                    <i class="fas fa-balance-scale"></i>
+                    Ethics Application Status
+                </h3>
+
+                <p>
+                    Overview of student ethics applications.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="status-grid">
+
+            <div class="status-box pending">
+
+                <span>Pending</span>
+
+                <strong>
+                    @Model.PendingEthics
+                </strong>
+
+            </div>
+
+
+            <div class="status-box submitted">
+
+                <span>Submitted</span>
+
+                <strong>
+                    @Model.SubmittedEthics
+                </strong>
+
+            </div>
+
+
+            <div class="status-box approved">
+
+                <span>Approved</span>
+
+                <strong>
+                    @Model.ApprovedEthics
+                </strong>
+
+            </div>
+
+
+            <div class="status-box rejected">
+
+                <span>Rejected</span>
+
+                <strong>
+                    @Model.RejectedEthics
+                </strong>
+
+            </div>
+
+
+            <div class="status-box revision">
+
+                <span>Revision Required</span>
+
+                <strong>
+                    @Model.RevisionRequiredEthics
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         EVALUATION STATUS
+    ========================================== -->
+
+    <div class="report-section">
+
+        <div class="report-section-header">
+
+            <div>
+
+                <h3>
+                    <i class="fas fa-clipboard-check"></i>
+                    Evaluation Status
+                </h3>
+
+                <p>
+                    Overview of research proposal evaluations.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="status-grid">
+
+            <div class="status-box pending">
+
+                <span>Pending</span>
+
+                <strong>
+                    @Model.PendingEvaluations
+                </strong>
+
+            </div>
+
+
+            <div class="status-box review">
+
+                <span>In Progress</span>
+
+                <strong>
+                    @Model.InProgressEvaluations
+                </strong>
+
+            </div>
+
+
+            <div class="status-box approved">
+
+                <span>Completed</span>
+
+                <strong>
+                    @Model.CompletedEvaluations
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         STUDENT PROGRESS
+    ========================================== -->
+
+    <div class="report-section">
+
+        <div class="report-section-header">
+
+            <div>
+
+                <h3>
+                    <i class="fas fa-chart-line"></i>
+                    Student Progress
+                </h3>
+
+                <p>
+                    Individual postgraduate student research progress.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Student</th>
+
+                        <th>Student Number</th>
+
+                        <th>Research Title</th>
+
+                        <th>Progress</th>
+
+                        <th>Status</th>
+
+                        <th>Admin Message</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model.StudentProgress != null &&
+                         Model.StudentProgress.Any())
+                    {
+
+                        foreach (var student in Model.StudentProgress)
+                        {
+
+                            <tr>
+
+                                <td>
+
+                                    <strong>
+                                        @student.StudentName
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+                                    @student.StudentNumber
+                                </td>
+
+
+                                <td>
+                                    @student.ResearchTitle
+                                </td>
+
+
+                                <td>
+
+                                    <div class="progress-container">
+
+                                        <div class="progress-bar">
+
+                                            <div class="progress-fill"
+                                                 style="width:@student.ProgressPercentage%;">
+                                            </div>
+
+                                        </div>
+
+
+                                        <span>
+                                            @student.ProgressPercentage%
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    @if (student.Status == "Completed")
+                                    {
+
+                                        <span class="status-badge completed">
+                                            Completed
+                                        </span>
+
+                                    }
+                                    else if (student.Status == "In Progress")
+                                    {
+
+                                        <span class="status-badge in-progress">
+                                            In Progress
+                                        </span>
+
+                                    }
+                                    else if (student.Status == "Proposal Stage")
+                                    {
+
+                                        <span class="status-badge proposal">
+                                            Proposal Stage
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="status-badge not-started">
+                                            Not Started
+                                        </span>
+
+                                    }
+
+                                </td>
+                                <td>
+
+                                    @if (student.Status != "Completed")
+                                    {
+                                        using (Html.BeginForm(
+                                            "SendProgressNotification",
+                                            "Admin",
+                                            FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            <input type="hidden"
+                                                   name="studentId"
+                                                   value="@student.StudentID" />
+
+                                            <div class="admin-message-box">
+
+                                                <textarea name="message"
+                                                          class="admin-message-input"
+                                                          placeholder="Write a message to this student..."
+                                                          rows="2"
+                                                          required></textarea>
+
+                                                <button type="submit"
+                                                        class="admin-message-button">
+
+                                                    <i class="fas fa-paper-plane"></i>
+                                                    Send
+
+                                                </button>
+
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="completed-message">
+                                            No message required
+                                        </span>
+                                    }
+
+                                </td>
+                            </tr>
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        <tr>
+
+                            <td colspan="6"
+                                class="empty-message">
+
+                                No student progress information is available.
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         SUPERVISOR WORKLOAD
+    ========================================== -->
+
+    <div class="report-section">
+
+        <div class="report-section-header">
+
+            <div>
+
+                <h3>
+                    <i class="fas fa-user-tie"></i>
+                    Supervisor Workload
+                </h3>
+
+                <p>
+                    Overview of supervisor student assignments and reviews.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Supervisor</th>
+
+                        <th>Assigned Students</th>
+
+                        <th>Pending Reviews</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @if (Model.SupervisorWorkload != null &&
+                         Model.SupervisorWorkload.Any())
+                    {
+
+                        foreach (var supervisor in Model.SupervisorWorkload)
+                        {
+
+                            <tr>
+
+                                <td>
+
+                                    <strong>
+                                        @supervisor.SupervisorName
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+                                    @supervisor.AssignedStudents
+                                </td>
+
+
+                                <td>
+
+                                    @if (supervisor.PendingReviews > 0)
+                                    {
+
+                                        <span class="status-badge in-progress">
+                                            @supervisor.PendingReviews
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="status-badge completed">
+                                            0
+                                        </span>
+
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    }
+                    else
+                    {
+
+                        <tr>
+
+                            <td colspan="3"
+                                class="empty-message">
+
+                                No supervisor workload information is available.
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<br />
+<!-- ========================================= -->
+<!-- BACK TO DASHBOARD -->
+<!-- ========================================= -->
+
+<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>
+
+<style>
+    /* =========================================
+       REPORT PAGE HEADER
+    ========================================= */
+
+    .reports-page .page-header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+        .reports-page .page-header > div:first-child {
+            flex: 1;
+        }
+
+        .reports-page .page-header h2 {
+            margin: 0;
+            color: #001B44;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .reports-page .page-header p {
+            margin: 7px 0 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+
+    /* =========================================
+       GENERATE DYNAMIC REPORT BUTTON
+    ========================================= */
+
+    .reports-page .generate-dynamic-report-btn {
+        margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-width: 220px;
+        height: 48px;
+        padding: 0 22px;
+        background: #001B44;
+        color: #ffffff !important;
+        border: 2px solid #001B44;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none !important;
+        white-space: nowrap;
+        cursor: pointer;
+        box-shadow: 0 5px 14px rgba(0, 27, 68, 0.18);
+        transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+
+        /* ICON */
+
+        .reports-page .generate-dynamic-report-btn i {
+            font-size: 16px;
+        }
+
+
+        /* HOVER */
+
+        .reports-page .generate-dynamic-report-btn:hover {
+            background: #FDB913;
+            border-color: #FDB913;
+            color: #001B44 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(253, 185, 19, 0.30);
+        }
+
+
+        /* ACTIVE */
+
+        .reports-page .generate-dynamic-report-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0, 27, 68, 0.15);
+        }
+
+
+        /* FOCUS */
+
+        .reports-page .generate-dynamic-report-btn:focus {
+            outline: none;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 3px rgba(253, 185, 19, 0.25), 0 5px 14px rgba(0, 27, 68, 0.18);
+        }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @@media (max-width: 768px) {
+
+        .reports-page .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .reports-page .generate-dynamic-report-btn {
+            margin-left: 0;
+            width: 100%;
+        }
+    }
+</style>

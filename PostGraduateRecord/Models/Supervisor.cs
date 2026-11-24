@@ -19,6 +19,7 @@ namespace PostGraduateRecord.Models
         {
             this.Feedbacks = new HashSet<Feedback>();
             this.SupervisorAssignments = new HashSet<SupervisorAssignment>();
+            this.EvaluatorAssignments = new HashSet<EvaluatorAssignment>();
         }
     
         public int SupervisorID { get; set; }
@@ -33,5 +34,7 @@ namespace PostGraduateRecord.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SupervisorAssignment> SupervisorAssignments { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EvaluatorAssignment> EvaluatorAssignments { get; set; }
     }
 }

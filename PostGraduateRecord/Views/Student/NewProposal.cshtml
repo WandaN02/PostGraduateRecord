@@ -1,80 +1,151 @@
-﻿@{
+﻿@model PostGraduateRecord.ViewModels.ProposalViewModel
+
+@{
     ViewBag.Title = "New Proposal";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
-
-
 <div class="page-header">
 
     <h2>
-        <i class="fa-solid fa-upload"></i>
+        <i class="fa-solid fa-file-upload"></i>
         Upload Research Proposal
     </h2>
 
+    <p>
+        Complete the form below and upload your research proposal.
+    </p>
+
 </div>
+
+@if (ViewBag.Message != null)
+{
+    <div style="
+        background-color: #f8d7da;
+        color: #842029;
+        border: 1px solid #f5c2c7;
+        padding: 15px 20px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        font-weight: 500;">
+
+        <i class="fa-solid fa-circle-xmark"></i>
+        @ViewBag.Message
+
+    </div>
+}
 
 
 
 <div class="card-section">
 
+    @using (Html.BeginForm("NewProposal",
+                           "Student",
+                           FormMethod.Post,
+                           new { enctype = "multipart/form-data" }))
+    {
 
-    <form>
+        @Html.AntiForgeryToken()
 
+        <div class="form-group">
 
-        <label>
-            Proposal Title
-        </label>
+            <label>Research Title</label>
 
-        <input type="text"
-               class="form-control" />
+            @Html.TextBoxFor(m => m.Title,
+                new
+                {
+                    @class = "form-control",
+                    placeholder = "Enter research title"
+                })
 
+            @Html.ValidationMessageFor(m => m.Title)
 
-        <br />
-
-
-        <label>
-            Research Field
-        </label>
-
-        <input type="text"
-               class="form-control" />
-
-
-        <br />
-
-
-        <label>
-            Abstract
-        </label>
-
-        <textarea class="form-control"
-                  rows="5"></textarea>
-
+        </div>
 
         <br />
 
+        <div class="form-group">
 
-        <label>
-            Upload Proposal Document
-        </label>
+            <label>Research Field</label>
 
-        <input type="file"
-               class="form-control" />
+            @Html.TextBoxFor(m => m.ResearchField,
+                new
+                {
+                    @class = "form-control",
+                    placeholder = "Example: Software Engineering"
+                })
 
+            @Html.ValidationMessageFor(m => m.ResearchField)
+
+        </div>
 
         <br />
 
+        <div class="form-group">
 
-        <button class="btn btn-warning">
+            <label>Summary</label>
+
+            @Html.TextAreaFor(m => m.Abstract,
+                new
+                {
+                    @class = "form-control",
+                    rows = 6,
+                    placeholder = "Enter proposal abstract"
+                })
+
+            @Html.ValidationMessageFor(m => m.Abstract)
+
+        </div>
+
+        <br />
+
+        <div class="form-group">
+
+            <label>Keywords</label>
+
+            @Html.TextBoxFor(m => m.Keywords,
+                new
+                {
+                    @class = "form-control",
+                    placeholder = "Example: ASP.NET MVC, SQL Server"
+                })
+
+        </div>
+
+        <br />
+
+        <div class="form-group">
+
+            <label>Proposal Document (PDF or Word)</label>
+
+            <input type="file"
+                   name="ProposalFile"
+                   class="form-control"
+                   required />
+
+            <small class="text-muted">
+                Accepted formats: PDF, DOC, or DOCX.
+            </small>
+
+        </div>
+
+        <br />
+
+        <button type="submit" class="btn btn-warning">
+
+            <i class="fa-solid fa-upload"></i>
 
             Submit Proposal
 
         </button>
 
+        <a href="@Url.Action("Proposal","Student")"
+           class="btn btn-secondary">
 
-    </form>
+            Cancel
 
+        </a>
+
+    }
 
 </div>
-

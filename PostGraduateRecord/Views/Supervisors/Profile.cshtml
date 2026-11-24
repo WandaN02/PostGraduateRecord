@@ -1,0 +1,178 @@
+﻿@model PostGraduateRecord.Models.Supervisor
+
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_SupervisorLayout.cshtml";
+
+    string currentMode = Convert.ToString(ViewBag.CurrentMode);
+
+    bool isEvaluator = currentMode == "Evaluator";
+}
+
+<div class="dashboard-header">
+
+    <h2>My Profile</h2>
+
+    <p>
+        View your personal and academic information.
+    </p>
+
+</div>
+
+
+<div class="profile-card">
+
+    <div class="profile-top">
+
+        <div class="avatar">
+            <i class="fa-solid fa-circle-user"></i>
+        </div>
+
+        <div>
+
+            <h3>
+                @Model.User.FirstName @Model.User.LastName
+            </h3>
+
+            @if (isEvaluator)
+            {
+                <span class="role-badge">
+                    Evaluator
+                </span>
+            }
+            else
+            {
+                <span class="role-badge">
+                    Supervisor
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <hr />
+
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            @*<div class="profile-row">
+
+                <label>
+                    Employee Number
+                </label>
+
+                <p>
+                    @Model.User.EmployeeNumber
+                </p>
+
+            </div>*@
+
+
+            <div class="profile-row">
+
+                <label>
+                    Email Address
+                </label>
+
+                <p>
+                    @Model.User.Email
+                </p>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <label>
+                    Phone Number
+                </label>
+
+                <p>
+                    @Model.User.PhoneNumber
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+
+            <div class="profile-row">
+
+                <label>
+                    Department
+                </label>
+
+                <p>
+                    @Model.Department.DepartmentName
+                </p>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <label>
+                    Office
+                </label>
+
+                <p>
+                    @Model.Office
+                </p>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <label>
+                    Specialisation
+                </label>
+
+                <p>
+                    @Model.Specialisation
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<br />
+
+
+<div class="profile-actions">
+
+    @if (isEvaluator)
+    {
+        <a href="@Url.Action("Dashboard", "Evaluators")"
+           class="btn-back">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Evaluator Dashboard
+
+        </a>
+    }
+    else
+    {
+        <a href="@Url.Action("Dashboard", "Supervisors")"
+           class="btn-back">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to Supervisor Dashboard
+
+        </a>
+    }
+
+</div>

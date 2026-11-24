@@ -1,0 +1,104 @@
+﻿@model IEnumerable<PostGraduateRecord.Models.Student>
+
+@{
+    ViewBag.Title = "Students";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- PAGE HEADER -->
+
+<div class="page-header">
+
+    <div>
+        <h2>Registered Students</h2>
+
+        <p>
+            View and manage postgraduate students.
+        </p>
+    </div>
+
+
+</div>
+
+
+
+<!-- STUDENTS TABLE -->
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Student Number</th>
+
+            <th>First Name</th>
+
+            <th>Last Name</th>
+
+            <th>Email</th>
+
+            <th>Qualification</th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var student in Model)
+            {
+                <tr>
+
+                    <td>
+                        @student.User.StudentNumber
+                    </td>
+
+                    <td>
+                        @student.User.FirstName
+                    </td>
+
+                    <td>
+                        @student.User.LastName
+                    </td>
+
+                    <td>
+                        @student.User.Email
+                    </td>
+
+                    <td>
+                        @student.Qualification
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+
+                <td colspan="5" class="text-center">
+                    No students have been registered yet.
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+
+<!-- BACK BUTTON -->
+
+<a href="@Url.Action("Dashboard", "Admin")"
+   class="back-button">
+
+    <i class="fa-solid fa-arrow-left"></i>
+
+    Back to Dashboard
+
+</a>

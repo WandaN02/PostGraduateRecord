@@ -1,0 +1,175 @@
+﻿@model PostGraduateRecord.Models.Evaluator
+
+@{
+    ViewBag.Title = "My Profile";
+    Layout = "~/Views/Shared/_EvaluatorLayout.cshtml";
+}
+
+<div class="dashboard-header">
+
+    <h2>My Profile</h2>
+
+    <p>
+        View your personal and professional information.
+    </p>
+
+</div>
+
+
+<div class="profile-card">
+
+    <div class="profile-top">
+
+        <div class="avatar">
+
+            <i class="fa-solid fa-circle-user"></i>
+
+        </div>
+
+        <div>
+
+            <h3>
+                @Model.User.FirstName @Model.User.LastName
+            </h3>
+
+            <span class="role-badge">
+                Evaluator
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <hr />
+
+
+    <div class="row">
+
+        <!-- LEFT COLUMN -->
+
+        <div class="col-md-6">
+
+            <div class="profile-row">
+
+                <label>
+                    Employee Number
+                </label>
+
+                <p>
+                    @Model.User.EmployeeNumber
+                </p>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <label>
+                    Email Address
+                </label>
+
+                <p>
+                    @Model.User.Email
+                </p>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <label>
+                    Phone Number
+                </label>
+
+                <p>
+                    @Model.User.PhoneNumber
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+
+        <div class="col-md-6">
+
+            <div class="profile-row">
+
+                <label>
+                    Department
+                </label>
+
+                <p>
+
+                    @if (Model.Department != null)
+                    {
+                        @Model.Department.DepartmentName
+                    }
+                    else
+                    {
+                        <span>Not specified</span>
+                    }
+
+                </p>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <label>
+                    Organisation
+                </label>
+
+                <p>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Organisation))
+                    {
+                        @Model.Organisation
+                    }
+                    else
+                    {
+                        <span>Not specified</span>
+                    }
+
+                </p>
+
+            </div>
+
+
+            <div class="profile-row">
+
+                <label>
+                    Role
+                </label>
+
+                <p>
+                    Evaluator
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<br />
+
+
+<div class="profile-actions">
+
+    <a href="@Url.Action("Dashboard", "Evaluators")"
+       class="btn-back">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Dashboard
+
+    </a>
+
+</div>

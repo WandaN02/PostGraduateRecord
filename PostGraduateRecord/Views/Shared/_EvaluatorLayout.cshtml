@@ -1,0 +1,913 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>
+        @ViewBag.Title - SPGS Record System
+    </title>
+
+    <!-- Bootstrap -->
+    <link href="~/Content/bootstrap.min.css"
+          rel="stylesheet" />
+
+    <!-- SPGS Supervisor/Evaluator Styling -->
+    <link href="~/Content/Supervisor.css"
+          rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          rel="stylesheet" />
+
+
+    <style>
+
+        /* =========================================================
+           ACCESSIBLE SPGS THEMING
+           Themes:
+           1. Light
+           2. Eye Comfort
+           3. System
+        ========================================================= */
+
+        body {
+            transition:
+                background-color 0.25s ease,
+                color 0.25s ease;
+        }
+
+
+        /* =========================================================
+           LIGHT THEME
+           Default SPGS appearance
+        ========================================================= */
+
+        body:not(.eye-comfort-theme) {
+            background-color: #F4F6F9;
+            color: #172033;
+        }
+
+
+        /* =========================================================
+           EYE COMFORT THEME
+           Warm light colour scheme for improved visual comfort
+        ========================================================= */
+
+        body.eye-comfort-theme {
+            background-color: #F7F1E3 !important;
+            color: #332B20 !important;
+        }
+
+        body.eye-comfort-theme .main,
+        body.eye-comfort-theme .content {
+            background-color: #F7F1E3 !important;
+            color: #332B20 !important;
+        }
+
+
+        /* ---------------------------------------------------------
+           HEADINGS
+        --------------------------------------------------------- */
+
+        body.eye-comfort-theme h1,
+        body.eye-comfort-theme h2,
+        body.eye-comfort-theme h3,
+        body.eye-comfort-theme h4,
+        body.eye-comfort-theme h5,
+        body.eye-comfort-theme h6 {
+            color: #332B20 !important;
+        }
+
+
+        /* ---------------------------------------------------------
+           TEXT
+        --------------------------------------------------------- */
+
+        body.eye-comfort-theme p,
+        body.eye-comfort-theme label,
+        body.eye-comfort-theme span {
+            color: #4A4033;
+        }
+
+        body.eye-comfort-theme small,
+        body.eye-comfort-theme .text-muted {
+            color: #665C4D !important;
+        }
+
+
+        /* ---------------------------------------------------------
+           CARDS
+        --------------------------------------------------------- */
+
+        body.eye-comfort-theme .card,
+        body.eye-comfort-theme .panel,
+        body.eye-comfort-theme .dashboard-card,
+        body.eye-comfort-theme .section-card,
+        body.eye-comfort-theme .settings-card,
+        body.eye-comfort-theme .table-container {
+            background-color: #FFF9EC !important;
+            color: #332B20 !important;
+            border: 1px solid #D8CDB8 !important;
+            box-shadow: 0 2px 8px rgba(70, 55, 30, 0.08);
+        }
+
+
+        /* ---------------------------------------------------------
+           CARD HEADERS
+        --------------------------------------------------------- */
+
+        body.eye-comfort-theme .card-header,
+        body.eye-comfort-theme .settings-card-header {
+            background-color: #FFF1C9 !important;
+            color: #332B20 !important;
+            border-bottom: 1px solid #D8CDB8 !important;
+        }
+
+
+        /* =========================================================
+           TABLES
+        ========================================================= */
+
+        body.eye-comfort-theme table {
+            background-color: #FFF9EC !important;
+            color: #332B20 !important;
+            border-color: #D8CDB8 !important;
+        }
+
+        body.eye-comfort-theme table th,
+        body.eye-comfort-theme thead th {
+            background-color: #001B44 !important;
+            color: #FFFFFF !important;
+            border-color: #001B44 !important;
+        }
+
+        body.eye-comfort-theme table td {
+            background-color: #FFF9EC !important;
+            color: #332B20 !important;
+            border-color: #D8CDB8 !important;
+        }
+
+        body.eye-comfort-theme tbody tr:hover td {
+            background-color: #FFF1C9 !important;
+            color: #332B20 !important;
+        }
+
+
+        /* =========================================================
+           FORM CONTROLS
+        ========================================================= */
+
+        body.eye-comfort-theme input,
+        body.eye-comfort-theme select,
+        body.eye-comfort-theme textarea,
+        body.eye-comfort-theme .form-control,
+        body.eye-comfort-theme .form-select {
+            background-color: #FFFDF6 !important;
+            color: #332B20 !important;
+            border: 1px solid #BBAE98 !important;
+        }
+
+        body.eye-comfort-theme input::placeholder,
+        body.eye-comfort-theme textarea::placeholder {
+            color: #756B5D !important;
+            opacity: 1 !important;
+        }
+
+        body.eye-comfort-theme input:focus,
+        body.eye-comfort-theme select:focus,
+        body.eye-comfort-theme textarea:focus,
+        body.eye-comfort-theme .form-control:focus,
+        body.eye-comfort-theme .form-select:focus {
+            background-color: #FFFFFF !important;
+            color: #332B20 !important;
+            border-color: #FDB913 !important;
+
+            box-shadow:
+                0 0 0 3px rgba(253, 185, 19, 0.25) !important;
+
+            outline: none !important;
+        }
+
+
+        /* =========================================================
+           ACCESSIBILITY / KEYBOARD FOCUS
+        ========================================================= */
+
+        body.eye-comfort-theme button:focus,
+        body.eye-comfort-theme a:focus,
+        body.eye-comfort-theme input:focus,
+        body.eye-comfort-theme select:focus,
+        body.eye-comfort-theme textarea:focus {
+            outline: 3px solid #FDB913 !important;
+            outline-offset: 2px;
+        }
+
+
+        /* =========================================================
+           LINKS
+        ========================================================= */
+
+        body.eye-comfort-theme a {
+            color: #001B44;
+        }
+
+        body.eye-comfort-theme a:hover {
+            color: #8A6200;
+        }
+
+
+        /* =========================================================
+           BUTTONS
+        ========================================================= */
+
+        body.eye-comfort-theme .btn-primary {
+            background-color: #001B44 !important;
+            border-color: #001B44 !important;
+            color: #FFFFFF !important;
+        }
+
+        body.eye-comfort-theme .btn-primary:hover,
+        body.eye-comfort-theme .btn-primary:focus {
+            background-color: #00336F !important;
+            border-color: #00336F !important;
+            color: #FFFFFF !important;
+        }
+
+        body.eye-comfort-theme .btn-warning {
+            background-color: #FDB913 !important;
+            border-color: #FDB913 !important;
+            color: #001B44 !important;
+            font-weight: 600;
+        }
+
+        body.eye-comfort-theme .btn-warning:hover,
+        body.eye-comfort-theme .btn-warning:focus {
+            background-color: #E5A900 !important;
+            border-color: #E5A900 !important;
+            color: #001B44 !important;
+        }
+
+        body.eye-comfort-theme .btn-secondary {
+            background-color: #665C4D !important;
+            border-color: #665C4D !important;
+            color: #FFFFFF !important;
+        }
+
+        body.eye-comfort-theme .btn-secondary:hover,
+        body.eye-comfort-theme .btn-secondary:focus {
+            background-color: #4A4033 !important;
+            border-color: #4A4033 !important;
+            color: #FFFFFF !important;
+        }
+
+
+        /* =========================================================
+           TOP NAVIGATION
+        ========================================================= */
+
+        body.eye-comfort-theme .top-navbar {
+            background-color: #FFF9EC !important;
+            color: #001B44 !important;
+            border-bottom: 1px solid #D8CDB8 !important;
+        }
+
+        body.eye-comfort-theme .top-navbar h2 {
+            color: #001B44 !important;
+        }
+
+        body.eye-comfort-theme .current-date {
+            color: #4A4033 !important;
+        }
+
+        body.eye-comfort-theme .notification-btn,
+        body.eye-comfort-theme .profile-icon {
+            color: #001B44 !important;
+        }
+
+        body.eye-comfort-theme .notification-btn:hover,
+        body.eye-comfort-theme .profile-icon:hover {
+            color: #8A6200 !important;
+        }
+
+
+        /* =========================================================
+           PROFILE
+        ========================================================= */
+
+        body.eye-comfort-theme .evaluator-profile-name {
+            color: #332B20 !important;
+            font-weight: 600;
+        }
+
+        body.eye-comfort-theme .evaluator-profile-mode {
+            color: #665C4D !important;
+        }
+
+        .evaluator-profile-info {
+            text-decoration: none;
+        }
+
+        .evaluator-profile-info:hover {
+            text-decoration: none;
+        }
+
+
+        /* =========================================================
+           SIDEBAR
+        ========================================================= */
+
+        body.eye-comfort-theme .sidebar {
+            background-color: #001B44 !important;
+        }
+
+        body.eye-comfort-theme .sidebar h2 {
+            color: #FFFFFF !important;
+        }
+
+        body.eye-comfort-theme .sidebar a {
+            color: #FFFFFF !important;
+        }
+
+        body.eye-comfort-theme .sidebar a:hover {
+            background-color: rgba(253, 185, 19, 0.18) !important;
+            color: #FDB913 !important;
+        }
+
+        body.eye-comfort-theme .sidebar a.active {
+            background-color: #FDB913 !important;
+            color: #001B44 !important;
+            font-weight: 700;
+        }
+
+        body.eye-comfort-theme .sidebar a.active i {
+            color: #001B44 !important;
+        }
+
+
+        /* =========================================================
+           SIDEBAR ICON ALIGNMENT
+        ========================================================= */
+
+        .sidebar ul li a i {
+            width: 20px;
+            text-align: center;
+        }
+
+
+        /* =========================================================
+           SETTINGS ACTIVE STATE
+        ========================================================= */
+
+        .sidebar ul li a.active {
+            background-color: #FDB913 !important;
+            color: #001B44 !important;
+        }
+
+        .sidebar ul li a.active i {
+            color: #001B44 !important;
+        }
+
+
+        /* =========================================================
+           ROLE SWITCH
+        ========================================================= */
+
+        .evaluator-role-switch a,
+        .evaluator-role-switch span {
+            transition: all 0.2s ease;
+        }
+
+
+        /* =========================================================
+           NOTIFICATIONS
+        ========================================================= */
+
+        .notification-menu {
+            z-index: 9999;
+        }
+
+        body.eye-comfort-theme .notification-menu {
+            background-color: #FFF9EC !important;
+            border: 1px solid #D8CDB8 !important;
+            box-shadow: 0 5px 15px rgba(60, 45, 20, 0.15);
+        }
+
+        body.eye-comfort-theme .notification-item {
+            background-color: #FFF9EC !important;
+            color: #332B20 !important;
+            border-bottom: 1px solid #D8CDB8 !important;
+        }
+
+        body.eye-comfort-theme .notification-item:hover {
+            background-color: #FFF1C9 !important;
+        }
+
+        body.eye-comfort-theme .notification-item.unread {
+            background-color: #FFF3CD !important;
+            color: #332B20 !important;
+            border-left: 4px solid #FDB913 !important;
+        }
+
+
+        /* =========================================================
+           DROPDOWN MENUS
+        ========================================================= */
+
+        body.eye-comfort-theme .dropdown-menu {
+            background-color: #FFF9EC !important;
+            border: 1px solid #D8CDB8 !important;
+            box-shadow: 0 5px 15px rgba(60, 45, 20, 0.15);
+        }
+
+        body.eye-comfort-theme .dropdown-item {
+            color: #332B20 !important;
+        }
+
+        body.eye-comfort-theme .dropdown-item:hover {
+            background-color: #FFF1C9 !important;
+            color: #001B44 !important;
+        }
+
+
+        /* =========================================================
+           SEARCH / FILTER BOXES
+        ========================================================= */
+
+        body.eye-comfort-theme .search-box,
+        body.eye-comfort-theme .filter-box,
+        body.eye-comfort-theme .search-bar,
+        body.eye-comfort-theme .search-container {
+            background-color: #FFF9EC !important;
+            border-color: #D8CDB8 !important;
+            color: #332B20 !important;
+        }
+
+
+        /* =========================================================
+           ALERTS
+        ========================================================= */
+
+        body.eye-comfort-theme .alert-success {
+            background-color: #EDF6E8 !important;
+            color: #23451F !important;
+            border-color: #A8C99A !important;
+        }
+
+        body.eye-comfort-theme .alert-danger {
+            background-color: #FCE8E6 !important;
+            color: #6B1E18 !important;
+            border-color: #D99A93 !important;
+        }
+
+        body.eye-comfort-theme .alert-warning {
+            background-color: #FFF3CD !important;
+            color: #5C4300 !important;
+            border-color: #E6C65C !important;
+        }
+
+        body.eye-comfort-theme .alert-info {
+            background-color: #E8F1F8 !important;
+            color: #173A56 !important;
+            border-color: #9DBBD2 !important;
+        }
+
+
+        /* =========================================================
+           BADGES
+        ========================================================= */
+
+        body.eye-comfort-theme .badge.bg-primary {
+            background-color: #001B44 !important;
+            color: #FFFFFF !important;
+        }
+
+        body.eye-comfort-theme .badge.bg-warning {
+            background-color: #FDB913 !important;
+            color: #001B44 !important;
+        }
+
+
+        /* =========================================================
+           MODALS
+        ========================================================= */
+
+        body.eye-comfort-theme .modal-content {
+            background-color: #FFF9EC !important;
+            color: #332B20 !important;
+            border: 1px solid #D8CDB8 !important;
+        }
+
+        body.eye-comfort-theme .modal-header,
+        body.eye-comfort-theme .modal-footer {
+            border-color: #D8CDB8 !important;
+        }
+
+
+        /* =========================================================
+           CONTENT SPACING
+        ========================================================= */
+
+        .main .content {
+            padding-left: 30px !important;
+            padding-right: 30px !important;
+        }
+
+
+        /* =========================================================
+           SYSTEM THEME
+           Uses the normal light SPGS interface rather than the
+           previous dark mode.
+        ========================================================= */
+
+        body.system-theme {
+            background-color: #F4F6F9;
+            color: #172033;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE CONTENT
+        ========================================================= */
+
+        @@media (max-width: 768px) {
+
+            .main .content {
+                padding-left: 15px !important;
+                padding-right: 15px !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+@{
+    /*
+     * =========================================================
+     * DETERMINE USER THEME
+     * =========================================================
+     */
+
+    var userTheme = Session["UserTheme"] != null
+        ? Session["UserTheme"].ToString()
+        : "Light";
+
+    var themeClass = "";
+
+    if (userTheme == "EyeComfort")
+    {
+        themeClass = "eye-comfort-theme";
+    }
+    else if (userTheme == "System")
+    {
+        themeClass = "system-theme";
+    }
+    else
+    {
+        themeClass = "";
+    }
+}
+
+
+<body class="@themeClass">
+
+    <div class="wrapper">
+
+
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+
+        <div class="sidebar">
+
+            <h2>SPGS</h2>
+
+            <ul>
+
+                <!-- DASHBOARD -->
+                <li>
+
+                    <a href="@Url.Action("Dashboard", "Evaluators")"
+                       class="@(ViewContext.RouteData.Values["action"].ToString() == "Dashboard" ? "active" : "")">
+
+                        <i class="fa-solid fa-house"></i>
+
+                        <span>Dashboard</span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- PROPOSALS -->
+                <li>
+
+                    <a href="@Url.Action("Proposals", "Evaluators")"
+                       class="@(ViewContext.RouteData.Values["action"].ToString() == "Proposals" ? "active" : "")">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                        <span>Proposals</span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- SETTINGS -->
+                <li>
+
+                    <a href="@Url.Action("Index", "Settings")"
+                       class="@(ViewContext.RouteData.Values["controller"].ToString() == "Settings" ? "active" : "")">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                        <span>Settings</span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- LOGOUT -->
+                <li>
+
+                    <a href="@Url.Action("Login", "Account")">
+
+                        <i class="fa-solid fa-right-from-bracket"></i>
+
+                        <span>Logout</span>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+
+        <div class="main">
+
+
+            <!-- =================================================
+                 TOP NAVIGATION
+            ================================================== -->
+
+            <header class="top-navbar">
+
+                <div class="nav-left">
+
+                    @*<button class="menu-btn"
+                            type="button"
+                            aria-label="Open navigation menu">
+
+                        <i class="fa-solid fa-bars"></i>
+
+                    </button>*@
+
+                    <h2>Evaluator Portal</h2>
+
+                </div>
+
+
+                <div class="nav-right">
+
+
+                    <!-- DATE -->
+                    <div class="current-date">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                        @DateTime.Now.ToString("dddd, dd MMM yyyy")
+
+                    </div>
+
+
+                    <!-- NOTIFICATIONS -->
+                    <div class="notification-wrapper">
+
+                        <button id="notificationBtn"
+                                class="notification-btn"
+                                type="button"
+                                aria-label="Notifications">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                            @if (ViewBag.NotificationCount != null &&
+                                Convert.ToInt32(ViewBag.NotificationCount) > 0)
+                            {
+                                <span class="badge">
+                                    @ViewBag.NotificationCount
+                                </span>
+                            }
+
+                        </button>
+
+
+                        <div id="notificationMenu"
+                             class="notification-menu">
+
+                            @if (ViewBag.Notifications != null &&
+                                ((List<PostGraduateRecord.ViewModels.NotificationViewModel>)
+                                ViewBag.Notifications).Any())
+                            {
+                                foreach (var item in
+                                    (List<PostGraduateRecord.ViewModels.NotificationViewModel>)
+                                    ViewBag.Notifications)
+                                {
+
+                                    <a href="@item.Link"
+                                       class="notification-item @(item.IsRead ? "" : "unread")">
+
+                                        <div class="notification-message">
+                                            @item.Message
+                                        </div>
+
+                                        <small>
+
+                                            @(item.SentDate.HasValue
+                                                ? item.SentDate.Value.ToString("dd MMM yyyy HH:mm")
+                                                : "")
+
+                                        </small>
+
+                                    </a>
+
+                                }
+                            }
+                            else
+                            {
+                                <div class="notification-item">
+                                    No new notifications.
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROFILE ICON -->
+                    <a href="@Url.Action("Profile", "Evaluators")"
+                       class="profile-icon"
+                       title="Evaluator Profile"
+                       aria-label="Evaluator Profile">
+
+                        <i class="fa-solid fa-circle-user"></i>
+
+                    </a>
+
+
+                    <!-- PROFILE INFORMATION -->
+                    <div class="evaluator-profile">
+
+                        <a href="@Url.Action("Profile", "Evaluators")"
+                           class="evaluator-profile-info">
+
+                            <span class="evaluator-profile-name">
+
+                                @(Session["FullName"] ?? "Evaluator")
+
+                            </span>
+
+                            <span class="evaluator-profile-mode">
+
+                                Current Mode: Evaluator
+
+                            </span>
+
+                        </a>
+
+
+                        <!-- ROLE SWITCH -->
+                        <div class="evaluator-role-switch">
+
+                            @if (Session["IsSupervisor"] != null &&
+                                (bool)Session["IsSupervisor"])
+                            {
+                                <a href="@Url.Action("SwitchToSupervisor", "Evaluators")"
+                                   class="role-switch-btn supervisor-btn">
+
+                                    <i class="fa-solid fa-user-tie"></i>
+
+                                    Supervisor
+
+                                </a>
+                            }
+
+
+                            @if (Session["IsEvaluator"] != null &&
+                                (bool)Session["IsEvaluator"])
+                            {
+                                <span class="role-switch-btn evaluator-btn">
+
+                                    <i class="fa-solid fa-clipboard-check"></i>
+
+                                    Evaluator
+
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+            ================================================== -->
+
+            <div class="content">
+
+                @RenderBody()
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         NOTIFICATION JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var notificationBtn =
+                document.getElementById("notificationBtn");
+
+            var notificationMenu =
+                document.getElementById("notificationMenu");
+
+
+            if (notificationBtn && notificationMenu) {
+
+                notificationBtn.addEventListener("click", function (e) {
+
+                    e.stopPropagation();
+
+                    notificationMenu.classList.toggle("show");
+
+                });
+
+
+                document.addEventListener("click", function () {
+
+                    notificationMenu.classList.remove("show");
+
+                });
+
+            }
+
+        });
+
+
+        /* =========================================================
+           THEME
+           Light / EyeComfort / System
+        ========================================================== */
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var savedTheme = "@userTheme";
+
+            document.body.classList.remove(
+                "eye-comfort-theme",
+                "system-theme"
+            );
+
+
+            if (savedTheme === "EyeComfort") {
+
+                document.body.classList.add("eye-comfort-theme");
+
+            }
+            else if (savedTheme === "System") {
+
+                document.body.classList.add("system-theme");
+
+            }
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

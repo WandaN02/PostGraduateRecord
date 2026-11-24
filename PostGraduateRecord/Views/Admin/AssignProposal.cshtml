@@ -1,0 +1,71 @@
+﻿
+@model PostGraduateRecord.Models.Proposal
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h2>
+    Assign Supervisor
+</h2>
+
+
+<h4>
+    Proposal:
+    @Model.Title
+</h4>
+
+
+<p>
+    <strong>Student:</strong>
+    @Model.Student.User.FirstName
+    @Model.Student.User.LastName
+</p>
+
+
+
+<form method="post"
+      action="@Url.Action("AssignProposal","Admin")">
+
+
+    <input type="hidden"
+           name="proposalID"
+           value="@Model.ProposalID" />
+
+
+
+    <label>
+        Select Supervisor
+    </label>
+
+
+    <select name="supervisorID"
+            class="form-control">
+
+
+        @foreach (var supervisor in ViewBag.Supervisors)
+        {
+
+           <option value="@supervisor.SupervisorID">
+               @supervisor.User.FirstName @supervisor.User.LastName
+           </option>
+
+        }
+
+
+    </select>
+
+
+    <br />
+
+
+    <button class="btn btn-success">
+
+        Assign
+
+    </button>
+
+
+</form>
+

@@ -1,0 +1,1182 @@
+﻿
+@model PostGraduateRecord.ViewModels.UserSettingsViewModel
+
+@{
+    var activeRole = Session["ActiveRole"]?.ToString();
+
+    Layout = activeRole == "Evaluator"
+        ? "~/Views/Shared/_EvaluatorLayout.cshtml"
+        : "~/Views/Shared/_SupervisorLayout.cshtml";
+
+    var dashboardController = activeRole == "Evaluator"
+        ? "Evaluators"
+        : "Supervisors";
+}
+
+<style>
+
+    /* =========================================================
+       SETTINGS PAGE
+    ========================================================= */
+
+    .settings-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 10px 5px 40px;
+    }
+
+    .settings-header {
+        margin-bottom: 28px;
+    }
+
+        .settings-header h1 {
+            margin: 0 0 8px;
+            color: #001B44;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .settings-header p {
+            margin: 0;
+            color: #5F6875;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+
+    /* =========================================================
+       SETTINGS CARD
+    ========================================================= */
+
+    .settings-card {
+        margin-bottom: 22px;
+        overflow: hidden;
+        background: #FFFFFF;
+        border: 1px solid #E1E5EA;
+        border-radius: 14px;
+        box-shadow: 0 3px 12px rgba(0, 27, 68, 0.05);
+    }
+
+    .settings-card-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px 24px;
+        background: #F8FAFC;
+        border-bottom: 1px solid #E8EBEF;
+    }
+
+    .settings-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #001B44;
+        color: #FDB913;
+        font-size: 18px;
+    }
+
+    .settings-card-header h2 {
+        margin: 0;
+        color: #001B44;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .settings-card-header p {
+        margin: 4px 0 0;
+        color: #667085;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .settings-card-body {
+        padding: 24px;
+    }
+
+
+    /* =========================================================
+       SETTING ROW
+    ========================================================= */
+
+    .setting-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+        padding: 18px 0;
+        border-bottom: 1px solid #EEF1F4;
+    }
+
+        .setting-row:first-child {
+            padding-top: 0;
+        }
+
+        .setting-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+    .setting-information {
+        flex: 1;
+        min-width: 0;
+    }
+
+        .setting-information label {
+            display: block;
+            margin-bottom: 5px;
+            color: #1F2937;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+    .setting-description {
+        margin: 0;
+        color: #667085;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .setting-control {
+        width: 100%;
+        min-width: 260px;
+        max-width: 340px;
+    }
+
+
+    /* =========================================================
+       SELECT
+    ========================================================= */
+
+    .setting-select {
+        width: 100%;
+        height: 42px;
+        padding: 8px 12px;
+        border: 1px solid #B8C0CC;
+        border-radius: 8px;
+        background: #FFFFFF;
+        color: #1F2937;
+        font-size: 14px;
+        outline: none;
+        cursor: pointer;
+    }
+
+        .setting-select:hover {
+            border-color: #001B44;
+        }
+
+        .setting-select:focus {
+            border-color: #FDB913;
+            outline: 3px solid transparent;
+            box-shadow: 0 0 0 3px rgba(253, 185, 19, 0.25);
+        }
+
+
+    /* =========================================================
+       THEME OPTIONS
+    ========================================================= */
+
+    .theme-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .theme-option {
+        position: relative;
+    }
+
+        .theme-option input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .theme-option label {
+            display: block;
+            padding: 10px 14px;
+            border: 1px solid #B8C0CC;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+            .theme-option label:hover {
+                border-color: #001B44;
+                color: #001B44;
+            }
+
+        .theme-option input:checked + label {
+            background: #001B44;
+            border-color: #001B44;
+            color: #FFFFFF;
+        }
+
+        .theme-option input:focus + label {
+            outline: 3px solid #FDB913;
+            outline-offset: 2px;
+        }
+
+
+    /* =========================================================
+       CLICKABLE ACCESSIBLE TOGGLE
+
+       The checkbox itself is the switch.
+       No hidden checkbox.
+       No separate toggle label.
+       No overlay.
+    ========================================================= */
+
+    .toggle-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-shrink: 0;
+    }
+
+    .setting-toggle {
+        appearance: none;
+        -webkit-appearance: none;
+        display: block;
+        position: relative;
+        z-index: 10;
+        width: 52px;
+        height: 28px;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #AEB8C5;
+        border-radius: 30px;
+        background: #CBD5E1;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        /* Switch knob */
+
+        .setting-toggle::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            left: 3px;
+            top: 3px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease;
+        }
+
+        /* ON */
+
+        .setting-toggle:checked {
+            background: #001B44;
+            border-color: #001B44;
+        }
+
+            .setting-toggle:checked::before {
+                transform: translateX(24px);
+            }
+
+        /* Keyboard focus */
+
+        .setting-toggle:focus {
+            outline: 3px solid #FDB913;
+            outline-offset: 3px;
+        }
+
+        /* Hover */
+
+        .setting-toggle:hover {
+            box-shadow: 0 0 0 3px rgba(0, 27, 68, 0.10);
+        }
+
+
+    /* =========================================================
+       SUCCESS MESSAGE
+    ========================================================= */
+
+    .success-message {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 22px;
+        padding: 13px 16px;
+        border: 1px solid #A8C99A;
+        border-radius: 10px;
+        background: #EDF6E8;
+        color: #23451F;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+
+    /* =========================================================
+       INFORMATION BOX
+    ========================================================= */
+
+    .info-box {
+        margin-top: 18px;
+        padding: 13px 15px;
+        border: 1px solid #DCE3EA;
+        border-radius: 9px;
+        background: #F8FAFC;
+        color: #596579;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+        .info-box strong {
+            color: #001B44;
+        }
+
+
+    /* =========================================================
+       ACTION BUTTONS
+    ========================================================= */
+
+    .settings-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .btn-settings {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+    }
+
+        .btn-settings:hover {
+            text-decoration: none;
+        }
+
+        .btn-settings:focus {
+            outline: 3px solid #FDB913;
+            outline-offset: 2px;
+        }
+
+    .btn-save {
+        border: 1px solid #001B44;
+        background: #001B44;
+        color: #FFFFFF;
+    }
+
+        .btn-save:hover {
+            border-color: #FDB913;
+            background: #FDB913;
+            color: #001B44;
+            transform: translateY(-1px);
+        }
+
+    .btn-back {
+        border: 1px solid #B8C0CC;
+        background: #FFFFFF;
+        color: #374151;
+    }
+
+        .btn-back:hover {
+            border-color: #8D98A8;
+            background: #F3F4F6;
+            color: #111827;
+        }
+
+
+    /* =========================================================
+       EYE COMFORT THEME
+    ========================================================= */
+
+    body.eye-comfort-theme .settings-header h1 {
+        color: #001B44 !important;
+    }
+
+    body.eye-comfort-theme .settings-header p {
+        color: #4A4033 !important;
+    }
+
+    body.eye-comfort-theme .settings-card {
+        background: #FFF9EC !important;
+        border-color: #D8CDB8 !important;
+        box-shadow: 0 3px 12px rgba(70, 55, 30, 0.08);
+    }
+
+    body.eye-comfort-theme .settings-card-header {
+        background: #FFF1C9 !important;
+        border-color: #D8CDB8 !important;
+    }
+
+        body.eye-comfort-theme .settings-card-header h2 {
+            color: #332B20 !important;
+        }
+
+        body.eye-comfort-theme .settings-card-header p {
+            color: #665C4D !important;
+        }
+
+    body.eye-comfort-theme .settings-icon {
+        background: #001B44 !important;
+        color: #FDB913 !important;
+    }
+
+    body.eye-comfort-theme .setting-row {
+        border-color: #D8CDB8 !important;
+    }
+
+    body.eye-comfort-theme .setting-information label {
+        color: #332B20 !important;
+    }
+
+    body.eye-comfort-theme .setting-description {
+        color: #665C4D !important;
+    }
+
+    body.eye-comfort-theme .setting-select {
+        background: #FFFDF6 !important;
+        border-color: #BBAE98 !important;
+        color: #332B20 !important;
+    }
+
+        body.eye-comfort-theme .setting-select:focus {
+            background: #FFFFFF !important;
+            border-color: #FDB913 !important;
+            box-shadow: 0 0 0 3px rgba(253, 185, 19, 0.25) !important;
+        }
+
+    body.eye-comfort-theme .theme-option label {
+        background: #FFFDF6 !important;
+        border-color: #BBAE98 !important;
+        color: #4A4033 !important;
+    }
+
+        body.eye-comfort-theme .theme-option label:hover {
+            border-color: #001B44 !important;
+            color: #001B44 !important;
+        }
+
+    body.eye-comfort-theme .theme-option input:checked + label {
+        background: #001B44 !important;
+        border-color: #001B44 !important;
+        color: #FFFFFF !important;
+    }
+
+    body.eye-comfort-theme .info-box {
+        background: #FFF1C9 !important;
+        border-color: #D8CDB8 !important;
+        color: #665C4D !important;
+    }
+
+        body.eye-comfort-theme .info-box strong {
+            color: #001B44 !important;
+        }
+
+    body.eye-comfort-theme .btn-back {
+        background: #FFFDF6 !important;
+        border-color: #BBAE98 !important;
+        color: #332B20 !important;
+    }
+
+        body.eye-comfort-theme .btn-back:hover {
+            background: #FFF1C9 !important;
+            border-color: #998B75 !important;
+            color: #001B44 !important;
+        }
+
+    body.eye-comfort-theme .setting-toggle {
+        background: #D7CDBB;
+        border-color: #BBAE98;
+    }
+
+        body.eye-comfort-theme .setting-toggle:checked {
+            background: #001B44;
+            border-color: #001B44;
+        }
+
+        body.eye-comfort-theme .setting-toggle:hover {
+            box-shadow: 0 0 0 3px rgba(70, 55, 30, 0.12);
+        }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @@media (max-width: 700px) {
+
+        .settings-page {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .setting-row {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .setting-control {
+            width: 100%;
+            min-width: 0;
+            max-width: none;
+        }
+
+        .toggle-wrapper {
+            align-self: flex-end;
+        }
+
+        .theme-options {
+            width: 100%;
+        }
+
+        .theme-option {
+            flex: 1;
+        }
+
+            .theme-option label {
+                text-align: center;
+            }
+
+        .settings-card-body {
+            padding: 18px;
+        }
+
+        .settings-card-header {
+            padding: 18px;
+        }
+
+        .settings-actions {
+            flex-direction: column-reverse;
+        }
+
+        .btn-settings {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="settings-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+    ====================================================== -->
+
+    <div class="settings-header">
+
+        <h1>Settings</h1>
+
+        <p>
+            Manage your personal preferences for the SPGS
+            @activeRole portal.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+    ====================================================== -->
+
+    @if (TempData["SettingsSuccess"] != null)
+    {
+        <div class="success-message" role="status">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <span>
+                @TempData["SettingsSuccess"]
+            </span>
+
+        </div>
+    }
+
+
+    @using (Html.BeginForm("Index", "Settings", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+
+        <!-- =====================================================
+             APPEARANCE
+        ====================================================== -->
+
+        <div class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    <i class="fa-solid fa-palette"></i>
+                </div>
+
+                <div>
+
+                    <h2>Appearance</h2>
+
+                    <p>
+                        Choose how the SPGS portal looks.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-card-body">
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label>
+                            Theme
+                        </label>
+
+                        <p class="setting-description">
+                            Select the interface appearance that is most comfortable
+                            for you to use.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-control">
+
+                        <div class="theme-options">
+
+                            <div class="theme-option">
+
+                                @Html.RadioButtonFor(
+                                    m => m.Theme,
+                                    "Light",
+                                    new { id = "themeLight" }
+                                )
+
+                                <label for="themeLight">
+                                    <i class="fa-solid fa-sun"></i>
+                                    Light
+                                </label>
+
+                            </div>
+
+
+                            <div class="theme-option">
+
+                                @Html.RadioButtonFor(
+                                    m => m.Theme,
+                                    "EyeComfort",
+                                    new { id = "themeEyeComfort" }
+                                )
+
+                                <label for="themeEyeComfort">
+                                    <i class="fa-solid fa-eye"></i>
+                                    Eye Comfort
+                                </label>
+
+                            </div>
+
+
+                            <div class="theme-option">
+
+                                @Html.RadioButtonFor(
+                                    m => m.Theme,
+                                    "System",
+                                    new { id = "themeSystem" }
+                                )
+
+                                <label for="themeSystem">
+                                    <i class="fa-solid fa-desktop"></i>
+                                    System
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <strong>Eye Comfort</strong>
+                    uses a warmer light colour scheme to reduce visual harshness.
+                    It does not change your monitor's actual blue-light settings.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             LANGUAGE & SPELL CHECK
+        ====================================================== -->
+
+        <div class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    <i class="fa-solid fa-language"></i>
+                </div>
+
+                <div>
+
+                    <h2>Language &amp; Spell Check</h2>
+
+                    <p>
+                        Manage language and spelling preferences.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-card-body">
+
+
+                <!-- PREFERRED LANGUAGE -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label>
+                            Preferred Language
+                        </label>
+
+                        <p class="setting-description">
+                            Your preferred language for communication and content.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-control">
+
+                        @Html.DropDownListFor(
+                            m => m.PreferredLanguage,
+                            new SelectList(new[]
+                            {
+                                "English (South Africa)",
+                                "English (United Kingdom)",
+                                "English (United States)",
+                                "Afrikaans",
+                                "isiXhosa"
+                            }),
+                            new { @class = "setting-select" }
+                        )
+
+                    </div>
+
+                </div>
+
+
+                <!-- INTERFACE LANGUAGE -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label>
+                            Interface Language
+                        </label>
+
+                        <p class="setting-description">
+                            Language used for menus, buttons and portal labels.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-control">
+
+                        @Html.DropDownListFor(
+                            m => m.InterfaceLanguage,
+                            new SelectList(new[]
+                            {
+                                "English"
+                            }),
+                            new { @class = "setting-select" }
+                        )
+
+                    </div>
+
+                </div>
+
+
+                <!-- SPELL CHECK -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label for="spellCheckToggle">
+                            Spell Check
+                        </label>
+
+                        <p class="setting-description">
+                            Enable spell checking when entering text into supported fields.
+                        </p>
+
+                    </div>
+
+
+                    <div class="toggle-wrapper">
+
+                        @Html.CheckBoxFor(
+                            m => m.SpellCheckEnabled,
+                            new
+                            {
+                                @class = "setting-toggle",
+                                id = "spellCheckToggle"
+                            }
+                        )
+
+                    </div>
+
+                </div>
+
+
+                <!-- SPELL CHECK LANGUAGE -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label>
+                            Spell Check Language
+                        </label>
+
+                        <p class="setting-description">
+                            Language used for spell-checking text.
+                        </p>
+
+                    </div>
+
+
+                    <div class="setting-control">
+
+                        @Html.DropDownListFor(
+                            m => m.SpellCheckLanguage,
+                            new SelectList(new[]
+                            {
+                                "English (South Africa)",
+                                "English (United Kingdom)",
+                                "English (United States)",
+                                "Afrikaans",
+                                "isiXhosa"
+                            }),
+                            new { @class = "setting-select" }
+                        )
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             DOWNLOADS
+        ====================================================== -->
+
+        <div class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    <i class="fa-solid fa-download"></i>
+                </div>
+
+                <div>
+
+                    <h2>Downloads</h2>
+
+                    <p>
+                        Control how documents are opened and downloaded.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-card-body">
+
+
+                <!-- OPEN PDF -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label for="openPdfToggle">
+                            Open PDF in Browser
+                        </label>
+
+                        <p class="setting-description">
+                            Open PDF documents in the browser instead of immediately
+                            downloading them.
+                        </p>
+
+                    </div>
+
+
+                    <div class="toggle-wrapper">
+
+                        @Html.CheckBoxFor(
+                            m => m.OpenPdfInBrowser,
+                            new
+                            {
+                                @class = "setting-toggle",
+                                id = "openPdfToggle"
+                            }
+                        )
+
+                    </div>
+
+                </div>
+
+
+                <!-- DOWNLOAD CONFIRMATION -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label for="downloadConfirmationToggle">
+                            Download Confirmation
+                        </label>
+
+                        <p class="setting-description">
+                            Ask for confirmation before downloading a document.
+                        </p>
+
+                    </div>
+
+
+                    <div class="toggle-wrapper">
+
+                        @Html.CheckBoxFor(
+                            m => m.DownloadConfirmation,
+                            new
+                            {
+                                @class = "setting-toggle",
+                                id = "downloadConfirmationToggle"
+                            }
+                        )
+
+                    </div>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    Your browser controls the actual download folder and some
+                    download behaviour. These settings control the SPGS
+                    application's document behaviour.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             NOTIFICATIONS
+        ====================================================== -->
+
+        <div class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+
+                <div>
+
+                    <h2>Notifications</h2>
+
+                    <p>
+                        Choose which SPGS notifications you want to receive.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-card-body">
+
+
+                <!-- ENABLE NOTIFICATIONS -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label for="notificationsToggle">
+                            Enable Notifications
+                        </label>
+
+                        <p class="setting-description">
+                            Allow the SPGS system to display notifications for your account.
+                        </p>
+
+                    </div>
+
+
+                    <div class="toggle-wrapper">
+
+                        @Html.CheckBoxFor(
+                            m => m.NotificationsEnabled,
+                            new
+                            {
+                                @class = "setting-toggle",
+                                id = "notificationsToggle"
+                            }
+                        )
+
+                    </div>
+
+                </div>
+
+
+                <!-- DEADLINE REMINDERS -->
+
+                <div class="setting-row">
+
+                    <div class="setting-information">
+
+                        <label for="deadlineRemindersToggle">
+                            Deadline Reminders
+                        </label>
+
+                        <p class="setting-description">
+                            Receive reminders about upcoming postgraduate deadlines.
+                        </p>
+
+                    </div>
+
+
+                    <div class="toggle-wrapper">
+
+                        @Html.CheckBoxFor(
+                            m => m.DeadlineRemindersEnabled,
+                            new
+                            {
+                                @class = "setting-toggle",
+                                id = "deadlineRemindersToggle"
+                            }
+                        )
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             PRIVACY & SECURITY
+        ====================================================== -->
+
+        <div class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+
+                <div>
+
+                    <h2>Privacy &amp; Security</h2>
+
+                    <p>
+                        Manage account security through your profile.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="settings-card-body">
+
+                <div class="info-box" style="margin-top: 0;">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    Your personal profile information and password are managed
+                    from the <strong>Profile</strong> section of the portal.
+                    Settings does not duplicate your profile information.
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ACTIONS
+        ====================================================== -->
+
+        <div class="settings-actions">
+
+            <a href="@Url.Action("Dashboard", dashboardController)"
+               class="btn-settings btn-back">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                &nbsp;
+                Back to Dashboard
+
+            </a>
+
+
+            <button type="submit"
+                    class="btn-settings btn-save">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+                &nbsp;
+                Save Settings
+
+            </button>
+
+        </div>
+
+    }
+
+</div>
+

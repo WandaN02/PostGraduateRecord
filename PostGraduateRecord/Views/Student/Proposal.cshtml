@@ -1,6 +1,8 @@
-﻿@{
-        ViewBag.Title = "Proposal";
-        Layout = "~/Views/Shared/_StudentLayout.cshtml";
+﻿@model IEnumerable<PostGraduateRecord.Models.Proposal>
+
+@{
+    ViewBag.Title = "Research Proposal";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
 
 
@@ -17,77 +19,325 @@
 
 </div>
 
+@if (TempData["Info"] != null)
+{
+    <div class="alert-info">
+        <i class="fa-solid fa-circle-info"></i>
+        @TempData["Info"]
+    </div>
+}
 
 
-<div class="card-section">
+<div class="card-section proposal-card">
 
+    <!-- CARD HEADER -->
+    <div class="proposal-card-header">
 
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
 
-        <h3>
-            My Proposals
-        </h3>
+            <h3>My Proposal</h3>
 
+            <div class="gold-line"></div>
 
-        <a href="@Url.Action("NewProposal","Student")"
-           class="btn btn-warning">
-
-            <i class="fa-solid fa-upload"></i>
-            Upload New Proposal
-
-        </a>
-
+        </div>
 
     </div>
 
 
-    <br />
+    <!-- TABLE -->
+    <div class="proposal-table-wrapper">
+
+        <table class="proposal-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Research Title</th>
+
+                    <th>Date Submitted</th>
+
+                    <th>Status</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
 
 
-    <<table class="table">
+            <tbody>
 
-    <tr>
-
-        <th>
-            Document
-        </th>
-
-        <th>
-            Research Title
-        </th>
-
-        <th>
-            Date Submitted
-        </th>
-
-        <th>
-            Status
-        </th>
-
-        <th>
-            Feedback
-        </th>
-
-        <th>
-            Action
-        </th>
-
-    </tr>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var proposal in Model)
+                    {
+                        /*
+                         * Find the evaluator evaluation belonging to
+                         * this proposal that has already been released
+                         * by the Supervisor.
+                         */
+                        var releasedEvaluation = proposal.Evaluations?
+                            .FirstOrDefault(e =>
+                                e.EvaluationSentToStudent);
 
 
-    <tr>
+                        <tr>
 
-        <td colspan="6">
+                            <!-- RESEARCH TITLE -->
+                            <td class="proposal-title">
 
-            No proposal submitted yet.
+                                @proposal.Title
 
-        </td>
-
-    </tr>
+                            </td>
 
 
-</table>
+                            <!-- DATE -->
+                            <td>
 
+                                @(proposal.SubmissionDate.HasValue
+                                    ? proposal.SubmissionDate.Value.ToString("dd MMM yyyy")
+                                    : "N/A")
+
+                            </td>
+
+
+                            <!-- STATUS -->
+                            <td>
+
+                                @if (proposal.Status == "Approved")
+                                {
+                                    <span class="proposal-status approved">
+
+                                        <i class="fa-solid fa-circle-check"></i>
+
+                                        Approved
+
+                                    </span>
+                                }
+                                else if (proposal.Status == "Approved with Changes")
+                                {
+                                    <span class="proposal-status approved">
+
+                                        <i class="fa-solid fa-circle-check"></i>
+
+                                        Approved with Changes
+
+                                    </span>
+                                }
+                                else if (proposal.Status == "Rejected")
+                                {
+                                    <span class="proposal-status rejected">
+
+                                        <i class="fa-solid fa-circle-xmark"></i>
+
+                                        Rejected
+
+                                    </span>
+                                }
+                                else if (proposal.Status == "Submitted")
+                                {
+                                    <span class="proposal-status pending">
+
+                                        <i class="fa-solid fa-paper-plane"></i>
+
+                                        Submitted
+
+                                    </span>
+                                }
+                                else if (proposal.Status == "Revision Required")
+                                {
+                                    <span class="proposal-status revision">
+
+                                        <i class="fa-solid fa-rotate"></i>
+
+                                        Revision Required
+
+                                    </span>
+                                }
+                                else if (proposal.Status == "Under Evaluation")
+                                {
+                                    <span class="proposal-status pending">
+
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                                        Under Evaluation
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="proposal-status">
+
+                                        @proposal.Status
+
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ACTION -->
+                            <td>
+
+                                <div class="proposal-actions">
+
+                                    <!-- VIEW PROPOSAL -->
+                                    <a href="@Url.Action(
+                                        "ProposalDetails",
+                                        "Student",
+                                        new { id = proposal.ProposalID })"
+                                       class="proposal-btn view-btn">
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                        View Proposal
+
+                                    </a>
+
+
+                                    <!-- EDIT / SUBMIT REVISION -->
+                                    @if (proposal.Status == "Revision Required")
+                                    {
+                                        <a href="@Url.Action(
+                                                "EditProposal",
+                                                "Student",
+                                                new { id = proposal.ProposalID })"
+                                           class="proposal-btn edit-btn">
+
+                                            <i class="fa-solid fa-pen-to-square"></i>
+
+                                            Edit & Submit Revision
+
+                                        </a>
+                                    }
+
+
+                                    <!-- VIEW RELEASED EVALUATION -->
+                                    @if (releasedEvaluation != null)
+                                    {
+                                        <a href="@Url.Action(
+                                            "EvaluationDetails",
+                                            "Student",
+                                            new { id = releasedEvaluation.EvaluationID })"
+                                           class="proposal-btn evaluation-btn">
+
+                                            <i class="fa-solid fa-clipboard-check"></i>
+
+                                            View Evaluator Evaluation
+
+                                        </a>
+                                    }
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="4" class="no-proposal">
+
+                            <i class="fa-solid fa-file-circle-xmark"></i>
+
+                            <strong>
+                                No research proposal submitted yet.
+                            </strong>
+
+                            <span>
+                                Submit your research proposal to begin the review process.
+                            </span>
+
+                            <a href="@Url.Action("NewProposal", "Student")"
+                               class="proposal-btn submit-btn">
+
+                                <i class="fa-solid fa-plus"></i>
+
+                                Submit Research Proposal
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
+
+<style>
+
+    /* =========================================================
+       EVALUATOR EVALUATION BUTTON
+       ========================================================= */
+
+    .evaluation-btn {
+        background: #001B44;
+        color: #FFFFFF !important;
+        border: 1px solid #001B44;
+    }
+
+        .evaluation-btn:hover {
+            background: #FDB913;
+            color: #001B44 !important;
+            border-color: #FDB913;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================================
+       INFO MESSAGE
+       ========================================================= */
+
+    .alert-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        background: #eef5ff;
+        color: #174a7e;
+        border: 1px solid #c9ddf5;
+    }
+
+
+    /* =========================================================
+       ACTION BUTTON LAYOUT
+       ========================================================= */
+
+    .proposal-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .proposal-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+            .proposal-actions .proposal-btn {
+                width: 100%;
+                text-align: center;
+            }
+    }
+</style>

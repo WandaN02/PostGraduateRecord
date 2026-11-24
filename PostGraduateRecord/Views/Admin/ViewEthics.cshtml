@@ -1,0 +1,497 @@
+﻿@model PostGraduateRecord.Models.EthicsApplication
+
+@{
+    ViewBag.Title = "View Ethics Application";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!-- ========================================= -->
+<!-- PAGE HEADER -->
+<!-- ========================================= -->
+
+<div class="page-header">
+
+    <div>
+
+        <h2>
+            <i class="fa-solid fa-scale-balanced"></i>
+            Ethics Application
+        </h2>
+
+        <p>
+            View postgraduate research ethics application details.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================= -->
+<!-- APPLICATION INFORMATION -->
+<!-- ========================================= -->
+
+<div class="dashboard-panel ethics-details-panel">
+
+
+    <!-- ========================================= -->
+    <!-- HEADER -->
+    <!-- ========================================= -->
+
+    <div class="ethics-details-header">
+
+        <div>
+
+            <h3>
+                <i class="fa-solid fa-file-shield"></i>
+                Ethics Application
+            </h3>
+
+            <span>
+                Ethics ID: #@Model.EthicsID
+            </span>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div>
+
+            @if (Model.Status == "Approved")
+            {
+                <span class="status-badge approved">
+                    Approved
+                </span>
+            }
+            else if (Model.Status == "Resubmission Required")
+            {
+                <span class="status-badge pending">
+                    Resubmission Required
+                </span>
+            }
+            else if (Model.Status == "Submitted")
+            {
+                <span class="status-badge pending">
+                    Submitted
+                </span>
+            }
+            else
+            {
+                <span class="status-badge pending">
+                    @Model.Status
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <hr />
+
+
+    <!-- ========================================= -->
+    <!-- STUDENT INFORMATION -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-user-graduate"></i>
+            Student Information
+        </h3>
+
+
+        <div class="details-grid">
+
+            <!-- STUDENT NAME -->
+
+            <div class="detail-item">
+
+                <span>
+                    Student Name
+                </span>
+
+                <strong>
+
+                    @if (Model.Student != null &&
+                        Model.Student.User != null)
+                    {
+                        @Model.Student.User.FirstName
+                        @Model.Student.User.LastName
+                    }
+                    else
+                    {
+                        <text>N/A</text>
+                    }
+
+                </strong>
+
+            </div>
+
+
+            <!-- STUDENT NUMBER -->
+
+            <div class="detail-item">
+
+                <span>
+                    Student Number
+                </span>
+
+                <strong>
+
+                    @if (Model.Student != null &&
+                        Model.Student.User != null)
+                    {
+                        @Model.Student.User.StudentNumber
+                    }
+                    else
+                    {
+                        <text>N/A</text>
+                    }
+
+                </strong>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="detail-item">
+
+                <span>
+                    Email
+                </span>
+
+                <strong>
+
+                    @if (Model.Student != null &&
+                        Model.Student.User != null)
+                    {
+                        @Model.Student.User.Email
+                    }
+                    else
+                    {
+                        <text>N/A</text>
+                    }
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- ETHICS INFORMATION -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-file-circle-check"></i>
+            Ethics Information
+        </h3>
+
+
+        <!-- PROJECT TITLE -->
+
+        <div class="detail-full">
+
+            <span>
+                Project Title
+            </span>
+
+            <strong>
+
+                @(string.IsNullOrWhiteSpace(Model.ProjectTitle)
+                    ? "N/A"
+                    : Model.ProjectTitle)
+
+            </strong>
+
+        </div>
+
+
+        <!-- RESEARCH TITLE -->
+
+        <div class="detail-full">
+
+            <span>
+                Research Title
+            </span>
+
+            <strong>
+
+                @(string.IsNullOrWhiteSpace(Model.ResearchTitle)
+                    ? "N/A"
+                    : Model.ResearchTitle)
+
+            </strong>
+
+        </div>
+
+
+        <!-- RISK LEVEL -->
+
+        <div class="detail-full">
+
+            <span>
+                Risk Level
+            </span>
+
+            <strong>
+
+                @(string.IsNullOrWhiteSpace(Model.RiskLevel)
+                    ? "N/A"
+                    : Model.RiskLevel)
+
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- DATA COLLECTION METHODS -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-database"></i>
+            Data Collection Methods
+        </h3>
+
+
+        <div class="text-content">
+
+            @if (!string.IsNullOrWhiteSpace(
+                Model.DataCollectionMethods))
+            {
+                @Model.DataCollectionMethods
+            }
+            else
+            {
+                <span>
+                    No data collection methods provided.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- CONSENT PROCESS -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-handshake"></i>
+            Consent Process
+        </h3>
+
+
+        <div class="text-content">
+
+            @if (!string.IsNullOrWhiteSpace(
+                Model.ConsentProcess))
+            {
+                @Model.ConsentProcess
+            }
+            else
+            {
+                <span>
+                    No consent process provided.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- PRIVACY AND DATA PROTECTION -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-shield-halved"></i>
+            Privacy and Data Protection Measures
+        </h3>
+
+
+        <div class="text-content">
+
+            @if (!string.IsNullOrWhiteSpace(
+                Model.PrivacyDataProtectionMeasures))
+            {
+                @Model.PrivacyDataProtectionMeasures
+            }
+            else
+            {
+                <span>
+                    No privacy and data protection measures provided.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- SUBMISSION INFORMATION -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-calendar-days"></i>
+            Submission Information
+        </h3>
+
+
+        <div class="details-grid">
+
+            <!-- SUBMISSION DATE -->
+
+            <div class="detail-item">
+
+                <span>
+                    Submission Date
+                </span>
+
+                <strong>
+
+                    @(Model.SubmissionDate.HasValue
+                        ? Model.SubmissionDate.Value.ToString("dd MMM yyyy")
+                        : "N/A")
+
+                </strong>
+
+            </div>
+
+
+            <!-- APPROVAL DATE -->
+
+            <div class="detail-item">
+
+                <span>
+                    Approval Date
+                </span>
+
+                <strong>
+
+                    @(Model.ApprovalDate.HasValue
+                        ? Model.ApprovalDate.Value.ToString("dd MMM yyyy")
+                        : "Not approved")
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- ETHICS REFERENCE -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-hashtag"></i>
+            Ethics Reference
+        </h3>
+
+
+        <div class="detail-full">
+
+            <span>
+                Reference Number
+            </span>
+
+            <strong>
+
+                @if (!string.IsNullOrWhiteSpace(
+                    Model.ReferenceNumber))
+                {
+                    @Model.ReferenceNumber
+                }
+                else
+                {
+                    <span>
+                        Not yet assigned
+                    </span>
+                }
+
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- SUPERVISOR COMMENTS -->
+    <!-- ========================================= -->
+
+    <div class="details-section">
+
+        <h3>
+            <i class="fa-solid fa-comments"></i>
+            Supervisor Comments
+        </h3>
+
+
+        <div class="text-content">
+
+            @if (!string.IsNullOrWhiteSpace(
+                Model.Comments))
+            {
+                @Model.Comments
+            }
+            else
+            {
+                <span>
+                    No supervisor comments have been added.
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- ========================================= -->
+<!-- BOTTOM ACTIONS -->
+<!-- ========================================= -->
+
+<div class="details-actions">
+
+    <a href="@Url.Action("Ethics", "Admin")"
+       class="back-button">
+
+        <i class="fa-solid fa-arrow-left"></i>
+
+        Back to Ethics
+
+    </a>
+
+</div>

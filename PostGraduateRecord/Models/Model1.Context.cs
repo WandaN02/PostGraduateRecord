@@ -34,7 +34,6 @@ namespace PostGraduateRecord.Models
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<Milestone> Milestones { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
-        public virtual DbSet<ProgressReport> ProgressReports { get; set; }
         public virtual DbSet<ProposalDocument> ProposalDocuments { get; set; }
         public virtual DbSet<Proposal> Proposals { get; set; }
         public virtual DbSet<ProposalStatusHistory> ProposalStatusHistories { get; set; }
@@ -46,5 +45,13 @@ namespace PostGraduateRecord.Models
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TimelineEvent> TimelineEvents { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ApplicationDocument> ApplicationDocuments { get; set; }
+        public virtual DbSet<Application> Applications { get; set; }
+        public virtual DbSet<EvaluatorAssignment> EvaluatorAssignments { get; set; }
+        public virtual DbSet<Thesis> Theses { get; set; }
+        public virtual DbSet<EvaluationCriteria> EvaluationCriterias { get; set; }
+        public virtual DbSet<EvaluationCriterionRating> EvaluationCriterionRatings { get; set; }
+        public virtual DbSet<UserSetting> UserSettings { get; set; }
+        public virtual DbSet<ProgressReport> ProgressReports { get; set; }
     }
 }

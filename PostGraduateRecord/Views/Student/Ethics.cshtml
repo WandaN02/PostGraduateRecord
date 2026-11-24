@@ -1,8 +1,9 @@
-﻿@{
-    ViewBag.Title = "Ethics";
+﻿@model PostGraduateRecord.Models.EthicsApplication
+
+@{
+    ViewBag.Title = "Ethics Application";
     Layout = "~/Views/Shared/_StudentLayout.cshtml";
 }
-
 
 <div class="page-header">
 
@@ -12,34 +13,198 @@
     </h2>
 
     <p>
-        Manage your research ethics applications.
+        Record your ethics application information.
     </p>
 
 </div>
-
 
 
 <div class="card-section">
 
+    <div class="ethics-page-header">
 
-    <h3>
-        Current Ethics Status
-    </h3>
+        <h3>
+            <i class="fa-solid fa-file-shield"></i>
+            Ethics Information
+        </h3>
+
+    </div>
 
 
-    <p>
-        No ethics application submitted yet.
+    <p class="ethics-description">
+        The actual ethics application is submitted externally.
+        Use this section to record whether you have submitted
+        your ethics application and, if applicable, your Ethics Number.
     </p>
 
 
-    <a href="@Url.Action("EthicsApplication","Student")"
-       class="btn btn-warning">
+    @if (Model == null || Model.Status == "Not Submitted")
+    {
+        <div class="empty-state">
 
-        <i class="fa-solid fa-plus"></i>
-        New Ethics Application
+            <div class="empty-message">
 
-    </a>
+                <div class="empty-icon">
+                    <i class="fa-solid fa-file-circle-question"></i>
+                </div>
 
+                <h3>
+                    Ethics Application Information
+                </h3>
+
+                <p>
+                    Please indicate whether you have submitted
+                    your ethics application.
+                </p>
+
+                <br />
+
+                <a href="@Url.Action("EthicsApplication", "Student")"
+                   class="new-ethics-button">
+
+                    <i class="fa-solid fa-plus"></i>
+                    Enter Ethics Information
+
+                </a>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="ethics-status-card">
+
+            <div class="status-icon">
+
+                @if (Model.Status == "Approved")
+                {
+                    <i class="fa-solid fa-circle-check"></i>
+                }
+                else
+                {
+                    <i class="fa-solid fa-clock"></i>
+                }
+
+            </div>
+
+
+            <div class="status-content">
+
+                <span class="status-label">
+                    ETHICS STATUS
+                </span>
+
+                @if (Model.Status == "Approved")
+                {
+                    <h3>
+                        <span class="status approved">
+                            Verified
+                        </span>
+                    </h3>
+
+                    <p>
+                        Your Ethics Number has been verified successfully.
+                    </p>
+                }
+                else
+                {
+                    <h3>
+                        <span class="status">
+                            @Model.Status
+                        </span>
+                    </h3>
+                }
+
+            </div>
+
+        </div>
+
+
+        if (Model.Status == "Approved")
+        {
+            <div class="details-card">
+
+                <div class="details-header">
+
+                    <h3>
+                        <i class="fa-solid fa-hashtag"></i>
+                        Ethics Details
+                    </h3>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-label">
+                        Ethics Number
+                    </div>
+
+                    <div class="detail-value">
+                        @Model.ReferenceNumber
+                    </div>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <div class="detail-label">
+                        Verification Date
+                    </div>
+
+                    <div class="detail-value">
+
+                        @(Model.ApprovalDate.HasValue
+                            ? Model.ApprovalDate.Value.ToString("dd MMM yyyy")
+                            : "N/A")
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="ethics-actions">
+
+                <a href="@Url.Action("EthicsCertificate", "Student")"
+                   class="btn btn-warning">
+
+                    <i class="fa-solid fa-certificate"></i>
+                    View Ethics Certificate
+
+                </a>
+
+
+                <a href="@Url.Action(
+                            "DownloadEthicsCertificate",
+                            "Student",
+                            new { id = Model.EthicsID })"
+                   class="btn btn-warning">
+
+                    <i class="fa-solid fa-download"></i>
+                    Download Ethics Certificate
+
+                </a>
+
+            </div>
+        }
+
+    }
 
 </div>
 
+
+<div class="back-section">
+
+    <a href="@Url.Action("Dashboard", "Student")"
+       class="back-button">
+
+        <i class="fa-solid fa-arrow-left"></i>
+        Back to Dashboard
+
+    </a>
+
+</div>

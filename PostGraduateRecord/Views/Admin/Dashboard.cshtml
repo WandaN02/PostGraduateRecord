@@ -1,0 +1,510 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- =========================================
+     DASHBOARD HEADER
+========================================= -->
+
+<div class="dashboard-header">
+
+    <div>
+        <h2>
+            Welcome, @Session["FullName"]
+        </h2>
+
+        <p>
+            Here's an overview of postgraduate research activities.
+        </p>
+    </div>
+
+</div>
+
+
+<!-- =========================================
+     STATISTICS CARDS
+========================================= -->
+
+<div class="dashboard-cards">
+
+    <!-- TOTAL STUDENTS -->
+
+    <a href="@Url.Action("Students", "Admin")"
+       class="dashboard-card">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-user-graduate"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span>Total Students</span>
+
+            <strong>
+                @ViewBag.TotalStudents
+            </strong>
+
+        </div>
+
+    </a>
+
+
+    <!-- TOTAL SUPERVISORS -->
+
+    <a href="@Url.Action("Supervisors", "Admin")"
+       class="dashboard-card">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-user-tie"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span>Total Supervisors</span>
+
+            <strong>
+                @ViewBag.TotalSupervisors
+            </strong>
+
+        </div>
+
+    </a>
+
+
+    <!-- PENDING APPLICATIONS -->
+
+    <a href="@Url.Action("PendingApplications", "Admin")"
+       class="dashboard-card">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-file-circle-check"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span>Pending Applications</span>
+
+            <strong>
+                @ViewBag.PendingApplications
+            </strong>
+
+        </div>
+
+    </a>
+
+
+    <!-- PENDING ASSIGNMENTS -->
+
+    <a href="@Url.Action("PendingAssignments", "Admin")"
+       class="dashboard-card">
+
+        <div class="stat-icon">
+            <i class="fa-solid fa-user-clock"></i>
+        </div>
+
+        <div class="stat-content">
+
+            <span>Pending Assignments</span>
+
+            <strong>
+                @ViewBag.PendingAssignments
+            </strong>
+
+        </div>
+
+    </a>
+
+</div>
+
+
+<!-- =========================================
+     MAIN DASHBOARD AREA
+========================================= -->
+
+<div class="admin-dashboard-grid">
+
+
+    <!-- =====================================
+         RECENT RESEARCH ACTIVITY
+    ====================================== -->
+
+    <section class="dashboard-panel activity-panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    Recent Research Activity
+                </h3>
+
+                <p>
+                    Latest postgraduate research activities
+                </p>
+
+            </div>
+
+            <a href="@Url.Action("Timeline", "Admin")"
+               class="panel-link">
+
+                View Timeline →
+
+            </a>
+
+        </div>
+
+
+        <div class="activity-timeline">
+
+
+            <!-- =================================
+                 ACTIVITY 1
+            ================================== -->
+
+            <a href="@Url.Action("Applications", "Admin", new { status = "Approved" })"
+               class="activity-item activity-clickable">
+
+                <div class="activity-dot">
+                    <i class="fa-solid fa-file-circle-check"></i>
+                </div>
+
+                <div class="activity-info">
+
+                    <h4>
+                        Application Approved
+                    </h4>
+
+                    <p>
+                        A postgraduate research application
+                        was approved.
+                    </p>
+
+                    <span>
+                        View approved applications →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- =================================
+                 ACTIVITY 2
+            ================================== -->
+
+            <a href="@Url.Action("PendingAssignments", "Admin")"
+               class="activity-item activity-clickable">
+
+                <div class="activity-dot">
+                    <i class="fa-solid fa-user-tie"></i>
+                </div>
+
+                <div class="activity-info">
+
+                    <h4>
+                        Supervisor Assigned
+                    </h4>
+
+                    <p>
+                        A supervisor was assigned to a
+                        postgraduate student.
+                    </p>
+
+                    <span>
+                        View supervisor assignments →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- =================================
+                 ACTIVITY 3
+            ================================== -->
+
+            <a href="@Url.Action("PendingApplications", "Admin")"
+               class="activity-item activity-clickable">
+
+                <div class="activity-dot">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+
+                <div class="activity-info">
+
+                    <h4>
+                        New Research Application
+                    </h4>
+
+                    <p>
+                        A new postgraduate research
+                        application was submitted.
+                    </p>
+
+                    <span>
+                        View pending applications →
+                    </span>
+
+                </div>
+
+            </a>
+
+
+            <!-- =================================
+                 ACTIVITY 4
+            ================================== -->
+
+            <a href="@Url.Action("Students", "Admin")"
+               class="activity-item activity-clickable">
+
+                <div class="activity-dot">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+
+                <div class="activity-info">
+
+                    <h4>
+                        Student Registered
+                    </h4>
+
+                    <p>
+                        A new postgraduate student was
+                        registered in the system.
+                    </p>
+
+                    <span>
+                        View students →
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================
+         APPLICATION STATUS
+    ====================================== -->
+
+    <section class="dashboard-panel status-panel">
+
+        <div class="panel-header">
+
+            <div>
+
+                <h3>
+                    <i class="fa-solid fa-chart-simple"></i>
+                    Application Status
+                </h3>
+
+                <p>
+                    Current application overview
+                </p>
+
+            </div>
+
+            <a href="@Url.Action("Applications", "Admin")"
+               class="panel-link">
+
+                View All →
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================
+             STATUS TIMELINE
+        ================================== -->
+
+        <div class="application-timeline">
+
+            <div class="status-line"></div>
+
+
+            <!-- PENDING -->
+
+            <a href="@Url.Action("Applications", "Admin", new { status = "Pending" })"
+               class="application-status status-clickable">
+
+                <div class="status-circle pending">
+
+                    <i class="fa-solid fa-hourglass-half"></i>
+
+                </div>
+
+                <strong>
+                    @ViewBag.PendingApplications
+                </strong>
+
+                <span>
+                    Pending
+                </span>
+
+            </a>
+
+
+            <!-- APPROVED -->
+
+            <a href="@Url.Action("Applications", "Admin", new { status = "Approved" })"
+               class="application-status status-clickable">
+
+                <div class="status-circle approved">
+
+                    <i class="fa-solid fa-check"></i>
+
+                </div>
+
+                <strong>
+                    @ViewBag.ApprovedApplications
+                </strong>
+
+                <span>
+                    Approved
+                </span>
+
+            </a>
+
+
+            <!-- REJECTED -->
+
+            <a href="@Url.Action("Applications", "Admin", new { status = "Rejected" })"
+               class="application-status status-clickable">
+
+                <div class="status-circle rejected">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </div>
+
+                <strong>
+                    @ViewBag.RejectedApplications
+                </strong>
+
+                <span>
+                    Rejected
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =================================
+             TOTAL APPLICATIONS
+        ================================== -->
+
+        <a href="@Url.Action("Applications", "Admin")"
+           class="application-summary summary-clickable">
+
+            <div>
+
+                <span>
+                    Total Applications
+                </span>
+
+                <strong>
+                    @ViewBag.TotalApplications
+                </strong>
+
+            </div>
+
+            <i class="fa-solid fa-file-lines"></i>
+
+        </a>
+
+    </section>
+
+</div>
+
+
+<!-- =========================================
+     QUICK ACTIONS
+========================================= -->
+
+<section class="quick-actions-section">
+
+    <div class="quick-actions-header">
+
+        <div>
+
+            <h3>
+                <i class="fa-solid fa-bolt"></i>
+                Quick Actions
+            </h3>
+
+            <p>
+                Frequently used administrative functions
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="quick-actions">
+
+
+        <!-- REGISTER STUDENT -->
+
+        <a href="@Url.Action("RegisterStudent", "Admin")"
+           class="quick-action">
+
+            <i class="fa-solid fa-user-plus"></i>
+
+            <span>
+                Register Student
+            </span>
+
+        </a>
+
+
+        <!-- MANAGE APPLICATIONS -->
+
+        <a href="@Url.Action("Applications", "Admin")"
+           class="quick-action">
+
+            <i class="fa-solid fa-file-circle-check"></i>
+
+            <span>
+                Manage Applications
+            </span>
+
+        </a>
+
+
+        <!-- MANAGE SUPERVISORS -->
+
+        <a href="@Url.Action("Supervisors", "Admin")"
+           class="quick-action">
+
+            <i class="fa-solid fa-user-tie"></i>
+
+            <span>
+                Manage Supervisors
+            </span>
+
+        </a>
+
+
+        <!-- REPORTS -->
+
+        <a href="@Url.Action("Reports", "Admin")"
+           class="quick-action">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            <span>
+                Reports
+            </span>
+
+        </a>
+
+    </div>
+
+</section>
